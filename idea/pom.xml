@@ -9,14 +9,16 @@
 
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.codehaus.sonar-ide</groupId>
-  <artifactId>sonar-idea-plugin</artifactId>
+  <artifactId>idea-sonar-plugin</artifactId>
   <packaging>jar</packaging>
   <version>0.1-SNAPSHOT</version>
   <name>Sonar IDEs :: IntelliJ IDEA</name>
+  <description>An IntelliJ IDEA Plugin for Sonar.</description>
 
   <properties>
     <version.sonar>1.13-SNAPSHOT</version.sonar>
     <version.idea>9.0.1</version.idea>
+    <version.idea.build>8000</version.idea.build>
   </properties>
 
   <dependencies>
@@ -84,17 +86,25 @@
       <version>4.7</version>
       <scope>test</scope>
     </dependency>
-
-    <!-- TODO remove -->
-    <dependency>
-      <groupId>org.codehaus.sonar</groupId>
-      <artifactId>sonar-plugin-api</artifactId>
-      <version>${version.sonar}</version>
-      <scope>test</scope>
-    </dependency>
   </dependencies>
 
   <build>
+    <resources>
+      <resource>
+        <directory>src/main/resources</directory>
+        <excludes>
+          <exclude>META-INF/plugin.xml</exclude>
+        </excludes>
+      </resource>
+      <resource>
+        <directory>src/main/resources</directory>
+        <includes>
+          <include>META-INF/plugin.xml</include>
+        </includes>
+        <filtering>true</filtering>
+      </resource>
+    </resources>
+
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -108,7 +118,8 @@
             </goals>
             <configuration>
               <descriptors>
-                <descriptor>${pom.basedir}/src/main/assembly/idea-plugin-assembly.xml
+                <descriptor>
+                  ${pom.basedir}/src/main/assembly/idea-plugin-assembly.xml
                 </descriptor>
               </descriptors>
             </configuration>

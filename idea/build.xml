@@ -1,11 +1,11 @@
 <project>
 
   <target name="deploy">
-    <delete dir="${user.home}/.IntelliJIdea90/system/plugins-sandbox/plugins/sonar-idea-plugin"/>
+    <delete dir="${user.home}/.IntelliJIdea90/system/plugins-sandbox/plugins/idea-sonar-plugin"/>
 
     <mvn args="package"/>
 
-    <unzip src="target/sonar-idea-plugin-0.1-SNAPSHOT.zip"
+    <unzip src="target/idea-sonar-plugin-0.1-SNAPSHOT.zip"
            dest="${user.home}/.IntelliJIdea90/system/plugins-sandbox/plugins/"/>
   </target>
 

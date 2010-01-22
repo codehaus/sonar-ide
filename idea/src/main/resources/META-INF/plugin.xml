@@ -1,34 +1,35 @@
-<idea-plugin version="2">
-  <id>org.codehaus.sonar-ide</id>
+<!DOCTYPE idea-plugin PUBLIC "Plugin/DTD" "http://plugins.intellij.net/plugin.dtd">
+<idea-plugin version="2" url="${project.url}">
   <name>Sonar</name>
-  <description><!-- TODO short description here --></description>
-  <version>1.0</version>
-  <vendor>SonarSource</vendor>
-  <idea-version since-build="8000"/>
+
+  <id>${project.artifactId}</id>
+  <version>${project.version}</version>
+
+  <description><![CDATA[${project.description}]]></description>
+
+  <vendor url="${project.organization.url}">${project.organization.name}</vendor>
+
+  <idea-version since-build="${version.idea.build}"/>
 
   <!-- TODO
   <depends>org.jetbrains.idea.maven</depends>
   -->
 
   <application-components>
-    <!-- Add your application components here -->
     <component>
       <implementation-class>org.sonar.ide.idea.SonarInspectionProvider</implementation-class>
     </component>
   </application-components>
 
   <project-components>
-    <!-- Add your project components here -->
     <component>
       <implementation-class>org.sonar.ide.idea.SonarWorkspaceSettingsComponent</implementation-class>
     </component>
   </project-components>
 
   <actions>
-    <!-- Add your actions here -->
   </actions>
 
   <extensions defaultExtensionNs="com.intellij">
-    <!-- Add your extensions here -->
   </extensions>
 </idea-plugin>
