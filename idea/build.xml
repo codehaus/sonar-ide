@@ -1,0 +1,25 @@
+<project>
+
+  <target name="deploy">
+    <delete dir="${user.home}/.IntelliJIdea90/system/plugins-sandbox/plugins/sonar-idea-plugin"/>
+
+    <mvn args="package"/>
+
+    <unzip src="target/sonar-idea-plugin-0.1-SNAPSHOT.zip"
+           dest="${user.home}/.IntelliJIdea90/system/plugins-sandbox/plugins/"/>
+  </target>
+
+  <macrodef name="mvn">
+    <attribute name="args" default=""/>
+
+    <sequential>
+      <exec failonerror="true" executable="mvn" osfamily="unix">
+        <arg line="@{args}"/>
+      </exec>
+      <exec failonerror="true" executable="mvn.bat" osfamily="Windows">
+        <arg line="@{args}"/>
+      </exec>
+    </sequential>
+  </macrodef>
+
+</project>
