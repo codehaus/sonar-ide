@@ -57,11 +57,20 @@ public final class InspectionUtils {
 
     for (Violation violation : violations) {
       int line = violation.getLine() - 1;
+
+      /*
+      BLOCKER
+      CRITICAL
+      MAJOR
+      MINOR
+      INFO
+      */
+
       problems.add(manager.createProblemDescriptor(
           element,
           getTextRange(document, line),
           getDescriptionTemplate(violation),
-          ProblemHighlightType.ERROR,
+          ProblemHighlightType.GENERIC_ERROR_OR_WARNING,
           isOnTheFly,
           getQuickFix()
       ));

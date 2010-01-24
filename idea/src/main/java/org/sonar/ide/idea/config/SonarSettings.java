@@ -1,5 +1,6 @@
 package org.sonar.ide.idea.config;
 
+import org.jetbrains.annotations.NotNull;
 import org.sonar.wsclient.Server;
 
 import java.io.*;
@@ -10,21 +11,22 @@ import java.util.Properties;
  */
 public class SonarSettings {
   private Server server;
-  private String projectKey;
+  private boolean onTheFly = false;
 
-  public SonarSettings(Server server, String projectKey) {
+  public SonarSettings(Server server) {
     this.server = server;
-    this.projectKey = projectKey;
   }
 
   public static SonarSettings load(String path) {
-    File file = new File(path);
     Properties properties = new Properties();
-    if (path != null && file.exists()) {
-      try {
-        properties.load(new FileInputStream(file));
-      } catch (IOException e) {
-        e.printStackTrace();
+    if (path != null) {
+      File file = new File(path);
+      if (file.exists()) {
+        try {
+          properties.load(new FileInputStream(file));
+        } catch (IOException e) {
+          e.printStackTrace();
+        }
       }
     }
     return new SonarSettings(
@@ -32,12 +34,11 @@ public class SonarSettings {
             properties.getProperty("host", "http://localhost:9000"),
             properties.getProperty("username"),
             properties.getProperty("password")
-        ),
-        properties.getProperty("project", "org.codehaus.sonar-ide:test-project")
+        )
     );
   }
 
-  public void save(String path) {
+  public void save(@NotNull String path) {
     Properties properties = new Properties();
     if (server.getHost() != null) {
       properties.setProperty("host", server.getHost());
@@ -61,7 +62,7 @@ public class SonarSettings {
     return server;
   }
 
-  public String getProjectKey() {
-    return projectKey;
+  public boolean isOnTheFly() {
+    return onTheFly;
   }
 }

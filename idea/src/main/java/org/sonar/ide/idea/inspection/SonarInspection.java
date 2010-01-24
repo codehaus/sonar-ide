@@ -11,6 +11,7 @@ import com.intellij.psi.PsiNamedElement;
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.sonar.ide.idea.SonarWorkspaceSettingsComponent;
 import org.sonar.ide.idea.utils.InspectionUtils;
 import org.sonar.ide.idea.utils.ViolationUtils;
 
@@ -50,6 +51,9 @@ public class SonarInspection extends LocalInspectionTool {
   @Nullable
   @Override
   public ProblemDescriptor[] checkFile(@NotNull PsiFile file, @NotNull InspectionManager manager, boolean isOnTheFly) {
+    if (isOnTheFly && !SonarWorkspaceSettingsComponent.getInstance(file.getProject()).getSettings().isOnTheFly()) {
+      return null;
+    }
     LOG.debug("Running " + (isOnTheFly ? "on the fly" : "offline") + " inspection for " + file);
     return InspectionUtils.buildProblemDescriptors(
         ViolationUtils.getViolations(file),

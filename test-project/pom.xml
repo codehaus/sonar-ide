@@ -4,8 +4,8 @@
   <groupId>org.codehaus.sonar-ide.test-project</groupId>
   <artifactId>parent</artifactId>
   <version>0.1-SNAPSHOT</version>
-  <packaging>jar</packaging>
-  <name>A very basic project</name>
+  <packaging>pom</packaging>
+  <name>A very basic multi module project</name>
 
   <modules>
     <module>module1</module>

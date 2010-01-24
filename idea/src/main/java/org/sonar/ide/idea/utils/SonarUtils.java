@@ -6,6 +6,10 @@ import org.sonar.ide.idea.config.SonarSettings;
 import org.sonar.wsclient.Server;
 import org.sonar.wsclient.Sonar;
 import org.sonar.wsclient.connectors.HttpClient4Connector;
+import org.sonar.wsclient.services.Violation;
+import org.sonar.wsclient.services.ViolationQuery;
+
+import java.util.Collection;
 
 /**
  * @author Evgeny Mandrikov
@@ -28,5 +32,11 @@ public final class SonarUtils {
 
   public static Sonar getSonar(Project project) {
     return new Sonar(new HttpClient4Connector(getSonarSettings(project).getServer()));
+  }
+
+  public static void main(String[] args) {
+    Sonar sonar = new Sonar(new HttpClient4Connector(new Server("http://localhost:9000")));
+    ViolationQuery query = new ViolationQuery("org.codehaus.sonar-ide:test-project:[default].ClassOnDefaultPackage");
+    Collection<Violation> violations = sonar.findAll(query);
   }
 }

@@ -2,18 +2,16 @@
 <idea-plugin version="2" url="${project.url}">
   <name>Sonar</name>
 
-  <id>${project.artifactId}</id>
+  <id>${project.groupId}.${project.artifactId}</id>
   <version>${project.version}</version>
 
   <description><![CDATA[${project.description}]]></description>
 
-  <vendor url="${project.organization.url}">${project.organization.name}</vendor>
+  <vendor url="${project.organization.url}" email="user@sonar.codehaus.org">${project.organization.name}</vendor>
 
   <idea-version since-build="${version.idea.build}"/>
 
-  <!-- TODO
   <depends>org.jetbrains.idea.maven</depends>
-  -->
 
   <application-components>
     <component>

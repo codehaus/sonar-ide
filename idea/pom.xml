@@ -72,6 +72,12 @@
       <version>${version.idea}</version>
       <scope>provided</scope>
     </dependency>
+    <dependency>
+      <groupId>org.jetbrains.idea</groupId>
+      <artifactId>maven</artifactId>
+      <version>${version.idea}</version>
+      <scope>provided</scope>
+    </dependency>
 
     <!-- unit tests -->
     <dependency>
