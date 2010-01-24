@@ -1,5 +1,6 @@
 package org.sonar.ide.idea.config;
 
+import com.intellij.openapi.diagnostic.Logger;
 import org.jetbrains.annotations.NotNull;
 import org.sonar.wsclient.Server;
 
@@ -10,6 +11,8 @@ import java.util.Properties;
  * @author Evgeny Mandrikov
  */
 public class SonarSettings {
+  private static final Logger LOG = Logger.getInstance(SonarSettings.class.getName());
+
   private Server server;
   private boolean onTheFly = false;
 
@@ -18,6 +21,7 @@ public class SonarSettings {
   }
 
   public static SonarSettings load(String path) {
+    LOG.debug("Loading settings from " + path);
     Properties properties = new Properties();
     if (path != null) {
       File file = new File(path);
@@ -39,6 +43,7 @@ public class SonarSettings {
   }
 
   public void save(@NotNull String path) {
+    LOG.debug("Saving settings to " + path);
     Properties properties = new Properties();
     if (server.getHost() != null) {
       properties.setProperty("host", server.getHost());

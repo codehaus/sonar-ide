@@ -1,6 +1,7 @@
 package org.sonar.ide.idea;
 
 import com.intellij.openapi.components.SettingsSavingComponent;
+import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import org.jetbrains.annotations.Nullable;
@@ -12,6 +13,8 @@ import java.io.File;
  * @author Evgeny Mandrikov
  */
 public class SonarWorkspaceSettingsComponent implements SettingsSavingComponent {
+  private static final Logger LOG = Logger.getInstance(SonarWorkspaceSettingsComponent.class.getName());
+
   private SonarSettings settings;
   private Project project;
 
@@ -34,7 +37,9 @@ public class SonarWorkspaceSettingsComponent implements SettingsSavingComponent 
     if (basedir == null) {
       return null;
     }
-    return basedir.getPath() + File.separator + "sonar-ide.properties";
+    String cfgFilePath = basedir.getPath() + File.separator + "sonar-ide.properties";
+    LOG.debug("Config: " + cfgFilePath);
+    return cfgFilePath;
   }
 
   private void load() {

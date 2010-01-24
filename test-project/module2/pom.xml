@@ -5,7 +5,7 @@
   <artifactId>module2</artifactId>
   <version>0.1-SNAPSHOT</version>
   <packaging>jar</packaging>
-  <name>A very basic project</name>
+  <name>module2</name>
 
   <dependencies>
     <dependency>
