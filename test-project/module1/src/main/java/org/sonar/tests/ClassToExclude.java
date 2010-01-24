@@ -9,7 +9,7 @@ public class ClassToExclude {
   String test2 = "bar";
   String test3 = "toto";
 
-  public ClassToExclude(){
+  public ClassToExclude() {
     String t;
     if (true)
       t = "sonar";
@@ -30,36 +30,36 @@ public class ClassToExclude {
     // commmmmmmments
     // foo..............
     i++;
-    int j=10;
-    if (i==0) {
-      i=j + 10;
+    int j = 10;
+    if (i == 0) {
+      i = j + 10;
     }
-    if (i==0) {
-      i=j + 10;
+    if (i == 0) {
+      i = j + 10;
     }
-    if (i==0) {
-      i=j + 10;
+    if (i == 0) {
+      i = j + 10;
     }
-    if (i==0) {
-      i=j + 10;
+    if (i == 0) {
+      i = j + 10;
     }
-    if (i==0) {
-      i=j + 10;
+    if (i == 0) {
+      i = j + 10;
     }
-    if (i==0) {
-      i=j + 10;
+    if (i == 0) {
+      i = j + 10;
     }
-    if (i==0) {
-      i=j + 10;
+    if (i == 0) {
+      i = j + 10;
     }
-    if (i==0) {
-      i=j + 10;
+    if (i == 0) {
+      i = j + 10;
     }
-    if (i==0) {
-      i=j + 10;
+    if (i == 0) {
+      i = j + 10;
     }
-    if (i==0) {
-      i=j + 10;
+    if (i == 0) {
+      i = j + 10;
     }
     System.out.println("i=" + i);
   }

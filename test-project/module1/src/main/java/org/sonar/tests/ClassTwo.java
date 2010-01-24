@@ -1,13 +1,11 @@
-package org.sonar.tests.packageToExclude;
-
-import java.lang.String;
+package org.sonar.tests;
 
 /**
  * THE JAVADOC HEADER
  */
-public class ClassThree {
+public class ClassTwo {
 
-  public ClassThree(int i) {
+  public ClassTwo(int i) {
     // single comment
     int j = i++;
     myMethod();

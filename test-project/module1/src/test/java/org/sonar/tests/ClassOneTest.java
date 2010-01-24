@@ -2,7 +2,7 @@ package org.sonar.tests;
 
 import org.junit.Test;
 
-public class ClassOneTest  {
+public class ClassOneTest {
 
   @Test
   public void nothing() {
