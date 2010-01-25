@@ -48,6 +48,11 @@ public class SonarInspection extends LocalInspectionTool {
     return "Static description"; // TODO
   }
 
+  @Override
+  public boolean isEnabledByDefault() {
+    return true;
+  }
+
   @Nullable
   @Override
   public ProblemDescriptor[] checkFile(@NotNull PsiFile file, @NotNull InspectionManager manager, boolean isOnTheFly) {

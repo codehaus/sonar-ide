@@ -42,6 +42,8 @@ public final class ViolationUtils {
   public static Collection<Violation> getViolations(Sonar sonar, String resourceKey) {
     LOG.debug("Loading violations for " + resourceKey);
     ViolationQuery query = ViolationQuery.createForResource(resourceKey);
-    return sonar.findAll(query);
+    Collection<Violation> violations = sonar.findAll(query);
+    LOG.debug("Loaded " + violations.size() + " violations");
+    return violations;
   }
 }
