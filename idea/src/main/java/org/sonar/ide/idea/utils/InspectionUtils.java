@@ -72,15 +72,10 @@ public final class InspectionUtils {
           getDescriptionTemplate(violation),
           ProblemHighlightType.GENERIC_ERROR_OR_WARNING,
           isOnTheFly,
-          getQuickFix()
+          LocalQuickFix.EMPTY_ARRAY
       ));
     }
     return problems.toArray(new ProblemDescriptor[problems.size()]);
-  }
-
-  @Nullable
-  public static LocalQuickFix[] getQuickFix() {
-    return null;
   }
 
   public static String getDescriptionTemplate(Violation violation) {
