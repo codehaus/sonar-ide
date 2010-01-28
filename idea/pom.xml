@@ -55,7 +55,13 @@
     </dependency>
     <dependency>
       <groupId>com.intellij</groupId>
-      <artifactId>extenstions</artifactId>
+      <artifactId>bootstrap</artifactId>
+      <version>${idea.version}</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.intellij</groupId>
+      <artifactId>extensions</artifactId>
       <version>${idea.version}</version>
       <scope>provided</scope>
     </dependency>

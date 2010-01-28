@@ -26,6 +26,13 @@
   </project-components>
 
   <actions>
+    <!-- Experimental:
+    <action id="SonarCheckUpdate"
+            class="org.sonar.ide.idea.autoupdate.CheckUpdateAction"
+            text="Check Sonar Update">
+      <add-to-group group-id="ToolsMenu" anchor="first"/>
+    </action>
+    -->
   </actions>
 
   <extensions defaultExtensionNs="com.intellij">
