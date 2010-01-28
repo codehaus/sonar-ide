@@ -4,8 +4,15 @@ import org.netbeans.spi.tasklist.FileTaskScanner;
 import org.netbeans.spi.tasklist.Task;
 import org.openide.filesystems.FileObject;
 import org.openide.util.NbBundle;
+import org.sonar.ide.netbeans.utils.ResourceUtils;
+import org.sonar.ide.shared.SonarProperties;
+import org.sonar.ide.shared.ViolationsLoader;
+import org.sonar.wsclient.Sonar;
+import org.sonar.wsclient.connectors.HttpClient4Connector;
+import org.sonar.wsclient.services.Violation;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -27,8 +34,20 @@ public class SonarTaskScanner extends FileTaskScanner {
     if (resource == null || !"java".equalsIgnoreCase(resource.getExt())) {
       return null;
     }
+
+    String resourceKey = new ResourceUtils().getResourceKey(resource);
+
+    SonarProperties sonarProperties = SonarProperties.getInstance();
+    Sonar sonar = new Sonar(new HttpClient4Connector(sonarProperties.getServer()));
+
+    ViolationsLoader violationsLoader = new ViolationsLoader();
+    Collection<Violation> violations = violationsLoader.getViolations(sonar, resourceKey);
+
     ArrayList<Task> tasks = new ArrayList<Task>();
-    tasks.add(Task.create(resource, "org-sonar-ide-netbeans-Task", "TEST message", 1));
+    for (Violation violation : violations) {
+      tasks.add(Task.create(resource, "org-sonar-ide-netbeans-Task", violation.getMessage(), violation.getLine()));
+    }
+
     return tasks;
   }
 
