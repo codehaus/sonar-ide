@@ -9,7 +9,7 @@
 
   <vendor url="${project.organization.url}" email="user@sonar.codehaus.org">${project.organization.name}</vendor>
 
-  <idea-version since-build="${version.idea.build}"/>
+  <idea-version since-build="${idea.build}"/>
 
   <depends>org.jetbrains.idea.maven</depends>
 

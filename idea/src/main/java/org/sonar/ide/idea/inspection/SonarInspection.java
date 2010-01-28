@@ -1,21 +1,24 @@
 package org.sonar.ide.idea.inspection;
 
-import com.intellij.codeInspection.InspectionManager;
-import com.intellij.codeInspection.LocalInspectionTool;
-import com.intellij.codeInspection.LocalInspectionToolSession;
-import com.intellij.codeInspection.ProblemDescriptor;
+import com.intellij.codeInspection.*;
 import com.intellij.openapi.diagnostic.Logger;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiFile;
-import com.intellij.psi.PsiNamedElement;
+import com.intellij.openapi.editor.Document;
+import com.intellij.openapi.project.Project;
+import com.intellij.openapi.util.TextRange;
+import com.intellij.psi.*;
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.sonar.ide.idea.SonarWorkspaceSettingsComponent;
-import org.sonar.ide.idea.utils.InspectionUtils;
-import org.sonar.ide.idea.utils.ViolationUtils;
+import org.sonar.ide.idea.utils.ResourceUtils;
+import org.sonar.ide.idea.utils.SonarUtils;
+import org.sonar.ide.shared.ViolationsLoader;
+import org.sonar.wsclient.Sonar;
+import org.sonar.wsclient.services.Violation;
 
 import javax.swing.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * @author Evgeny Mandrikov
@@ -56,12 +59,22 @@ public class SonarInspection extends LocalInspectionTool {
   @Nullable
   @Override
   public ProblemDescriptor[] checkFile(@NotNull PsiFile file, @NotNull InspectionManager manager, boolean isOnTheFly) {
-    if (isOnTheFly && !SonarWorkspaceSettingsComponent.getInstance(file.getProject()).getSettings().isOnTheFly()) {
+    if (isOnTheFly) {
+      return null;
+    }
+    if (!(file instanceof PsiJavaFile)) {
       return null;
     }
     LOG.debug("Running " + (isOnTheFly ? "on the fly" : "offline") + " inspection for " + file);
-    return InspectionUtils.buildProblemDescriptors(
-        ViolationUtils.getViolations(file),
+
+    PsiJavaFile javaFile = (PsiJavaFile) file;
+    ViolationsLoader violationsLoader = new ViolationsLoader();
+    Sonar sonar = SonarUtils.getSonar(file.getProject());
+    ResourceUtils resourceUtils = new ResourceUtils();
+    Collection<Violation> violations = violationsLoader.getViolations(sonar, resourceUtils.getResourceKey(javaFile));
+
+    return buildProblemDescriptors(
+        violations,
         manager,
         file,
         isOnTheFly
@@ -91,5 +104,59 @@ public class SonarInspection extends LocalInspectionTool {
   public void inspectionFinished(LocalInspectionToolSession session) {
     LOG.debug("Inspection finished");
     super.inspectionFinished(session);
+  }
+
+  @NotNull
+  private TextRange getTextRange(@NotNull Document document, int line) {
+    int lineStartOffset = document.getLineStartOffset(line);
+    int lineEndOffset = document.getLineEndOffset(line);
+    return new TextRange(lineStartOffset, lineEndOffset);
+  }
+
+  @Nullable
+  private ProblemDescriptor[] buildProblemDescriptors(
+      @Nullable Collection<Violation> violations,
+      @NotNull InspectionManager manager,
+      PsiElement element,
+      boolean isOnTheFly
+  ) {
+    if (violations == null) {
+      return null;
+    }
+
+    Project project = element.getProject();
+    PsiDocumentManager documentManager = PsiDocumentManager.getInstance(project);
+    Document document = documentManager.getDocument(element.getContainingFile());
+    if (document == null) {
+      return null;
+    }
+
+    List<ProblemDescriptor> problems = new ArrayList<ProblemDescriptor>();
+
+    for (Violation violation : violations) {
+      int line = violation.getLine() - 1;
+
+      /*
+      BLOCKER
+      CRITICAL
+      MAJOR
+      MINOR
+      INFO
+      */
+
+      problems.add(manager.createProblemDescriptor(
+          element,
+          getTextRange(document, line),
+          getDescriptionTemplate(violation),
+          ProblemHighlightType.GENERIC_ERROR_OR_WARNING,
+          isOnTheFly,
+          LocalQuickFix.EMPTY_ARRAY
+      ));
+    }
+    return problems.toArray(new ProblemDescriptor[problems.size()]);
+  }
+
+  private String getDescriptionTemplate(Violation violation) {
+    return violation.getRuleName() + " : " + violation.getMessage();
   }
 }

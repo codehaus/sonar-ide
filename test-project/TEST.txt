@@ -1,0 +1,4 @@
+- Default package
+- Two classes in same java file
+- Inner classes
+- Two maven modules

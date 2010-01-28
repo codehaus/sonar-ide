@@ -12,84 +12,78 @@
   <artifactId>idea-sonar-plugin</artifactId>
   <packaging>jar</packaging>
   <version>0.1-SNAPSHOT</version>
-  <name>Sonar IDEs :: IntelliJ IDEA</name>
+  <name>Sonar IDEs :: Plugin :: IntelliJ IDEA</name>
   <description>An IntelliJ IDEA Plugin for Sonar.</description>
 
   <properties>
-    <version.sonar>1.13-SNAPSHOT</version.sonar>
-    <version.idea>9.0.1</version.idea>
-    <version.idea.build>8000</version.idea.build>
+    <idea.version>9.0.1</idea.version>
+    <idea.build>8000</idea.build>
   </properties>
 
   <dependencies>
     <dependency>
-      <groupId>org.codehaus.sonar</groupId>
-      <artifactId>sonar-ws-client</artifactId>
-      <version>${version.sonar}</version>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>shared</artifactId>
+      <version>${project.version}</version>
     </dependency>
 
     <dependency>
-      <groupId>com.googlecode.json-simple</groupId>
-      <artifactId>json-simple</artifactId>
-      <version>1.1</version>
+      <groupId>commons-lang</groupId>
+      <artifactId>commons-lang</artifactId>
+      <version>2.4</version>
     </dependency>
 
-    <dependency>
-      <groupId>commons-httpclient</groupId>
-      <artifactId>commons-httpclient</artifactId>
-      <version>3.1</version>
-    </dependency>
-
-    <dependency>
-      <groupId>org.apache.httpcomponents</groupId>
-      <artifactId>httpclient</artifactId>
-      <version>4.0</version>
-    </dependency>
-
-    <!-- IntelliJ IDEA -->
+    <!-- === IntelliJ IDEA === -->
     <!-- TODO change groupId -->
     <dependency>
       <groupId>com.intellij</groupId>
       <artifactId>openapi</artifactId>
-      <version>${version.idea}</version>
+      <version>${idea.version}</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>com.intellij</groupId>
       <artifactId>util</artifactId>
-      <version>${version.idea}</version>
+      <version>${idea.version}</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>com.intellij</groupId>
       <artifactId>annotations</artifactId>
-      <version>${version.idea}</version>
+      <version>${idea.version}</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>com.intellij</groupId>
       <artifactId>extenstions</artifactId>
-      <version>${version.idea}</version>
+      <version>${idea.version}</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.jetbrains.idea</groupId>
       <artifactId>maven</artifactId>
-      <version>${version.idea}</version>
+      <version>${idea.version}</version>
       <scope>provided</scope>
     </dependency>
 
-    <!-- unit tests -->
+    <!-- === Unit tests === -->
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>shared</artifactId>
+      <version>${project.version}</version>
+      <type>test-jar</type>
+      <scope>test</scope>
+    </dependency>
+
     <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-all</artifactId>
-      <version>1.8.0</version>
       <scope>test</scope>
     </dependency>
+
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>4.7</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -134,6 +128,12 @@
       </plugin>
     </plugins>
   </build>
+
+  <scm>
+    <connection>scm:svn:http://svn.codehaus.org/sonar-ide/trunk/idea</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/sonar-ide/trunk/idea</developerConnection>
+    <url>http://svn.codehaus.org/sonar-ide</url>
+  </scm>
 
   <developers>
     <developer>

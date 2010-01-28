@@ -2,7 +2,7 @@ package org.sonar.ide.idea.utils;
 
 import com.intellij.openapi.project.Project;
 import org.sonar.ide.idea.SonarWorkspaceSettingsComponent;
-import org.sonar.ide.idea.config.SonarSettings;
+import org.sonar.ide.shared.SonarProperties;
 import org.sonar.wsclient.Server;
 import org.sonar.wsclient.Sonar;
 import org.sonar.wsclient.connectors.HttpClient4Connector;
@@ -26,7 +26,7 @@ public final class SonarUtils {
 //    return new Sonar(new HttpClient3Connector(server));
   }
 
-  public static SonarSettings getSonarSettings(Project project) {
+  public static SonarProperties getSonarSettings(Project project) {
     return SonarWorkspaceSettingsComponent.getInstance(project).getSettings();
   }
 

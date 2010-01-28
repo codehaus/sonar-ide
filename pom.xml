@@ -15,7 +15,10 @@
       </activation>
       <modules>
         <module>parent</module>
+        <module>shared</module>
         <module>idea</module>
+        <module>netbeans</module>
+        <module>eclipse</module>
       </modules>
     </profile>
   </profiles>
