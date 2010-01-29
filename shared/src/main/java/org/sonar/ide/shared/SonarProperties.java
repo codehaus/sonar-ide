@@ -1,5 +1,7 @@
 package org.sonar.ide.shared;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.sonar.wsclient.Server;
 
 import java.io.*;
@@ -9,6 +11,8 @@ import java.util.Properties;
  * @author Evgeny Mandrikov
  */
 public final class SonarProperties {
+  public static final Logger LOG = LoggerFactory.getLogger(SonarProperties.class);
+
   public static final String HOST_DEFAULT = "http://localhost:9000";
 
   public static final String HOST_PROPERTY = "host";
@@ -45,7 +49,7 @@ public final class SonarProperties {
         try {
           properties.load(new FileInputStream(file));
         } catch (IOException e) {
-          e.printStackTrace();
+          LOG.error(e.getMessage(), e);
         }
       }
     }
@@ -68,9 +72,9 @@ public final class SonarProperties {
     try {
       properties.store(new FileOutputStream(path), "Sonar Settings");
     } catch (FileNotFoundException e) {
-      e.printStackTrace();
+      LOG.error(e.getMessage(), e);
     } catch (IOException e) {
-      e.printStackTrace();
+      LOG.error(e.getMessage(), e);
     }
   }
 

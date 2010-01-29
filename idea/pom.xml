@@ -13,7 +13,7 @@
   <artifactId>idea-sonar-plugin</artifactId>
   <packaging>jar</packaging>
   <version>0.1-SNAPSHOT</version>
-  <name>Sonar IDEs :: Plugin :: IntelliJ IDEA</name>
+  <name>Sonar IDEs :: IntelliJ IDEA Plugin</name>
   <description>An IntelliJ IDEA Plugin for Sonar.</description>
 
   <properties>

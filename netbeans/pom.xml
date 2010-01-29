@@ -14,7 +14,7 @@
   <artifactId>netbeans-sonar-plugin</artifactId>
   <packaging>nbm</packaging>
   <version>0.1-SNAPSHOT</version>
-  <name>Sonar IDEs :: Plugin :: NetBeans</name>
+  <name>Sonar IDEs :: NetBeans Plugin</name>
   <description>NetBeans Plugin for Sonar.</description>
 
   <properties>
