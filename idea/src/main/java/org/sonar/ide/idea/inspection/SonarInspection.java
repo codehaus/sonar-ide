@@ -1,7 +1,6 @@
 package org.sonar.ide.idea.inspection;
 
 import com.intellij.codeInspection.*;
-import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.TextRange;
@@ -9,6 +8,8 @@ import com.intellij.psi.*;
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.sonar.ide.idea.utils.ResourceUtils;
 import org.sonar.ide.idea.utils.SonarUtils;
 import org.sonar.ide.shared.ViolationsLoader;
@@ -24,7 +25,7 @@ import java.util.List;
  * @author Evgeny Mandrikov
  */
 public class SonarInspection extends LocalInspectionTool {
-  private static final Logger LOG = Logger.getInstance(SonarInspection.class.getName());
+  private static final Logger LOG = LoggerFactory.getLogger(SonarInspection.class);
 
   @Nls
   @NotNull
