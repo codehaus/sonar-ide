@@ -1,6 +1,8 @@
 package org.sonar.ide.idea.utils;
 
 import com.intellij.openapi.project.Project;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.sonar.ide.idea.SonarWorkspaceSettingsComponent;
 import org.sonar.ide.shared.SonarProperties;
 import org.sonar.wsclient.Server;
@@ -15,15 +17,12 @@ import java.util.Collection;
  * @author Evgeny Mandrikov
  */
 public final class SonarUtils {
+  private static final Logger LOG = LoggerFactory.getLogger(SonarUtils.class);
+
   /**
    * Hide utility-class constructor.
    */
   private SonarUtils() {
-  }
-
-  public static Sonar getSonar(Server server) {
-    return new Sonar(new HttpClient4Connector(server));
-//    return new Sonar(new HttpClient3Connector(server));
   }
 
   public static SonarProperties getSonarSettings(Project project) {
@@ -31,12 +30,17 @@ public final class SonarUtils {
   }
 
   public static Sonar getSonar(Project project) {
-    return new Sonar(new HttpClient4Connector(getSonarSettings(project).getServer()));
+    Server server = getSonarSettings(project).getServer();
+    LOG.debug("Sonar server: {}", server.getHost());
+    return new Sonar(new HttpClient4Connector(server));
   }
 
   public static void main(String[] args) {
     Sonar sonar = new Sonar(new HttpClient4Connector(new Server("http://localhost:9000")));
-    ViolationQuery query = new ViolationQuery("org.codehaus.sonar-ide:test-project:[default].ClassOnDefaultPackage");
+    String projectKey = "org.codehaus.sonar-ide.test-project:module1";
+    String classKey = "[default].ClassOnDefaultPackage";
+    ViolationQuery query = new ViolationQuery(projectKey + ":" + classKey);
     Collection<Violation> violations = sonar.findAll(query);
+    System.out.println(violations);
   }
 }

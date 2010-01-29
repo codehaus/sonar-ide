@@ -5,10 +5,10 @@ import org.slf4j.LoggerFactory;
 
 /**
  * <ul>
- * <li><strong>Java file:</strong> groupId:artifactId:packageName:fileNameWithoutExt
+ * <li><strong>Java file:</strong> groupId:artifactId:packageName.fileNameWithoutExt
  * <ul>
- * <li>test:test:org.sonar:Foo</li>
- * <li>test:test:[default]:Bar</li>
+ * <li>test:test:org.sonar.Foo</li>
+ * <li>test:test:[default].Bar</li>
  * </ul>
  * </li>
  * <li><strong>File:</strong> groupId:artifactId:directoryPath/fileName
@@ -40,7 +40,7 @@ public abstract class AbstractResourceUtils<MODEL> {
     }
     String fileName = getFileName(file);
     String resourceKey = new StringBuilder()
-        .append(projectKey).append(DELIMITER).append(packageName).append(DELIMITER).append(fileName)
+        .append(projectKey).append(DELIMITER).append(packageName).append('.').append(fileName)
         .toString();
     LOG.info("Resource key for {} is {}", file, resourceKey);
     return resourceKey;

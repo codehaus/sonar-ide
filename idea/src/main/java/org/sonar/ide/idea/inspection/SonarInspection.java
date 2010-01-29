@@ -37,7 +37,7 @@ public class SonarInspection extends LocalInspectionTool {
   @NotNull
   @Override
   public String getDisplayName() {
-    return "Sonar Analysis"; // TODO
+    return "Violations";
   }
 
   @NotNull
@@ -48,7 +48,7 @@ public class SonarInspection extends LocalInspectionTool {
 
   @Override
   public String getStaticDescription() {
-    return "Static description"; // TODO
+    return "Violations from Sonar (Checkstyle, PMD, Findbugs, ...)";
   }
 
   @Override

@@ -20,16 +20,16 @@ public class AbstractResourceUtilsTest {
   @Test
   public void testDefaultPackage() throws Exception {
     ResourceUtils mock = createMock("test:test", "", "ClassOnDefaultPackage");
-    Assert.assertEquals("test:test:[default]:ClassOnDefaultPackage", mock.getResourceKey(new FileModel()));
+    Assert.assertEquals("test:test:[default].ClassOnDefaultPackage", mock.getResourceKey(new FileModel()));
 
     mock = createMock("test:test", null, "ClassOnDefaultPackage");
-    Assert.assertEquals("test:test:[default]:ClassOnDefaultPackage", mock.getResourceKey(new FileModel()));
+    Assert.assertEquals("test:test:[default].ClassOnDefaultPackage", mock.getResourceKey(new FileModel()));
   }
 
   @Test
   public void testSimpleClass() throws Exception {
     ResourceUtils mock = createMock("test:test", "org.sonar", "ClassOne");
-    Assert.assertEquals("test:test:org.sonar:ClassOne", mock.getResourceKey(new FileModel()));
+    Assert.assertEquals("test:test:org.sonar.ClassOne", mock.getResourceKey(new FileModel()));
   }
 
   private ResourceUtils createMock(String projectKey, String packageKey, String fileKey) {
