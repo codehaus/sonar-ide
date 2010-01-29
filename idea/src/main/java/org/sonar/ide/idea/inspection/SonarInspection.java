@@ -148,16 +148,12 @@ public class SonarInspection extends LocalInspectionTool {
       problems.add(manager.createProblemDescriptor(
           element,
           getTextRange(document, line),
-          getDescriptionTemplate(violation),
+          ViolationsLoader.getDescription(violation),
           ProblemHighlightType.GENERIC_ERROR_OR_WARNING,
           isOnTheFly,
           LocalQuickFix.EMPTY_ARRAY
       ));
     }
     return problems.toArray(new ProblemDescriptor[problems.size()]);
-  }
-
-  private String getDescriptionTemplate(Violation violation) {
-    return violation.getRuleName() + " : " + violation.getMessage();
   }
 }

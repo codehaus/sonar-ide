@@ -22,4 +22,7 @@ public final class ViolationsLoader {
     return violations;
   }
 
+  public static String getDescription(Violation violation) {
+    return violation.getResourceName() + " : " + violation.getMessage();
+  }
 }

@@ -45,7 +45,12 @@ public class SonarTaskScanner extends FileTaskScanner {
 
     ArrayList<Task> tasks = new ArrayList<Task>();
     for (Violation violation : violations) {
-      tasks.add(Task.create(resource, "org-sonar-ide-netbeans-Task", violation.getMessage(), violation.getLine()));
+      tasks.add(Task.create(
+          resource,
+          "org-sonar-ide-netbeans-Task",
+          ViolationsLoader.getDescription(violation),
+          violation.getLine()
+      ));
     }
 
     return tasks;
