@@ -2,7 +2,9 @@ package org.sonar.ide.test;
 
 import org.mortbay.jetty.testing.ServletTester;
 import org.sonar.ide.shared.SonarProperties;
+import org.sonar.wsclient.Server;
 import org.sonar.wsclient.Sonar;
+import org.sonar.wsclient.connectors.HttpClient4Connector;
 import org.sonar.wsclient.services.ViolationQuery;
 
 /**
@@ -30,7 +32,8 @@ public class SonarTestServer {
   }
 
   public Sonar getSonar() {
-    return Sonar.create(getBaseUrl());
+    HttpClient4Connector connector = new HttpClient4Connector(new Server(getBaseUrl()));
+    return new Sonar(connector);
   }
 
   public static void main(String[] args) throws Exception {
@@ -41,7 +44,7 @@ public class SonarTestServer {
     properties.getServer().setHost(server.getBaseUrl());
     properties.save();
 
-    Sonar sonar = Sonar.create(server.getBaseUrl());
+    Sonar sonar = server.getSonar();
     ViolationQuery query = new ViolationQuery("");
     System.out.println(sonar.findAll(query));
   }

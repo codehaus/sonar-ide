@@ -27,7 +27,7 @@ public class ViolationsLoaderTest {
     SonarTestServer testServer = new SonarTestServer();
     testServer.start();
 
-    Collection<Violation> violations = loader.getViolations(testServer.getSonar(), "test");
+    Collection<Violation> violations = loader.getViolations(testServer.getSonar(), "test:test:[default].ClassOnDefaultPackage");
     assertEquals(4, violations.size());
 
     testServer.stop();
