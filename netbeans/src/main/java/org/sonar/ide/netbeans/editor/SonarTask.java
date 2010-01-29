@@ -7,7 +7,7 @@ import org.openide.filesystems.FileObject;
 import org.openide.loaders.DataObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.sonar.ide.netbeans.utils.ResourceUtils;
+import org.sonar.ide.netbeans.utils.NetbeansResourceUtils;
 import org.sonar.ide.shared.SonarProperties;
 import org.sonar.ide.shared.ViolationsLoader;
 import org.sonar.wsclient.Sonar;
@@ -58,7 +58,7 @@ public class SonarTask implements CancellableTask<CompilationInfo> {
     StyledDocument document = editor.openDocument();
     // Do job
 
-    String resourceKey = new ResourceUtils().getResourceKey(fileObject);
+    String resourceKey = new NetbeansResourceUtils().getResourceKey(fileObject);
 
     SonarProperties sonarProperties = SonarProperties.getInstance();
     Sonar sonar = new Sonar(new HttpClient4Connector(sonarProperties.getServer()));

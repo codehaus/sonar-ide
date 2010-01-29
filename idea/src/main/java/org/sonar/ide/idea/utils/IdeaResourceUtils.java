@@ -10,7 +10,7 @@ import org.sonar.ide.shared.AbstractResourceUtils;
 /**
  * @author Evgeny Mandrikov
  */
-public final class ResourceUtils extends AbstractResourceUtils<PsiJavaFile> {
+public final class IdeaResourceUtils extends AbstractResourceUtils<PsiJavaFile> {
   @Override
   public String getFileName(PsiJavaFile file) {
     return StringUtils.substringBeforeLast(file.getName(), ".");

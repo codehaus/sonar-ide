@@ -4,7 +4,7 @@ import org.netbeans.spi.tasklist.FileTaskScanner;
 import org.netbeans.spi.tasklist.Task;
 import org.openide.filesystems.FileObject;
 import org.openide.util.NbBundle;
-import org.sonar.ide.netbeans.utils.ResourceUtils;
+import org.sonar.ide.netbeans.utils.NetbeansResourceUtils;
 import org.sonar.ide.shared.SonarProperties;
 import org.sonar.ide.shared.ViolationsLoader;
 import org.sonar.wsclient.Sonar;
@@ -35,7 +35,7 @@ public class SonarTaskScanner extends FileTaskScanner {
       return null;
     }
 
-    String resourceKey = new ResourceUtils().getResourceKey(resource);
+    String resourceKey = new NetbeansResourceUtils().getResourceKey(resource);
 
     SonarProperties sonarProperties = SonarProperties.getInstance();
     Sonar sonar = new Sonar(new HttpClient4Connector(sonarProperties.getServer()));

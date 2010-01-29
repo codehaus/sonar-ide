@@ -15,8 +15,8 @@ import org.sonar.ide.shared.AbstractResourceUtils;
 /**
  * @author Evgeny Mandrikov
  */
-public final class ResourceUtils extends AbstractResourceUtils<FileObject> {
-  private static final Logger LOG = LoggerFactory.getLogger(ResourceUtils.class);
+public final class NetbeansResourceUtils extends AbstractResourceUtils<FileObject> {
+  private static final Logger LOG = LoggerFactory.getLogger(NetbeansResourceUtils.class);
 
   @Override
   public String getFileName(FileObject file) {

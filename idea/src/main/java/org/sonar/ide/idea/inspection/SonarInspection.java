@@ -10,7 +10,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.sonar.ide.idea.utils.ResourceUtils;
+import org.sonar.ide.idea.utils.IdeaResourceUtils;
 import org.sonar.ide.idea.utils.SonarUtils;
 import org.sonar.ide.shared.ViolationsLoader;
 import org.sonar.wsclient.Sonar;
@@ -71,7 +71,7 @@ public class SonarInspection extends LocalInspectionTool {
     PsiJavaFile javaFile = (PsiJavaFile) file;
     ViolationsLoader violationsLoader = new ViolationsLoader();
     Sonar sonar = SonarUtils.getSonar(file.getProject());
-    ResourceUtils resourceUtils = new ResourceUtils();
+    IdeaResourceUtils resourceUtils = new IdeaResourceUtils();
     Collection<Violation> violations = violationsLoader.getViolations(sonar, resourceUtils.getResourceKey(javaFile));
 
     return buildProblemDescriptors(
