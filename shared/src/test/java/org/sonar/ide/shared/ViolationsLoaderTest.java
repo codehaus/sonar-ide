@@ -10,6 +10,8 @@ import org.sonar.wsclient.services.Violation;
 import java.util.Collection;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 /**
  * @author Evgeny Mandrikov
@@ -36,5 +38,13 @@ public class ViolationsLoaderTest {
   @Test(expected = ConnectionException.class)
   public void testServerUnavailable() throws Exception {
     loader.getViolations(Sonar.create("http://localhost:9999"), "test");
+  }
+
+  @Test
+  public void testGetDescription() {
+    Violation violation = mock(Violation.class);
+    when(violation.getRuleName()).thenReturn("Unused");
+    when(violation.getMessage()).thenReturn("Avoid unused");
+    assertEquals("Unused : Avoid unused", ViolationsLoader.getDescription(violation));
   }
 }
