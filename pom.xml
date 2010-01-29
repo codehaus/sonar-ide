@@ -19,7 +19,6 @@
         <module>shared</module>
         <module>idea</module>
         <module>netbeans</module>
-        <module>eclipse/org.sonar.ide.eclipse.parent</module>
       </modules>
     </profile>
   </profiles>
