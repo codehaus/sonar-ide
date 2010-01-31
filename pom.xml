@@ -21,6 +21,15 @@
         <module>netbeans</module>
       </modules>
     </profile>
+
+    <profile>
+      <id>stable</id>
+      <modules>
+        <module>parent</module>
+        <module>shared</module>
+        <module>netbeans</module>
+      </modules>
+    </profile>
   </profiles>
 
 </project>
