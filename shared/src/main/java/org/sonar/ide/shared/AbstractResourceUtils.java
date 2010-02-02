@@ -32,24 +32,51 @@ public abstract class AbstractResourceUtils<MODEL> {
 
   public static final char DELIMITER = ':';
 
+  /**
+   * Returns resource key of specified file.
+   *
+   * @param file file
+   * @return resource key or null, if unable to determine
+   */
   public final String getResourceKey(MODEL file) {
+    String resourceKey = null;
     String projectKey = getProjectKey(file);
-    String packageName = getPackageName(file);
-    if (packageName == null || packageName.trim().equals("")) {
-      packageName = DEFAULT_PACKAGE_NAME;
+    if (projectKey != null) {
+      String packageName = getPackageName(file);
+      if (packageName == null || packageName.trim().equals("")) {
+        packageName = DEFAULT_PACKAGE_NAME;
+      }
+      String fileName = getFileName(file);
+      resourceKey = new StringBuilder()
+          .append(projectKey).append(DELIMITER).append(packageName).append('.').append(fileName)
+          .toString();
     }
-    String fileName = getFileName(file);
-    String resourceKey = new StringBuilder()
-        .append(projectKey).append(DELIMITER).append(packageName).append('.').append(fileName)
-        .toString();
     LOG.info("Resource key for {} is {}", file, resourceKey);
     return resourceKey;
   }
 
+  /**
+   * Returns name of specified file.
+   *
+   * @param file file
+   * @return filename
+   */
   public abstract String getFileName(MODEL file);
 
+  /**
+   * Returns package name of specified file.
+   *
+   * @param file file
+   * @return package name or null, if default package
+   */
   public abstract String getPackageName(MODEL file);
 
+  /**
+   * Returns project key of specified file..
+   *
+   * @param file file
+   * @return project key or null, if unable to determine
+   */
   public abstract String getProjectKey(MODEL file);
 
 }

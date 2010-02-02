@@ -1,8 +1,9 @@
 package org.sonar.ide.shared;
 
-import org.junit.Assert;
 import org.junit.Test;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -11,6 +12,10 @@ import static org.mockito.Mockito.when;
  * @author Evgeny Mandrikov
  */
 public class AbstractResourceUtilsTest {
+  private static final String PROJECT_KEY = "test:test";
+  private static final String CLASS_NAME = "ClassOne";
+  private static final String PACKAGE_NAME = "org.sonar";
+
   class FileModel {
   }
 
@@ -18,18 +23,24 @@ public class AbstractResourceUtilsTest {
   }
 
   @Test
-  public void testDefaultPackage() throws Exception {
-    ResourceUtils mock = createMock("test:test", "", "ClassOnDefaultPackage");
-    Assert.assertEquals("test:test:[default].ClassOnDefaultPackage", mock.getResourceKey(new FileModel()));
+  public void testNoMavenProject() {
+    ResourceUtils mock = createMock(null, PACKAGE_NAME, CLASS_NAME);
+    assertNull(mock.getResourceKey(new FileModel()));
+  }
 
-    mock = createMock("test:test", null, "ClassOnDefaultPackage");
-    Assert.assertEquals("test:test:[default].ClassOnDefaultPackage", mock.getResourceKey(new FileModel()));
+  @Test
+  public void testDefaultPackage() throws Exception {
+    ResourceUtils mock = createMock(PROJECT_KEY, "", CLASS_NAME);
+    assertEquals(PROJECT_KEY + ":[default]." + CLASS_NAME, mock.getResourceKey(new FileModel()));
+
+    mock = createMock(PROJECT_KEY, null, CLASS_NAME);
+    assertEquals(PROJECT_KEY + ":[default]." + CLASS_NAME, mock.getResourceKey(new FileModel()));
   }
 
   @Test
   public void testSimpleClass() throws Exception {
-    ResourceUtils mock = createMock("test:test", "org.sonar", "ClassOne");
-    Assert.assertEquals("test:test:org.sonar.ClassOne", mock.getResourceKey(new FileModel()));
+    ResourceUtils mock = createMock(PROJECT_KEY, PACKAGE_NAME, CLASS_NAME);
+    assertEquals(PROJECT_KEY + ":" + PACKAGE_NAME + "." + CLASS_NAME, mock.getResourceKey(new FileModel()));
   }
 
   private ResourceUtils createMock(String projectKey, String packageKey, String fileKey) {
