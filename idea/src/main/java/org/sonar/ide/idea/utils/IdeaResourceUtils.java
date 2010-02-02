@@ -2,6 +2,7 @@ package org.sonar.ide.idea.utils;
 
 import com.intellij.psi.PsiJavaFile;
 import org.apache.commons.lang.StringUtils;
+import org.jetbrains.annotations.Nullable;
 import org.jetbrains.idea.maven.project.MavenId;
 import org.jetbrains.idea.maven.project.MavenProject;
 import org.jetbrains.idea.maven.project.MavenProjectsManager;
@@ -23,9 +24,17 @@ public final class IdeaResourceUtils extends AbstractResourceUtils<PsiJavaFile> 
 
   @Override
   public String getProjectKey(PsiJavaFile file) {
-    MavenProjectsManager mavenProjectsManager = MavenProjectsManager.getInstance(file.getProject());
-    MavenProject mavenProject = mavenProjectsManager.findContainingProject(file.getVirtualFile());
+    MavenProject mavenProject = getMavenProject(file);
+    if (mavenProject == null) {
+      return null;
+    }
     MavenId mavenId = mavenProject.getMavenId();
     return mavenId.getGroupId() + DELIMITER + mavenId.getArtifactId();
+  }
+
+  @Nullable
+  protected MavenProject getMavenProject(PsiJavaFile file) {
+    MavenProjectsManager mavenProjectsManager = MavenProjectsManager.getInstance(file.getProject());
+    return mavenProjectsManager.findContainingProject(file.getVirtualFile());
   }
 }
