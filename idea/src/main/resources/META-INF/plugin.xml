@@ -3,17 +3,20 @@
   <name>Sonar</name>
 
   <id>${project.groupId}.${project.artifactId}</id>
-  <version>${project.version}</version>
+  <version>${project.version}, ${plugin.timestamp}</version>
 
   <description><![CDATA[${project.description}]]></description>
 
-  <vendor url="${project.organization.url}" email="user@sonar.codehaus.org">${project.organization.name}</vendor>
-
   <idea-version since-build="${idea.build}"/>
+
+  <vendor url="${plugin.vendor.url}" email="${plugin.vendor.email}">${plugin.vendor}</vendor>
 
   <depends>org.jetbrains.idea.maven</depends>
 
   <application-components>
+    <component>
+      <implementation-class>org.sonar.ide.idea.IdeaSonarApplicationComponent</implementation-class>
+    </component>
     <component>
       <implementation-class>org.sonar.ide.idea.SonarInspectionProvider</implementation-class>
     </component>
@@ -21,20 +24,24 @@
 
   <project-components>
     <component>
+      <implementation-class>org.sonar.ide.idea.IdeaSonarProjectComponent</implementation-class>
+    </component>
+    <component>
       <implementation-class>org.sonar.ide.idea.SonarWorkspaceSettingsComponent</implementation-class>
     </component>
   </project-components>
 
   <actions>
-    <!-- Experimental:
-    <action id="SonarCheckUpdate"
-            class="org.sonar.ide.idea.autoupdate.CheckUpdateAction"
-            text="Check Sonar Update">
+    <!--
+    <action id="Sonar.ShowViolation"
+            class="org.sonar.ide.idea.editor.actions.ToggleAnnotation"
+            text="Show violation">
       <add-to-group group-id="ToolsMenu" anchor="first"/>
     </action>
     -->
   </actions>
 
   <extensions defaultExtensionNs="com.intellij">
+    <errorHandler implementation="org.sonar.ide.idea.BlameSonar"/>
   </extensions>
 </idea-plugin>

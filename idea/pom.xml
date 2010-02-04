@@ -19,7 +19,20 @@
   <properties>
     <idea.version>9.0.1</idea.version>
     <idea.build>8000</idea.build>
+
+    <maven.build.timestamp.format>yyyyMMddHHmm</maven.build.timestamp.format>
+
+    <!-- Workaround for http://jira.codehaus.org/browse/MRESOURCES-99 -->
+    <plugin.timestamp>${maven.build.timestamp}</plugin.timestamp>
+    <plugin.vendor>${project.organization.name}</plugin.vendor>
+    <plugin.vendor.url>${project.organization.url}</plugin.vendor.url>
+    <plugin.vendor.email>user@sonar.codehaus.org</plugin.vendor.email>
   </properties>
+
+  <prerequisites>
+    <!-- maven.build.timestamp since 2.1.0-M1-->
+    <maven>2.1.0</maven>
+  </prerequisites>
 
   <dependencies>
     <dependency>
