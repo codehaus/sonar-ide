@@ -40,8 +40,7 @@ public class SonarTaskScanner extends FileTaskScanner {
     SonarProperties sonarProperties = SonarProperties.getInstance();
     Sonar sonar = new Sonar(new HttpClient4Connector(sonarProperties.getServer()));
 
-    ViolationsLoader violationsLoader = new ViolationsLoader();
-    Collection<Violation> violations = violationsLoader.getViolations(sonar, resourceKey);
+    Collection<Violation> violations = ViolationsLoader.getViolations(sonar, resourceKey);
 
     ArrayList<Task> tasks = new ArrayList<Task>();
     for (Violation violation : violations) {

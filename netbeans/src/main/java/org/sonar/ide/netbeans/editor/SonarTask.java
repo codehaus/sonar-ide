@@ -63,8 +63,7 @@ public class SonarTask implements CancellableTask<CompilationInfo> {
     SonarProperties sonarProperties = SonarProperties.getInstance();
     Sonar sonar = new Sonar(new HttpClient4Connector(sonarProperties.getServer()));
 
-    ViolationsLoader violationsLoader = new ViolationsLoader();
-    Collection<Violation> violations = violationsLoader.getViolations(sonar, resourceKey);
+    Collection<Violation> violations = ViolationsLoader.getViolations(sonar, resourceKey);
     List<SonarAnnotation> annotations = SonarAnnotation.convert(document, violations);
 
     // Save results

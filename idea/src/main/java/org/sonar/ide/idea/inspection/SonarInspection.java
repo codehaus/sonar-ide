@@ -69,10 +69,13 @@ public class SonarInspection extends LocalInspectionTool {
     LOG.debug("Running " + (isOnTheFly ? "on the fly" : "offline") + " inspection for " + file);
 
     PsiJavaFile javaFile = (PsiJavaFile) file;
-    ViolationsLoader violationsLoader = new ViolationsLoader();
     Sonar sonar = SonarUtils.getSonar(file.getProject());
-    IdeaResourceUtils resourceUtils = new IdeaResourceUtils();
-    Collection<Violation> violations = violationsLoader.getViolations(sonar, resourceUtils.getResourceKey(javaFile));
+    String text = javaFile.getText();
+    Collection<Violation> violations = ViolationsLoader.getViolations(
+        sonar,
+        IdeaResourceUtils.getInstance().getResourceKey(javaFile),
+        text
+    );
 
     return buildProblemDescriptors(
         violations,

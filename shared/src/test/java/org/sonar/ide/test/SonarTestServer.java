@@ -5,6 +5,8 @@ import org.sonar.ide.shared.SonarProperties;
 import org.sonar.wsclient.Server;
 import org.sonar.wsclient.Sonar;
 import org.sonar.wsclient.connectors.HttpClient4Connector;
+import org.sonar.wsclient.services.Source;
+import org.sonar.wsclient.services.SourceQuery;
 import org.sonar.wsclient.services.ViolationQuery;
 
 /**
@@ -18,6 +20,7 @@ public class SonarTestServer {
     tester = new ServletTester();
     tester.setContextPath("/");
     tester.addServlet(ViolationServlet.class, "/api/violations");
+    tester.addServlet(SourceServlet.class, "/api/sources");
 
     baseUrl = tester.createSocketConnector(true);
     tester.start();
@@ -44,8 +47,22 @@ public class SonarTestServer {
     properties.getServer().setHost(server.getBaseUrl());
     properties.save();
 
+    String key = "test:test:[default].ClassOnDefaultPackage";
+
     Sonar sonar = server.getSonar();
-    ViolationQuery query = new ViolationQuery("");
+    ViolationQuery query = new ViolationQuery(key);
     System.out.println(sonar.findAll(query));
+
+    SourceQuery sourceQuery = new SourceQuery(key);
+    Source source = sonar.find(sourceQuery);
+    System.out.println(source.getLines());
+
+    /*
+    String key = "org.codehaus.sonar-ide.test-project:module1:[default].ClassOnDefaultPackage";
+    Sonar sonar = Sonar.create("http://localhost:9000");
+    SourceQuery sourceQuery = new SourceQuery(key);
+    Source source = sonar.find(sourceQuery);
+    System.out.println(source.getLines());
+    */
   }
 }

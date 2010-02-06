@@ -12,6 +12,18 @@ import org.sonar.ide.shared.AbstractResourceUtils;
  * @author Evgeny Mandrikov
  */
 public final class IdeaResourceUtils extends AbstractResourceUtils<PsiJavaFile> {
+  private static IdeaResourceUtils instance;
+
+  public static IdeaResourceUtils getInstance() {
+    if (instance == null) {
+      instance = new IdeaResourceUtils();
+    }
+    return instance;
+  }
+
+  private IdeaResourceUtils() {
+  }
+
   @Override
   public String getFileName(PsiJavaFile file) {
     return StringUtils.substringBeforeLast(file.getName(), ".");

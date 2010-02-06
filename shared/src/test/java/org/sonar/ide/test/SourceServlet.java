@@ -3,9 +3,9 @@ package org.sonar.ide.test;
 /**
  * @author Evgeny Mandrikov
  */
-public class ViolationServlet extends TestServlet {
+public class SourceServlet extends TestServlet {
   @Override
   protected String getResource(String classKey) {
-    return "/violations/" + classKey + ".json";
+    return "/sources/" + classKey + ".json";
   }
 }
