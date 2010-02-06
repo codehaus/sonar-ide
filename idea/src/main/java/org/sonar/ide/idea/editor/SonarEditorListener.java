@@ -33,7 +33,7 @@ import java.util.Map;
 public class SonarEditorListener implements EditorFactoryListener {
   private static final Logger LOG = LoggerFactory.getLogger(SonarEditorListener.class);
 
-  private static final Key<String> VIOLATION_DATA_KEY = Key.create("VIOLATION_DATA_KEY");
+  private static final Key<String> VIOLATION_DATA_KEY = Key.create("SONAR_VIOLATION_DATA_KEY");
 
   public void editorCreated(EditorFactoryEvent editorFactoryEvent) {
     LOG.info("Editor created");
@@ -108,7 +108,7 @@ public class SonarEditorListener implements EditorFactoryListener {
     highlighter.setGutterIconRenderer(renderer);
     highlighter.setGreedyToRight(true);
     highlighter.setGreedyToLeft(true);
-    highlighter.setErrorStripeMarkColor(renderer.getStripeMarkColor());
+    highlighter.setErrorStripeMarkColor(renderer.getErrorStripeMarkColor());
     highlighter.setErrorStripeTooltip(renderer.getTooltipText());
     highlighter.putUserData(VIOLATION_DATA_KEY, "violation");
   }

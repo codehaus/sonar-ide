@@ -34,4 +34,20 @@
     </profile>
   </profiles>
 
+  <scm>
+    <connection>scm:svn:http://svn.codehaus.org/sonar-ide/trunk</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/sonar-ide/trunk</developerConnection>
+    <url>http://svn.codehaus.org/sonar-ide</url>
+  </scm>
+
+  <ciManagement>
+    <system>Bamboo</system>
+    <url>http://bamboo.ci.codehaus.org/browse/SONARIDE</url>
+  </ciManagement>
+
+  <issueManagement>
+    <system>jira</system>
+    <url>http://jira.codehaus.org/browse/SONARIDE</url>
+  </issueManagement>
+
 </project>

@@ -18,7 +18,13 @@ public class ViolationsTooltipPanel extends JPanel {
     setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
     for (Violation violation : violations) {
-      JLabel label = new JLabel("<html><b>" + violation.getRuleName() + "</b> : " + violation.getMessage() + "</html>");
+      // TODO RuleName should be a link to rule description
+      StringBuilder sb = new StringBuilder()
+          .append("<html>")
+          .append("<b>").append(violation.getRuleName()).append("</b>")
+          .append(" : ").append(violation.getMessage())
+          .append("</html>");
+      JLabel label = new JLabel(sb.toString());
       label.setIcon(ViolationIcons.getPriorityIcon(violation.getPriority()));
       add(label);
     }

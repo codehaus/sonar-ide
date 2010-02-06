@@ -61,7 +61,7 @@ public class ViolationGutterIconRenderer extends GutterIconRenderer {
     return sb.toString();
   }
 
-  public Color getStripeMarkColor() {
+  public Color getErrorStripeMarkColor() {
     return ViolationIcons.getPriorityColor(violations.get(0).getPriority());
   }
 }
