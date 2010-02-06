@@ -89,6 +89,7 @@ public final class ViolationsLoader {
 
   /**
    * Sets proper line numbers for violations by matching modified source code with code from server.
+   * Actually this is an implementation of heuristic algorithm - magic happens here.
    * <p>
    * Currently this method just compares hash codes (see {@link #getHashCode(String)}).
    * Works for O(V*L) time, where V - number of violations and L - number of lines in modified source code.
