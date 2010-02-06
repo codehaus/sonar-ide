@@ -25,6 +25,8 @@ public class SonarInspectionProvider implements InspectionToolProvider, Applicat
   }
 
   public Class[] getInspectionClasses() {
-    return new Class[]{SonarInspection.class};
+    return new Class[]{
+        SonarInspection.class
+    };
   }
 }

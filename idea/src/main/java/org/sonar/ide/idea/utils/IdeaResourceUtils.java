@@ -2,6 +2,7 @@ package org.sonar.ide.idea.utils;
 
 import com.intellij.psi.PsiJavaFile;
 import org.apache.commons.lang.StringUtils;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.idea.maven.project.MavenId;
 import org.jetbrains.idea.maven.project.MavenProject;
@@ -29,14 +30,21 @@ public final class IdeaResourceUtils extends AbstractResourceUtils<PsiJavaFile> 
     return StringUtils.substringBeforeLast(file.getName(), ".");
   }
 
+  @NotNull
   @Override
   public String getPackageName(PsiJavaFile file) {
     return file.getPackageName();
   }
 
+  @Nullable
   @Override
   public String getProjectKey(PsiJavaFile file) {
     MavenProject mavenProject = getMavenProject(file);
+    return getProjectKey(mavenProject);
+  }
+
+  @Nullable
+  public String getProjectKey(MavenProject mavenProject) {
     if (mavenProject == null) {
       return null;
     }

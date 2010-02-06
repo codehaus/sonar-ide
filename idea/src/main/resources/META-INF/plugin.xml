@@ -32,13 +32,23 @@
   </project-components>
 
   <actions>
-    <!--
-    <action id="Sonar.ShowViolation"
-            class="org.sonar.ide.idea.editor.actions.ToggleAnnotation"
-            text="Show violation">
-      <add-to-group group-id="ToolsMenu" anchor="first"/>
-    </action>
-    -->
+    <action id="Sonar.GoToDashboard"
+            class="org.sonar.ide.idea.actions.GoToDashboardAction"
+            text="Go to dashboard"
+        />
+
+    <group id="Sonar.BaseProjectMenu">
+      <reference ref="Sonar.GoToDashboard"/>
+    </group>
+
+    <!-- TODO add icon for next group -->
+    <group id="Sonar.GlobalProjectMenu"
+           class="org.sonar.ide.idea.utils.actions.SonarActionGroup"
+           text="Sonar" popup="true">
+      <add-to-group group-id="EditorPopupMenu" anchor="last"/>
+      <add-to-group group-id="ProjectViewPopupMenu" anchor="last"/>
+      <reference ref="Sonar.BaseProjectMenu"/>
+    </group>
   </actions>
 
   <extensions defaultExtensionNs="com.intellij">
