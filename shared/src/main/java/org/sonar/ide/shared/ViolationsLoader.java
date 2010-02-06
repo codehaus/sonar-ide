@@ -9,7 +9,9 @@ import org.sonar.wsclient.services.SourceQuery;
 import org.sonar.wsclient.services.Violation;
 import org.sonar.wsclient.services.ViolationQuery;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * Note: Violation on zero line means violation on whole file.
@@ -60,31 +62,6 @@ public final class ViolationsLoader {
       hashCodes[i] = getHashCode(str[i]);
     }
     return hashCodes;
-  }
-
-  private static Collection<Violation> removeSimilar(Source source, Collection<Violation> violations) {
-    Set<Violation> hashSet = new TreeSet<Violation>(new ViolationComparator(source));
-    for (Violation violation : violations) {
-      hashSet.add(violation);
-    }
-    return hashSet;
-  }
-
-  static class ViolationComparator implements Comparator<Violation> {
-    private Source source;
-
-    public ViolationComparator(Source source) {
-      this.source = source;
-    }
-
-    public int compare(Violation v1, Violation v2) {
-      String line = source.getLine(v1.getLine());
-      String line2 = source.getLine(v2.getLine());
-      if (getHashCode(line) == getHashCode(line2)) {
-        return 0;
-      }
-      return v1.getLine() - v2.getLine();
-    }
   }
 
   /**
