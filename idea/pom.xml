@@ -17,6 +17,9 @@
   <description>An IntelliJ IDEA Plugin for Sonar.</description>
 
   <properties>
+    <!-- Idea requires JDK 1.6 -->
+    <jdk.min.version>1.6</jdk.min.version>
+
     <idea.version>9.0.1</idea.version>
     <idea.build>8000</idea.build>
 
@@ -93,18 +96,6 @@
       <type>test-jar</type>
       <scope>test</scope>
     </dependency-->
-
-    <dependency>
-      <groupId>org.mockito</groupId>
-      <artifactId>mockito-all</artifactId>
-      <scope>test</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <scope>test</scope>
-    </dependency>
   </dependencies>
 
   <build>

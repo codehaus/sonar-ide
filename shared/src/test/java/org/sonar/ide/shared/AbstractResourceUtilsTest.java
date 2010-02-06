@@ -2,8 +2,9 @@ package org.sonar.ide.shared;
 
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
+import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -15,6 +16,8 @@ public class AbstractResourceUtilsTest {
   private static final String PROJECT_KEY = "test:test";
   private static final String CLASS_NAME = "ClassOne";
   private static final String PACKAGE_NAME = "org.sonar";
+  private static final String COMMON_CLASS = PROJECT_KEY + ":" + PACKAGE_NAME + "." + CLASS_NAME;
+  private static final String CLASS_ON_DEFAULT_PACKAGE = PROJECT_KEY + ":[default]." + CLASS_NAME;
 
   class FileModel {
   }
@@ -31,16 +34,25 @@ public class AbstractResourceUtilsTest {
   @Test
   public void testDefaultPackage() throws Exception {
     ResourceUtils mock = createMock(PROJECT_KEY, "", CLASS_NAME);
-    assertEquals(PROJECT_KEY + ":[default]." + CLASS_NAME, mock.getResourceKey(new FileModel()));
+    assertThat(
+        mock.getResourceKey(new FileModel()),
+        is(CLASS_ON_DEFAULT_PACKAGE)
+    );
 
     mock = createMock(PROJECT_KEY, null, CLASS_NAME);
-    assertEquals(PROJECT_KEY + ":[default]." + CLASS_NAME, mock.getResourceKey(new FileModel()));
+    assertThat(
+        mock.getResourceKey(new FileModel()),
+        is(CLASS_ON_DEFAULT_PACKAGE)
+    );
   }
 
   @Test
   public void testSimpleClass() throws Exception {
     ResourceUtils mock = createMock(PROJECT_KEY, PACKAGE_NAME, CLASS_NAME);
-    assertEquals(PROJECT_KEY + ":" + PACKAGE_NAME + "." + CLASS_NAME, mock.getResourceKey(new FileModel()));
+    assertThat(
+        mock.getResourceKey(new FileModel()),
+        is(COMMON_CLASS)
+    );
   }
 
   private ResourceUtils createMock(String projectKey, String packageKey, String fileKey) {

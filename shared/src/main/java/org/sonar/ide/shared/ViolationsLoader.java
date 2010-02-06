@@ -9,9 +9,7 @@ import org.sonar.wsclient.services.SourceQuery;
 import org.sonar.wsclient.services.Violation;
 import org.sonar.wsclient.services.ViolationQuery;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 /**
  * Note: Violation on zero line means violation on whole file.
@@ -64,6 +62,31 @@ public final class ViolationsLoader {
     return hashCodes;
   }
 
+  private static Collection<Violation> removeSimilar(Source source, Collection<Violation> violations) {
+    Set<Violation> hashSet = new TreeSet<Violation>(new ViolationComparator(source));
+    for (Violation violation : violations) {
+      hashSet.add(violation);
+    }
+    return hashSet;
+  }
+
+  static class ViolationComparator implements Comparator<Violation> {
+    private Source source;
+
+    public ViolationComparator(Source source) {
+      this.source = source;
+    }
+
+    public int compare(Violation v1, Violation v2) {
+      String line = source.getLine(v1.getLine());
+      String line2 = source.getLine(v2.getLine());
+      if (getHashCode(line) == getHashCode(line2)) {
+        return 0;
+      }
+      return v1.getLine() - v2.getLine();
+    }
+  }
+
   /**
    * Sets proper line numbers for violations by matching modified source code with code from server.
    * <p>
@@ -90,10 +113,13 @@ public final class ViolationsLoader {
       boolean found = false;
       for (int i = 0; i < hashCodes.length; i++) {
         if (hashCodes[i] == originalHashCode) {
+          if (found) {
+            // may be more than one match, but we take into account only first
+            LOG.warn("Found more than one match for violation");
+            break;
+          }
           violation.setLine(i + 1);
           found = true;
-          // may be more than one match, but we take into account only first
-          break;
         }
       }
       // skip violation, which doesn't match any line

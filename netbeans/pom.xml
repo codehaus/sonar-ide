@@ -133,12 +133,6 @@
     </dependency-->
 
     <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <scope>test</scope>
-    </dependency>
-
-    <dependency>
       <!-- For FileUtil#toFileObject -->
       <groupId>org.netbeans.modules</groupId>
       <artifactId>org-netbeans-modules-masterfs</artifactId>

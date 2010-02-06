@@ -7,8 +7,10 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertSame;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.sameInstance;
+import static org.hamcrest.Matchers.contains;
+import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -18,12 +20,12 @@ import static org.mockito.Mockito.when;
 public class ViolationUtilsTest {
   @Test
   public void testConvertPriority() throws Exception {
-    assertEquals(0, ViolationUtils.convertPriority("Blocker"));
-    assertEquals(1, ViolationUtils.convertPriority("Critical"));
-    assertEquals(2, ViolationUtils.convertPriority("Major"));
-    assertEquals(3, ViolationUtils.convertPriority("Minor"));
-    assertEquals(4, ViolationUtils.convertPriority("Info"));
-    assertEquals(4, ViolationUtils.convertPriority("Other"));
+    assertThat(ViolationUtils.convertPriority("Blocker"), is(0));
+    assertThat(ViolationUtils.convertPriority("Critical"), is(1));
+    assertThat(ViolationUtils.convertPriority("Major"), is(2));
+    assertThat(ViolationUtils.convertPriority("Minor"), is(3));
+    assertThat(ViolationUtils.convertPriority("Info"), is(4));
+    assertThat(ViolationUtils.convertPriority("Other"), is(4));
   }
 
   @Test
@@ -33,8 +35,9 @@ public class ViolationUtilsTest {
 
     List<Violation> violations = ViolationUtils.sortByPriority(Arrays.asList(minor, blocker));
 
-    assertSame(blocker, violations.get(0));
-    assertSame(minor, violations.get(1));
+    assertThat(violations.size(), is(2));
+    assertThat(violations.get(0), sameInstance(blocker));
+    assertThat(violations.get(1), sameInstance(minor));
   }
 
   @Test
@@ -45,9 +48,11 @@ public class ViolationUtilsTest {
 
     Map<Integer, List<Violation>> map = ViolationUtils.splitByLines(Arrays.asList(v1, v2, v3));
 
-    assertEquals(2, map.size());
-    assertEquals(1, map.get(1).size());
-    assertEquals(2, map.get(2).size());
+    assertThat(map.size(), is(2));
+    assertThat(map.get(1).size(), is(1));
+    assertThat(map.get(1), contains(v2));
+    assertThat(map.get(2).size(), is(2));
+    assertThat(map.get(2), contains(v1, v3));
   }
 
   @Test
@@ -55,7 +60,7 @@ public class ViolationUtilsTest {
     Violation violation = mock(Violation.class);
     when(violation.getRuleName()).thenReturn("Unused");
     when(violation.getMessage()).thenReturn("Avoid unused");
-    assertEquals("Unused : Avoid unused", ViolationUtils.getDescription(violation));
+    assertThat(ViolationUtils.getDescription(violation), is("Unused : Avoid unused"));
   }
 
   protected Violation newViolation(String priority, int line) {
