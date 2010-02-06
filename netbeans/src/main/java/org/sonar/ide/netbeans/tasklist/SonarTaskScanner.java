@@ -6,6 +6,7 @@ import org.openide.filesystems.FileObject;
 import org.openide.util.NbBundle;
 import org.sonar.ide.netbeans.utils.NetbeansResourceUtils;
 import org.sonar.ide.shared.SonarProperties;
+import org.sonar.ide.shared.ViolationUtils;
 import org.sonar.ide.shared.ViolationsLoader;
 import org.sonar.wsclient.Sonar;
 import org.sonar.wsclient.connectors.HttpClient4Connector;
@@ -47,7 +48,7 @@ public class SonarTaskScanner extends FileTaskScanner {
       tasks.add(Task.create(
           resource,
           "org-sonar-ide-netbeans-Task",
-          ViolationsLoader.getDescription(violation),
+          ViolationUtils.getDescription(violation),
           violation.getLine()
       ));
     }

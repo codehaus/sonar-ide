@@ -41,18 +41,16 @@ public class ViolationsLoaderTest {
   }
 
   @Test
-  public void testGetDescription() {
-    Violation violation = mock(Violation.class);
-    when(violation.getRuleName()).thenReturn("Unused");
-    when(violation.getMessage()).thenReturn("Avoid unused");
-    assertEquals("Unused : Avoid unused", ViolationsLoader.getDescription(violation));
-  }
-
-  @Test
   public void testGetHashCode() {
-    int hash1 = ViolationsLoader.getHashCode("int\ti;");
-    int hash2 = ViolationsLoader.getHashCode("int i;");
+    int hash1 = ViolationsLoader.getHashCode("int i;");
+    int hash2 = ViolationsLoader.getHashCode("int\ti;");
+    int hash3 = ViolationsLoader.getHashCode("int i;\n");
+    int hash4 = ViolationsLoader.getHashCode("int i;\r\n");
+    int hash5 = ViolationsLoader.getHashCode("int i;\r");
     assertEquals(hash1, hash2);
+    assertEquals(hash1, hash3);
+    assertEquals(hash1, hash4);
+    assertEquals(hash1, hash5);
   }
 
   @Test

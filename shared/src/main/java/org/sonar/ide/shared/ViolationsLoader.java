@@ -40,10 +40,6 @@ public final class ViolationsLoader {
     return violations;
   }
 
-  public static String getDescription(Violation violation) {
-    return violation.getRuleName() + " : " + violation.getMessage();
-  }
-
   /**
    * Returns hash code for specified string after removing whitespaces.
    *

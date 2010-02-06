@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.sonar.ide.idea.utils.IdeaResourceUtils;
 import org.sonar.ide.idea.utils.SonarUtils;
+import org.sonar.ide.shared.ViolationUtils;
 import org.sonar.ide.shared.ViolationsLoader;
 import org.sonar.wsclient.Sonar;
 import org.sonar.wsclient.services.Violation;
@@ -151,7 +152,7 @@ public class SonarInspection extends LocalInspectionTool {
       problems.add(manager.createProblemDescriptor(
           element,
           getTextRange(document, line),
-          ViolationsLoader.getDescription(violation),
+          ViolationUtils.getDescription(violation),
           ProblemHighlightType.GENERIC_ERROR_OR_WARNING,
           isOnTheFly,
           LocalQuickFix.EMPTY_ARRAY

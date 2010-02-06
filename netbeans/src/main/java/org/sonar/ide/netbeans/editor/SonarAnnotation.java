@@ -4,7 +4,7 @@ import org.openide.text.Annotation;
 import org.openide.text.NbDocument;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.sonar.ide.shared.ViolationsLoader;
+import org.sonar.ide.shared.ViolationUtils;
 import org.sonar.wsclient.services.Violation;
 
 import javax.swing.text.BadLocationException;
@@ -60,7 +60,7 @@ public class SonarAnnotation extends Annotation {
       annotations.add(new SonarAnnotation(
           document,
           violation.getLine() - 1,
-          ViolationsLoader.getDescription(violation)
+          ViolationUtils.getDescription(violation)
       ));
     }
     return annotations;
