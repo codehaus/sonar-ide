@@ -46,10 +46,14 @@ public final class SonarProperties {
     if (path != null) {
       File file = new File(path);
       if (file.exists()) {
+        FileInputStream inputStream = null;
         try {
-          properties.load(new FileInputStream(file));
+          inputStream = new FileInputStream(file);
+          properties.load(inputStream);
         } catch (IOException e) {
           LOG.error(e.getMessage(), e);
+        } finally {
+          closeStream(inputStream);
         }
       }
     }
@@ -69,16 +73,30 @@ public final class SonarProperties {
     addProperty(properties, HOST_PROPERTY, server.getHost());
     addProperty(properties, USERNAME_PROPERTY, server.getUsername());
     addProperty(properties, PASSWORD_PROPERTY, server.getPassword());
+    FileOutputStream outputStream = null;
     try {
-      properties.store(new FileOutputStream(path), "Sonar Settings");
+      outputStream = new FileOutputStream(path);
+      properties.store(outputStream, "Sonar Settings");
     } catch (FileNotFoundException e) {
       LOG.error(e.getMessage(), e);
     } catch (IOException e) {
       LOG.error(e.getMessage(), e);
+    } finally {
+      closeStream(outputStream);
     }
   }
 
   public static String getDefaultPath() {
     return System.getProperty("user.home") + File.separator + ".sonar-ide.properties";
+  }
+
+  protected void closeStream(Closeable stream) {
+    if (stream != null) {
+      try {
+        stream.close();
+      } catch (IOException e) {
+        // ignore
+      }
+    }
   }
 }

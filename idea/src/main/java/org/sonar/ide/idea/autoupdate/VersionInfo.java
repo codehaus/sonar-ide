@@ -18,7 +18,7 @@ import java.util.Properties;
 /**
  * @author Evgeny Mandrikov
  */
-public class VersionInfo {
+public final class VersionInfo {
   public static final String LATEST_VERSION_INFO_URL = "http://snapshots.dist.sonar-ide.codehaus.org/idea/versionInfo.properties";
   public static final String STABLE_VERSION_INFO_URL = "http://dist.sonar-ide.codehaus.org/idea/versionInfo.properties";
 

@@ -10,13 +10,12 @@ import org.sonar.ide.idea.inspection.SonarInspection;
  * @author Evgeny Mandrikov
  */
 public class SonarInspectionProvider implements InspectionToolProvider, ApplicationComponent {
-  public SonarInspectionProvider() {
-  }
-
   public void initComponent() {
+    // noop
   }
 
   public void disposeComponent() {
+    // noop
   }
 
   @NonNls

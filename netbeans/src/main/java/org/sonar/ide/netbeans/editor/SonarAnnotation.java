@@ -25,6 +25,7 @@ public class SonarAnnotation extends Annotation {
   private final String shortDescription;
 
   public SonarAnnotation(StyledDocument document, int lineNumber, String shortDescription) {
+    super();
     this.document = document;
     this.lineNumber = lineNumber;
     this.shortDescription = shortDescription;
