@@ -1,6 +1,5 @@
 package org.sonar.ide.shared;
 
-import org.junit.Ignore;
 import org.junit.Test;
 import org.sonar.ide.test.SonarTestServer;
 import org.sonar.wsclient.Sonar;
@@ -13,6 +12,7 @@ import java.util.Collections;
 import java.util.List;
 
 import static org.hamcrest.CoreMatchers.*;
+import static org.hamcrest.Matchers.hasItems;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.*;
 
@@ -76,7 +76,6 @@ public class ViolationsLoaderTest {
   }
 
   @Test
-  @Ignore("Not ready")
   public void testSimilarViolations() {
     final String line = "int j = i++;";
     final String[] lines = {
@@ -84,7 +83,7 @@ public class ViolationsLoaderTest {
         line
     };
     Violation violation1 = newViolation(1);
-    Violation violation2 = newViolation(1);
+    Violation violation2 = newViolation(2);
     Source source = new Source()
         .addLine(1, line)
         .addLine(2, line);
@@ -96,7 +95,7 @@ public class ViolationsLoaderTest {
     );
 
     assertThat(violations.size(), is(2));
-//    assertThat(violations, containsInAnyOrder(violation1, violation2));
+    assertThat(violations, hasItems(violation1, violation2));
     assertThat(violation1.getLine(), not(equalTo(violation2.getLine())));
   }
 

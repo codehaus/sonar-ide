@@ -111,16 +111,18 @@ public final class ViolationsLoader {
       }
       String originalSourceLine = source.getLine(originalLine);
       int originalHashCode = getHashCode(originalSourceLine);
-      boolean found = false;
-      for (int i = 0; i < hashCodes.length; i++) {
-        if (hashCodes[i] == originalHashCode) {
-          if (found) {
-            // may be more than one match, but we take into account only first
-            LOG.warn("Found more than one match for violation");
-            break;
+      boolean found = hashCodes[originalLine - 1] == originalHashCode;
+      if (!found) {
+        for (int i = 0; i < hashCodes.length; i++) {
+          if (hashCodes[i] == originalHashCode) {
+            if (found) {
+              // may be more than one match, but we take into account only first
+              LOG.warn("Found more than one match for violation");
+              break;
+            }
+            violation.setLine(i + 1);
+            found = true;
           }
-          violation.setLine(i + 1);
-          found = true;
         }
       }
       // skip violation, which doesn't match any line
