@@ -7,6 +7,7 @@ import org.sonar.ide.idea.utils.actions.SonarActionUtils;
 
 /**
  * @author Evgeny Mandrikov
+ * @see org.sonar.ide.idea.SelectInSonarTarget
  */
 public final class GoToDashboardAction extends SonarAction {
   @Override

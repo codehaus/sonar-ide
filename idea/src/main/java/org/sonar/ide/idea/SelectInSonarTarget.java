@@ -9,6 +9,7 @@ import org.sonar.ide.idea.utils.SonarUtils;
 
 /**
  * @author Evgeny Mandrikov
+ * @see org.sonar.ide.idea.actions.GoToDashboardAction
  */
 public class SelectInSonarTarget implements SelectInTarget {
   @Override
