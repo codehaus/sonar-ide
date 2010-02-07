@@ -1,7 +1,7 @@
 package org.sonar.ide.shared;
 
 import org.junit.Test;
-import org.sonar.wsclient.Server;
+import org.sonar.wsclient.Host;
 
 import java.io.File;
 
@@ -21,7 +21,7 @@ public class SonarPropertiesTest {
   public void testDefaultProperties() throws Exception {
     SonarProperties properties = new SonarProperties(null);
 
-    Server server = properties.getServer();
+    Host server = properties.getServer();
     assertEquals(SonarProperties.HOST_DEFAULT, server.getHost());
     assertNull(server.getUsername());
     assertNull(server.getPassword());

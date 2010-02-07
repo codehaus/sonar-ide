@@ -2,7 +2,7 @@ package org.sonar.ide.shared;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.sonar.wsclient.Server;
+import org.sonar.wsclient.Host;
 
 import java.io.*;
 import java.util.Properties;
@@ -22,7 +22,7 @@ public final class SonarProperties {
   private static SonarProperties instance;
 
   private String path;
-  private Server server;
+  private Host server;
 
   public static synchronized SonarProperties getInstance() {
     if (instance == null) {
@@ -33,11 +33,11 @@ public final class SonarProperties {
 
   public SonarProperties(String path) {
     this.path = path;
-    this.server = new Server(HOST_DEFAULT);
+    this.server = new Host(HOST_DEFAULT);
     reload();
   }
 
-  public Server getServer() {
+  public Host getServer() {
     return server;
   }
 

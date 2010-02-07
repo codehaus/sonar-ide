@@ -5,7 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.sonar.ide.idea.SonarWorkspaceSettingsComponent;
 import org.sonar.ide.shared.SonarProperties;
-import org.sonar.wsclient.Server;
+import org.sonar.wsclient.Host;
 import org.sonar.wsclient.Sonar;
 import org.sonar.wsclient.connectors.HttpClient4Connector;
 
@@ -26,7 +26,7 @@ public final class SonarUtils {
   }
 
   public static Sonar getSonar(Project project) {
-    Server server = getSonarSettings(project).getServer();
+    Host server = getSonarSettings(project).getServer();
     LOG.debug("Sonar server: {}", server.getHost());
     return new Sonar(new HttpClient4Connector(server));
   }
