@@ -12,11 +12,11 @@ import java.awt.*;
 public class ViolationIcons {
   public static final Icon VIOLATION_ICON = IconLoader.getIcon("/org/sonar/ide/images/violation.png");
 
-  public static final Icon PRIORITY_BLOCKER_ICON = IconLoader.getIcon("/org/sonar/ide/images/blocker.gif");
-  public static final Icon PRIORITY_CRITICAL_ICON = IconLoader.getIcon("/org/sonar/ide/images/critical.gif");
-  public static final Icon PRIORITY_MAJOR_ICON = IconLoader.getIcon("/org/sonar/ide/images/major.gif");
-  public static final Icon PRIORITY_MINOR_ICON = IconLoader.getIcon("/org/sonar/ide/images/minor.gif");
-  public static final Icon PRIORITY_INFO_ICON = IconLoader.getIcon("/org/sonar/ide/images/info.gif");
+  public static final Icon PRIORITY_BLOCKER_ICON = IconLoader.getIcon("/org/sonar/ide/images/priority/blocker.gif");
+  public static final Icon PRIORITY_CRITICAL_ICON = IconLoader.getIcon("/org/sonar/ide/images/priority/critical.gif");
+  public static final Icon PRIORITY_MAJOR_ICON = IconLoader.getIcon("/org/sonar/ide/images/priority/major.gif");
+  public static final Icon PRIORITY_MINOR_ICON = IconLoader.getIcon("/org/sonar/ide/images/priority/minor.gif");
+  public static final Icon PRIORITY_INFO_ICON = IconLoader.getIcon("/org/sonar/ide/images/priority/info.gif");
 
   public static final Icon[] PRIORITY_ICON = new Icon[]{
       PRIORITY_BLOCKER_ICON,
