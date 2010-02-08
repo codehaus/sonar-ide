@@ -13,8 +13,8 @@ public class DuplicationsViewer extends AbstractViewer {
   public static final String DUPLICATED_LINES = "duplicated_lines";
   public static final String DUPLICATED_BLOCKS = "duplicated_blocks";
 
-  public DuplicationsViewer(Sonar sonar, String resourceKey) {
-    super(sonar, resourceKey,
+  public DuplicationsViewer(Sonar sonar, AbstractIconLoader icons, String resourceKey) {
+    super(sonar, icons, resourceKey,
         DUPLICATED_LINES_DENSITY,
         LINES,
         DUPLICATED_LINES,

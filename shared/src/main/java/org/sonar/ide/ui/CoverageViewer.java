@@ -14,8 +14,8 @@ public class CoverageViewer extends AbstractViewer {
   private static final String BRANCH_COVERAGE = "branch_coverage";
   private static final String UNCOVERED_CONDITIONS = "uncovered_conditions";
 
-  public CoverageViewer(Sonar sonar, String resourceKey) {
-    super(sonar, resourceKey,
+  public CoverageViewer(Sonar sonar, AbstractIconLoader icons, String resourceKey) {
+    super(sonar, icons, resourceKey,
         COVERAGE,
         LINE_COVERAGE,
         UNCOVERED_LINES,

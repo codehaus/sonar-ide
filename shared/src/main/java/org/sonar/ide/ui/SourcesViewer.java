@@ -24,8 +24,8 @@ public class SourcesViewer extends AbstractViewer {
   public static final String PUBLIC_UNDOCUMENTED_API = "public_undocumented_api";
   public static final String PUBLIC_API = "public_api";
 
-  public SourcesViewer(Sonar sonar, String resourceKey) {
-    super(sonar, resourceKey,
+  public SourcesViewer(Sonar sonar, AbstractIconLoader icons, String resourceKey) {
+    super(sonar, icons, resourceKey,
         LINES,
         NCLOC,
         FUNCTIONS,

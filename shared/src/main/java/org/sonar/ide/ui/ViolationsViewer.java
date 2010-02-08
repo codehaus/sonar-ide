@@ -9,8 +9,8 @@ import org.sonar.wsclient.services.Resource;
  * @author Evgeny Mandrikov
  */
 public class ViolationsViewer extends AbstractViewer {
-  public ViolationsViewer(Sonar sonar, String resourceKey) {
-    super(sonar, resourceKey);
+  public ViolationsViewer(Sonar sonar, AbstractIconLoader icons, String resourceKey) {
+    super(sonar, icons, resourceKey);
   }
 
   @Override

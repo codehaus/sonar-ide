@@ -5,6 +5,7 @@ import com.intellij.openapi.ui.popup.IconButton;
 import com.intellij.openapi.ui.popup.JBPopup;
 import com.intellij.openapi.ui.popup.JBPopupFactory;
 import com.intellij.openapi.util.IconLoader;
+import org.sonar.ide.ui.IconsUtils;
 import org.sonar.wsclient.services.Violation;
 
 import javax.swing.*;
@@ -25,7 +26,7 @@ public class ViolationsTooltipPanel extends JPanel {
           .append(" : ").append(violation.getMessage())
           .append("</html>");
       JLabel label = new JLabel(sb.toString());
-      label.setIcon(ViolationIcons.getPriorityIcon(violation.getPriority()));
+      label.setIcon(IconLoader.getIcon(IconsUtils.getPriorityIconPath(violation)));
       add(label);
     }
   }

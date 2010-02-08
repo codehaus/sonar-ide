@@ -5,6 +5,7 @@ import com.intellij.openapi.ui.popup.IconButton;
 import com.intellij.openapi.ui.popup.JBPopup;
 import com.intellij.openapi.ui.popup.JBPopupFactory;
 import com.intellij.openapi.util.IconLoader;
+import org.sonar.ide.idea.utils.IdeaIconLoader;
 import org.sonar.ide.idea.utils.actions.SonarAction;
 import org.sonar.ide.idea.utils.actions.SonarActionUtils;
 import org.sonar.ide.ui.CoverageViewer;
@@ -22,12 +23,13 @@ public class ShowMeasuresAction extends SonarAction {
   @Override
   public void actionPerformed(AnActionEvent event) {
     Sonar sonar = SonarActionUtils.getSonar(event);
+    IdeaIconLoader tendencyIcons = new IdeaIconLoader();
     String resourceKey = SonarActionUtils.getResourceKey(event);
     JTabbedPane panel = new TabbetPaneBuilder()
-        .addTab(new SourcesViewer(sonar, resourceKey))
-        .addTab(new CoverageViewer(sonar, resourceKey))
+        .addTab(new SourcesViewer(sonar, tendencyIcons, resourceKey))
+        .addTab(new CoverageViewer(sonar, tendencyIcons, resourceKey))
 // TODO        .addTab(new ViolationsViewer(sonar, resourceKey))
-        .addTab(new DuplicationsViewer(sonar, resourceKey))
+        .addTab(new DuplicationsViewer(sonar, tendencyIcons, resourceKey))
         .build();
     JBPopup popup = JBPopupFactory.getInstance().createComponentPopupBuilder(panel, panel)
         .setRequestFocus(true)

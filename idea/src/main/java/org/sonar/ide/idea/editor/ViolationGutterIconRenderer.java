@@ -3,8 +3,10 @@ package org.sonar.ide.idea.editor;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.editor.markup.GutterIconRenderer;
+import com.intellij.openapi.util.IconLoader;
 import org.jetbrains.annotations.NotNull;
 import org.sonar.ide.shared.ViolationUtils;
+import org.sonar.ide.ui.IconsUtils;
 import org.sonar.wsclient.services.Violation;
 
 import javax.swing.*;
@@ -30,7 +32,7 @@ public class ViolationGutterIconRenderer extends GutterIconRenderer {
   @NotNull
   @Override
   public Icon getIcon() {
-    return ViolationIcons.VIOLATION_ICON;
+    return IconLoader.getIcon(IconsUtils.getIconPath(violations.get(0)));
   }
 
   @Override
@@ -62,6 +64,6 @@ public class ViolationGutterIconRenderer extends GutterIconRenderer {
   }
 
   public Color getErrorStripeMarkColor() {
-    return ViolationIcons.getPriorityColor(violations.get(0).getPriority());
+    return IconsUtils.getColor(violations.get(0));
   }
 }

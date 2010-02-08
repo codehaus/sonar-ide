@@ -7,6 +7,7 @@ import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiJavaFile;
 import com.intellij.psi.PsiManager;
+import org.jetbrains.idea.maven.project.MavenProject;
 import org.jetbrains.idea.maven.utils.actions.MavenActionUtil;
 import org.sonar.ide.idea.utils.IdeaResourceUtils;
 import org.sonar.ide.idea.utils.SonarUtils;
@@ -22,15 +23,15 @@ public final class SonarActionUtils {
   }
 
   public static String getResourceKey(AnActionEvent event) {
-//    MavenProject mavenProject = MavenActionUtil.getMavenProject(event);
     Project project = MavenActionUtil.getProject(event);
     VirtualFile virtualFile = getVirtualFile(event);
     PsiFile psiFile = PsiManager.getInstance(project).findFile(virtualFile);
     if (psiFile instanceof PsiJavaFile) {
       return IdeaResourceUtils.getInstance().getResourceKey((PsiJavaFile) psiFile);
     }
-    return null;
-//    return IdeaResourceUtils.getInstance().getProjectKey(mavenProject);
+//    return null;
+    MavenProject mavenProject = MavenActionUtil.getMavenProject(event);
+    return IdeaResourceUtils.getInstance().getProjectKey(mavenProject);
   }
 
   public static Sonar getSonar(AnActionEvent event) {

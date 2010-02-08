@@ -14,18 +14,22 @@ import javax.swing.*;
  */
 public abstract class AbstractViewer extends JPanel {
   private final String[] metrics;
+  private AbstractIconLoader iconLoader;
 
-  protected AbstractViewer(Sonar sonar, String resourceKey, String... metrics) {
+  protected AbstractViewer(Sonar sonar, AbstractIconLoader iconLoader, String resourceKey, String... metrics) {
     super();
     this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
     this.metrics = metrics;
+    this.iconLoader = iconLoader;
     loadMeasures(sonar, resourceKey);
   }
 
   public abstract String getTitle();
 
   private void loadMeasures(Sonar sonar, String resourceKey) {
-    ResourceQuery query = ResourceQuery.createForMetrics(resourceKey, metrics).setVerbose(true);
+    ResourceQuery query = ResourceQuery.createForMetrics(resourceKey, metrics)
+        .setIncludeTrends(true)
+        .setVerbose(true);
     display(sonar.find(query));
   }
 
@@ -37,7 +41,9 @@ public abstract class AbstractViewer extends JPanel {
     if (measures != null) {
       for (Measure measure : measures) {
         if (measure != null && measure.getFormattedValue() != null) {
-          cell.add(new JLabel("<html><b>" + measure.getMetricName() + ":</b> " + measure.getFormattedValue() + "</html>"));
+          JLabel label = new JLabel("<html><b>" + measure.getMetricName() + ":</b> " + measure.getFormattedValue() + "</html>");
+          label.setIcon(iconLoader.getIcon(IconsUtils.getTendencyIconPath(measure)));
+          cell.add(label);
         }
       }
     }
