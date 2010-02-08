@@ -32,19 +32,22 @@
   </project-components>
 
   <actions>
+    <action id="Sonar.ShowMeasures"
+            class="org.sonar.ide.idea.actions.ShowMeasuresAction"
+            text="Show measures"/>
+
     <action id="Sonar.GoToDashboard"
             class="org.sonar.ide.idea.actions.GoToDashboardAction"
-            text="Go to dashboard"
-        />
+            text="Go to dashboard"/>
 
     <group id="Sonar.BaseProjectMenu">
       <reference ref="Sonar.GoToDashboard"/>
+      <reference ref="Sonar.ShowMeasures"/>
     </group>
 
-    <!-- TODO add icon for next group -->
     <group id="Sonar.GlobalProjectMenu"
            class="org.sonar.ide.idea.utils.actions.SonarActionGroup"
-           text="Sonar" popup="true">
+           text="Sonar" popup="true" icon="/org/sonar/ide/images/sonarLogo.png">
       <add-to-group group-id="EditorPopupMenu" anchor="last"/>
       <add-to-group group-id="ProjectViewPopupMenu" anchor="last"/>
       <reference ref="Sonar.BaseProjectMenu"/>
@@ -53,5 +56,6 @@
 
   <extensions defaultExtensionNs="com.intellij">
     <errorHandler implementation="org.sonar.ide.idea.BlameSonar"/>
+    <selectInTarget implementation="org.sonar.ide.idea.SelectInSonarTarget"/>
   </extensions>
 </idea-plugin>
