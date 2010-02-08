@@ -41,13 +41,7 @@ public final class IconsUtils {
     return IMAGES_PATH + "priority/" + priority.toLowerCase() + ".gif";
   }
 
-  /**
-   * Returns tendency icon for specified measure.
-   *
-   * @param measure measure
-   * @return tendency icon
-   */
-  public static String getTendencyIconPath(Measure measure) {
+  public static String getTendencyIconPath(Measure measure, boolean small) {
     Integer trend = measure.getTrend();
     Integer var = measure.getVar();
     if (trend == null || var == null) {
@@ -72,8 +66,21 @@ public final class IconsUtils {
         sb.append("-green");
         break;
     }
+    if (small) {
+      sb.append("-small");
+    }
     sb.append(".png");
     return sb.toString();
+  }
+
+  /**
+   * Returns tendency icon for specified measure.
+   *
+   * @param measure measure
+   * @return tendency icon
+   */
+  public static String getTendencyIconPath(Measure measure) {
+    return getTendencyIconPath(measure, false);
   }
 
   /**

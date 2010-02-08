@@ -13,7 +13,7 @@ import javax.swing.*;
  * @author Evgeny Mandrikov
  */
 public abstract class AbstractViewer extends JPanel {
-  private final String[] metrics;
+  protected final String[] metrics;
   private AbstractIconLoader iconLoader;
 
   protected AbstractViewer(Sonar sonar, AbstractIconLoader iconLoader, String resourceKey, String... metrics) {
@@ -48,9 +48,5 @@ public abstract class AbstractViewer extends JPanel {
       }
     }
     add(cell);
-  }
-
-  protected void addBigCell(String value) {
-    add(new JLabel(value));
   }
 }

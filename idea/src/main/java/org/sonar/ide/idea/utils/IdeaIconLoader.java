@@ -10,6 +10,11 @@ import javax.swing.*;
  * @author Evgeny Mandrikov
  */
 public final class IdeaIconLoader extends AbstractIconLoader {
+  public static final IdeaIconLoader INSTANCE = new IdeaIconLoader();
+
+  private IdeaIconLoader() {
+  }
+
   @Override
   public Icon getIcon(@Nullable String path) {
     if (path == null) {
