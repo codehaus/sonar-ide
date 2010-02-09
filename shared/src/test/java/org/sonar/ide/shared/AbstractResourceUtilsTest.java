@@ -9,14 +9,9 @@ import static org.junit.Assert.assertThat;
  * @author Evgeny Mandrikov
  */
 public abstract class AbstractResourceUtilsTest<MODEL> {
-  private AbstractResourceUtils<MODEL> utils;
-
-  public AbstractResourceUtilsTest(AbstractResourceUtils<MODEL> utils) {
-    this.utils = utils;
-  }
-
   @Test
   public void testNullProject() {
+    AbstractResourceUtils<MODEL> utils = newUtils(true, null, "org.sonar", "ClassOne");
     MODEL file = newFileModel(true, null, "org.sonar", "ClassOne");
     assertThat(utils.getProjectKey(file), nullValue());
     assertThat(utils.getComponentKey(file), nullValue());
@@ -25,6 +20,7 @@ public abstract class AbstractResourceUtilsTest<MODEL> {
 
   @Test
   public void testNullPackage() {
+    AbstractResourceUtils<MODEL> utils = newUtils(true, "test:test", null, "ClassOne");
     MODEL file = newFileModel(true, "test:test", null, "ClassOne");
     assertThat(utils.getProjectKey(file), notNullValue());
     assertThat(utils.getComponentKey(file), nullValue());
@@ -33,6 +29,7 @@ public abstract class AbstractResourceUtilsTest<MODEL> {
 
   @Test
   public void testDefaultPackage() throws Exception {
+    AbstractResourceUtils<MODEL> utils = newUtils(true, "test:test", "", "ClassOnDefaultPackage");
     MODEL file = newFileModel(true, "test:test", "", "ClassOnDefaultPackage");
     assertThat(utils.getProjectKey(file), notNullValue());
     assertThat(utils.getComponentKey(file), is("test:test:[default]"));
@@ -41,6 +38,7 @@ public abstract class AbstractResourceUtilsTest<MODEL> {
 
   @Test
   public void testSimpleClass() throws Exception {
+    AbstractResourceUtils<MODEL> utils = newUtils(true, "test:test", "org.sonar", "ClassOne");
     MODEL file = newFileModel(true, "test:test", "org.sonar", "ClassOne");
     assertThat(utils.getProjectKey(file), notNullValue());
     assertThat(utils.getComponentKey(file), is("test:test:org.sonar"));
@@ -49,6 +47,7 @@ public abstract class AbstractResourceUtilsTest<MODEL> {
 
   @Test
   public void testNullDirectory() {
+    AbstractResourceUtils<MODEL> utils = newUtils(false, "test:test", null, "File.sql");
     MODEL file = newFileModel(false, "test:test", null, "File.sql");
     assertThat(utils.getProjectKey(file), notNullValue());
     assertThat(utils.getComponentKey(file), nullValue());
@@ -57,6 +56,7 @@ public abstract class AbstractResourceUtilsTest<MODEL> {
 
   @Test
   public void testDefaultDirectory() {
+    AbstractResourceUtils<MODEL> utils = newUtils(false, "test:test", "", "FileInRootDirectory.sql");
     MODEL file = newFileModel(false, "test:test", "", "FileInRootDirectory.sql");
     assertThat(utils.getProjectKey(file), notNullValue());
     assertThat(utils.getComponentKey(file), is("test:test:[root]"));
@@ -65,6 +65,7 @@ public abstract class AbstractResourceUtilsTest<MODEL> {
 
   @Test
   public void testSimpleFile() {
+    AbstractResourceUtils<MODEL> utils = newUtils(false, "test:test", "foo/bar", "File.sql");
     MODEL file = newFileModel(false, "test:test", "foo/bar", "File.sql");
     assertThat(utils.getProjectKey(file), notNullValue());
     assertThat(utils.getComponentKey(file), is("test:test:foo/bar"));
@@ -72,4 +73,6 @@ public abstract class AbstractResourceUtilsTest<MODEL> {
   }
 
   protected abstract MODEL newFileModel(boolean java, String projectKey, String packageOrDirectory, String fileName);
+
+  protected abstract AbstractResourceUtils<MODEL> newUtils(boolean java, String projectKey, String packageOrDirectory, String fileName);
 }

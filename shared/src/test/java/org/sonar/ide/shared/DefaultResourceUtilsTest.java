@@ -4,13 +4,14 @@ package org.sonar.ide.shared;
  * @author Evgeny Mandrikov
  */
 public class DefaultResourceUtilsTest extends AbstractResourceUtilsTest<DefaultResourceUtilsTest.FileModel> {
-  public DefaultResourceUtilsTest() {
-    super(new ResourceUtils());
-  }
-
   @Override
   protected FileModel newFileModel(boolean java, String projectKey, String packageOrDirectory, String fileName) {
     return new FileModel(java, projectKey, packageOrDirectory, fileName);
+  }
+
+  @Override
+  protected AbstractResourceUtils<FileModel> newUtils(boolean java, String projectKey, String packageOrDirectory, String fileName) {
+    return new ResourceUtils();
   }
 
   class FileModel {
