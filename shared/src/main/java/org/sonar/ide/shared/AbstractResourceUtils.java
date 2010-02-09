@@ -43,9 +43,12 @@ public abstract class AbstractResourceUtils<MODEL> {
    *
    * @param groupId    groupId
    * @param artifactId artifactId
-   * @return project key
+   * @return project key or null, if unable to determine
    */
   public final String getProjectKey(String groupId, String artifactId) {
+    if (StringUtils.isBlank(groupId) || StringUtils.isBlank(artifactId)) {
+      return null;
+    }
     return groupId + DELIMITER + artifactId;
   }
 

@@ -43,6 +43,10 @@ public class IdeaSonarModuleComponent extends AbstractConfigurableComponent impl
     );
   }
 
+  @Override
+  protected void saveConfig(AbstractConfigPanel configPanel) {
+  }
+
   class MyConfigPanel extends AbstractConfigPanel {
     MyConfigPanel(String text) {
       add(new JLabel(text));

@@ -92,9 +92,7 @@ public abstract class AbstractConfigurableComponent implements Configurable, Pro
     if (configPanel == null) {
       return;
     }
-    // TODO
-    getLog().warn("IMPLEMENT ME");
-    getLog().info("Properties: ", configPanel.getProperties());
+    saveConfig(configPanel);
   }
 
   @Override
@@ -113,4 +111,6 @@ public abstract class AbstractConfigurableComponent implements Configurable, Pro
   }
 
   protected abstract AbstractConfigPanel initConfigPanel();
+
+  protected abstract void saveConfig(AbstractConfigPanel configPanel);
 }

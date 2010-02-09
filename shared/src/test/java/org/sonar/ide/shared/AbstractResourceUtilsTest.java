@@ -10,6 +10,16 @@ import static org.junit.Assert.assertThat;
  */
 public abstract class AbstractResourceUtilsTest<MODEL> {
   @Test
+  public void testGetProjectKey() {
+    AbstractResourceUtils<MODEL> utils = newUtils(true, null, "org.sonar", "ClassOne");
+    assertThat(utils.getProjectKey(null, "myproject"), nullValue());
+    assertThat(utils.getProjectKey("org.example", null), nullValue());
+    assertThat(utils.getProjectKey("org.example", ""), nullValue());
+    assertThat(utils.getProjectKey("", "myproject"), nullValue());
+    assertThat(utils.getProjectKey("org.example", "myproject"), is("org.example:myproject"));
+  }
+
+  @Test
   public void testNullProject() {
     AbstractResourceUtils<MODEL> utils = newUtils(true, null, "org.sonar", "ClassOne");
     MODEL file = newFileModel(true, null, "org.sonar", "ClassOne");
