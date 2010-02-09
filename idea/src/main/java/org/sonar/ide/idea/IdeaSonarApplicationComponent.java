@@ -5,7 +5,9 @@ import com.intellij.openapi.components.ApplicationComponent;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.sonar.ide.idea.inspection.SonarInspection;
+import org.sonar.ide.idea.inspection.Dependencies;
+import org.sonar.ide.idea.inspection.Duplications;
+import org.sonar.ide.idea.inspection.Violations;
 
 /**
  * Per-application plugin component.
@@ -34,7 +36,9 @@ public class IdeaSonarApplicationComponent implements ApplicationComponent, Insp
   @Override
   public Class[] getInspectionClasses() {
     return new Class[]{
-        SonarInspection.class
+        Violations.class,
+        Duplications.class,
+        Dependencies.class
     };
   }
 }

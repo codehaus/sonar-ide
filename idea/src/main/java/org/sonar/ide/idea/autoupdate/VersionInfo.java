@@ -2,6 +2,7 @@ package org.sonar.ide.idea.autoupdate;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.jetbrains.annotations.Nullable;
+import org.sonar.ide.shared.SonarIdeException;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -32,7 +33,7 @@ public final class VersionInfo {
           props.getProperty("downloadUrl")
       );
     } catch (MalformedURLException e) {
-      throw new RuntimeException(e);
+      throw new SonarIdeException("WTF?", e);
     } catch (IOException e) {
       return null;
     } finally {

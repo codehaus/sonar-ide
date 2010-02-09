@@ -1,26 +1,23 @@
 package org.sonar.ide.idea.inspection;
 
-import com.intellij.codeInspection.*;
+import com.intellij.codeInspection.InspectionManager;
+import com.intellij.codeInspection.LocalQuickFix;
+import com.intellij.codeInspection.ProblemDescriptor;
+import com.intellij.codeInspection.ProblemHighlightType;
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.PsiDocumentManager;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
-import com.intellij.psi.PsiNamedElement;
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.sonar.ide.idea.utils.IdeaResourceUtils;
-import org.sonar.ide.idea.utils.SonarUtils;
 import org.sonar.ide.shared.ViolationUtils;
 import org.sonar.ide.shared.ViolationsLoader;
 import org.sonar.wsclient.Sonar;
 import org.sonar.wsclient.services.Violation;
 
-import javax.swing.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -28,16 +25,7 @@ import java.util.List;
 /**
  * @author Evgeny Mandrikov
  */
-public class SonarInspection extends LocalInspectionTool {
-  private static final Logger LOG = LoggerFactory.getLogger(SonarInspection.class);
-
-  @Nls
-  @NotNull
-  @Override
-  public String getGroupDisplayName() {
-    return "Sonar";
-  }
-
+public class Violations extends AbstractSonarInspectionTool {
   @Nls
   @NotNull
   @Override
@@ -48,7 +36,7 @@ public class SonarInspection extends LocalInspectionTool {
   @NotNull
   @Override
   public String getShortName() {
-    return "Sonar-IDEA"; // TODO
+    return "Sonar-Violations"; // TODO
   }
 
   @Override
@@ -56,20 +44,13 @@ public class SonarInspection extends LocalInspectionTool {
     return "Violations from Sonar (Checkstyle, PMD, Findbugs, ...)";
   }
 
-  @Override
-  public boolean isEnabledByDefault() {
-    return true;
-  }
-
   @Nullable
   @Override
-  public ProblemDescriptor[] checkFile(@NotNull PsiFile file, @NotNull InspectionManager manager, boolean isOnTheFly) {
+  public List<ProblemDescriptor> checkFileBySonar(@NotNull PsiFile file, @NotNull InspectionManager manager, boolean isOnTheFly, Sonar sonar) {
     if (isOnTheFly) {
       return null;
     }
-    LOG.debug("Running " + (isOnTheFly ? "on the fly" : "offline") + " inspection for " + file);
 
-    Sonar sonar = SonarUtils.getSonar(file.getProject());
     String text = file.getText();
     Collection<Violation> violations = ViolationsLoader.getViolations(
         sonar,
@@ -85,40 +66,8 @@ public class SonarInspection extends LocalInspectionTool {
     );
   }
 
-  @Override
-  public JComponent createOptionsPanel() {
-    LOG.debug("Create options panel");
-    return super.createOptionsPanel();
-  }
-
-  @Override
-  public PsiNamedElement getProblemElement(PsiElement psiElement) {
-    PsiNamedElement result = super.getProblemElement(psiElement);
-    LOG.debug("Get problem element for " + psiElement + " with result " + result);
-    return result;
-  }
-
-  @Override
-  public void inspectionStarted(LocalInspectionToolSession session) {
-    LOG.debug("Inspection started");
-    super.inspectionStarted(session);
-  }
-
-  @Override
-  public void inspectionFinished(LocalInspectionToolSession session) {
-    LOG.debug("Inspection finished");
-    super.inspectionFinished(session);
-  }
-
-  @NotNull
-  private TextRange getTextRange(@NotNull Document document, int line) {
-    int lineStartOffset = document.getLineStartOffset(line);
-    int lineEndOffset = document.getLineEndOffset(line);
-    return new TextRange(lineStartOffset, lineEndOffset);
-  }
-
   @Nullable
-  private ProblemDescriptor[] buildProblemDescriptors(
+  private List<ProblemDescriptor> buildProblemDescriptors(
       @Nullable Collection<Violation> violations,
       @NotNull InspectionManager manager,
       PsiElement element,
@@ -136,18 +85,8 @@ public class SonarInspection extends LocalInspectionTool {
     }
 
     List<ProblemDescriptor> problems = new ArrayList<ProblemDescriptor>();
-
     for (Violation violation : violations) {
       int line = violation.getLine() - 1;
-
-      /*
-      BLOCKER
-      CRITICAL
-      MAJOR
-      MINOR
-      INFO
-      */
-
       problems.add(manager.createProblemDescriptor(
           element,
           getTextRange(document, line),
@@ -157,6 +96,6 @@ public class SonarInspection extends LocalInspectionTool {
           LocalQuickFix.EMPTY_ARRAY
       ));
     }
-    return problems.toArray(new ProblemDescriptor[problems.size()]);
+    return problems;
   }
 }
