@@ -1,5 +1,6 @@
 package org.sonar.ide.netbeans.utils;
 
+import org.apache.commons.lang.NotImplementedException;
 import org.netbeans.api.java.classpath.ClassPath;
 import org.netbeans.api.project.FileOwnerQuery;
 import org.netbeans.api.project.Project;
@@ -19,8 +20,15 @@ public final class NetbeansResourceUtils extends AbstractResourceUtils<FileObjec
   private static final Logger LOG = LoggerFactory.getLogger(NetbeansResourceUtils.class);
 
   @Override
+  protected boolean isJavaFile(FileObject file) {
+    return "java".equals(file.getExt());
+  }
+
+  @Override
   public String getFileName(FileObject file) {
-    return file.getName();
+    return isJavaFile(file) ?
+        file.getName() :
+        file.getNameExt();
   }
 
   @Override
@@ -28,6 +36,12 @@ public final class NetbeansResourceUtils extends AbstractResourceUtils<FileObjec
     ClassPath classPath = ClassPath.getClassPath(fileObject, ClassPath.SOURCE);
     FileObject dir = fileObject.getParent();
     return classPath.getResourceName(dir, '.', false);
+  }
+
+  @Override
+  protected String getDirectoryPath(FileObject file) {
+    // TODO implement me
+    throw new NotImplementedException("Currently only java files supported");
   }
 
   @Override
@@ -42,6 +56,6 @@ public final class NetbeansResourceUtils extends AbstractResourceUtils<FileObjec
     POMModel model = POMModelFactory.getDefault().getModel(source);
     String groupId = model.getProject().getGroupId();
     String artifactId = model.getProject().getArtifactId();
-    return groupId + DELIMITER + artifactId;
+    return getProjectKey(groupId, artifactId);
   }
 }

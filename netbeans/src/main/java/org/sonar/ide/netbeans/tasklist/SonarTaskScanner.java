@@ -36,7 +36,7 @@ public class SonarTaskScanner extends FileTaskScanner {
       return null;
     }
 
-    String resourceKey = new NetbeansResourceUtils().getResourceKey(resource);
+    String resourceKey = new NetbeansResourceUtils().getFileKey(resource);
 
     SonarProperties sonarProperties = SonarProperties.getInstance();
     Sonar sonar = new Sonar(new HttpClient4Connector(sonarProperties.getServer()));

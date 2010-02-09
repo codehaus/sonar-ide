@@ -1,65 +1,116 @@
 package org.sonar.ide.shared;
 
+import org.junit.Before;
 import org.junit.Test;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertNull;
+import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertThat;
-import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 /**
  * @author Evgeny Mandrikov
  */
 public class AbstractResourceUtilsTest {
-  private static final String PROJECT_KEY = "test:test";
-  private static final String CLASS_NAME = "ClassOne";
-  private static final String PACKAGE_NAME = "org.sonar";
-  private static final String COMMON_CLASS = PROJECT_KEY + ":" + PACKAGE_NAME + "." + CLASS_NAME;
-  private static final String CLASS_ON_DEFAULT_PACKAGE = PROJECT_KEY + ":[default]." + CLASS_NAME;
+  private ResourceUtils utils;
 
-  class FileModel {
-  }
-
-  abstract class ResourceUtils extends AbstractResourceUtils<FileModel> {
+  @Before
+  public void setUp() {
+    utils = new ResourceUtils();
   }
 
   @Test
-  public void testNoMavenProject() {
-    ResourceUtils mock = createMock(null, PACKAGE_NAME, CLASS_NAME);
-    assertNull(mock.getResourceKey(new FileModel()));
+  public void testNullProject() {
+    FileModel file = new FileModel(true, null, "org.sonar", "ClassOne");
+    assertThat(utils.getProjectKey(file), nullValue());
+    assertThat(utils.getComponentKey(file), nullValue());
+    assertThat(utils.getFileKey(file), nullValue());
+  }
+
+  @Test
+  public void testNullPackage() {
+    FileModel file = new FileModel(true, "test:test", null, "ClassOne");
+    assertThat(utils.getProjectKey(file), notNullValue());
+    assertThat(utils.getComponentKey(file), nullValue());
+    assertThat(utils.getFileKey(file), nullValue());
   }
 
   @Test
   public void testDefaultPackage() throws Exception {
-    ResourceUtils mock = createMock(PROJECT_KEY, "", CLASS_NAME);
-    assertThat(
-        mock.getResourceKey(new FileModel()),
-        is(CLASS_ON_DEFAULT_PACKAGE)
-    );
-
-    mock = createMock(PROJECT_KEY, null, CLASS_NAME);
-    assertThat(
-        mock.getResourceKey(new FileModel()),
-        is(CLASS_ON_DEFAULT_PACKAGE)
-    );
+    FileModel file = new FileModel(true, "test:test", "", "ClassOnDefaultPackage");
+    assertThat(utils.getProjectKey(file), notNullValue());
+    assertThat(utils.getComponentKey(file), is("test:test:[default]"));
+    assertThat(utils.getFileKey(file), is("test:test:[default].ClassOnDefaultPackage"));
   }
 
   @Test
   public void testSimpleClass() throws Exception {
-    ResourceUtils mock = createMock(PROJECT_KEY, PACKAGE_NAME, CLASS_NAME);
-    assertThat(
-        mock.getResourceKey(new FileModel()),
-        is(COMMON_CLASS)
-    );
+    FileModel file = new FileModel(true, "test:test", "org.sonar", "ClassOne");
+    assertThat(utils.getProjectKey(file), notNullValue());
+    assertThat(utils.getComponentKey(file), is("test:test:org.sonar"));
+    assertThat(utils.getFileKey(file), is("test:test:org.sonar.ClassOne"));
   }
 
-  private ResourceUtils createMock(String projectKey, String packageKey, String fileKey) {
-    ResourceUtils mock = mock(ResourceUtils.class);
-    when(mock.getFileName((FileModel) any())).thenReturn(fileKey);
-    when(mock.getPackageName((FileModel) any())).thenReturn(packageKey);
-    when(mock.getProjectKey((FileModel) any())).thenReturn(projectKey);
-    return mock;
+  @Test
+  public void testNullDirectory() {
+    FileModel file = new FileModel(false, "test:test", null, "File.sql");
+    assertThat(utils.getProjectKey(file), notNullValue());
+    assertThat(utils.getComponentKey(file), nullValue());
+    assertThat(utils.getFileKey(file), nullValue());
+  }
+
+  @Test
+  public void testDefaultDirectory() {
+    FileModel file = new FileModel(false, "test:test", "", "FileInRootDirectory.sql");
+    assertThat(utils.getProjectKey(file), notNullValue());
+    assertThat(utils.getComponentKey(file), is("test:test:[root]"));
+    assertThat(utils.getFileKey(file), is("test:test:[root]/FileInRootDirectory.sql"));
+  }
+
+  @Test
+  public void testSimpleFile() {
+    FileModel file = new FileModel(false, "test:test", "foo/bar", "File.sql");
+    assertThat(utils.getProjectKey(file), notNullValue());
+    assertThat(utils.getComponentKey(file), is("test:test:foo/bar"));
+    assertThat(utils.getFileKey(file), is("test:test:foo/bar/File.sql"));
+  }
+
+  class FileModel {
+    String projectKey;
+    String packageName;
+    String fileName;
+    boolean java;
+
+    FileModel(boolean java, String projectKey, String packageName, String fileName) {
+      this.java = java;
+      this.projectKey = projectKey;
+      this.packageName = packageName;
+      this.fileName = fileName;
+    }
+  }
+
+  class ResourceUtils extends AbstractResourceUtils<FileModel> {
+    @Override
+    public String getProjectKey(FileModel file) {
+      return file.projectKey;
+    }
+
+    @Override
+    public String getPackageName(FileModel file) {
+      return file.packageName;
+    }
+
+    @Override
+    public String getFileName(FileModel file) {
+      return file.fileName;
+    }
+
+    @Override
+    protected boolean isJavaFile(FileModel file) {
+      return file.java;
+    }
+
+    @Override
+    protected String getDirectoryPath(FileModel file) {
+      return file.packageName;
+    }
   }
 }

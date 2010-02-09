@@ -5,9 +5,7 @@ import com.intellij.openapi.actionSystem.PlatformDataKeys;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiFile;
-import com.intellij.psi.PsiJavaFile;
 import com.intellij.psi.PsiManager;
-import org.jetbrains.idea.maven.project.MavenProject;
 import org.jetbrains.idea.maven.utils.actions.MavenActionUtil;
 import org.sonar.ide.idea.utils.IdeaResourceUtils;
 import org.sonar.ide.idea.utils.SonarUtils;
@@ -26,12 +24,7 @@ public final class SonarActionUtils {
     Project project = MavenActionUtil.getProject(event);
     VirtualFile virtualFile = getVirtualFile(event);
     PsiFile psiFile = PsiManager.getInstance(project).findFile(virtualFile);
-    if (psiFile instanceof PsiJavaFile) {
-      return IdeaResourceUtils.getInstance().getResourceKey((PsiJavaFile) psiFile);
-    }
-//    return null;
-    MavenProject mavenProject = MavenActionUtil.getMavenProject(event);
-    return IdeaResourceUtils.getInstance().getProjectKey(mavenProject);
+    return IdeaResourceUtils.getInstance().getFileKey(psiFile);
   }
 
   public static Sonar getSonar(AnActionEvent event) {

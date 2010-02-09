@@ -58,7 +58,7 @@ public class SonarTask implements CancellableTask<CompilationInfo> {
     StyledDocument document = editor.openDocument();
     // Do job
 
-    String resourceKey = new NetbeansResourceUtils().getResourceKey(fileObject);
+    String resourceKey = new NetbeansResourceUtils().getFileKey(fileObject);
 
     SonarProperties sonarProperties = SonarProperties.getInstance();
     Sonar sonar = new Sonar(new HttpClient4Connector(sonarProperties.getServer()));

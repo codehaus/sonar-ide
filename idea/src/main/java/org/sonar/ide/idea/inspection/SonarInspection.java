@@ -4,7 +4,10 @@ import com.intellij.codeInspection.*;
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.TextRange;
-import com.intellij.psi.*;
+import com.intellij.psi.PsiDocumentManager;
+import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiFile;
+import com.intellij.psi.PsiNamedElement;
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -64,17 +67,13 @@ public class SonarInspection extends LocalInspectionTool {
     if (isOnTheFly) {
       return null;
     }
-    if (!(file instanceof PsiJavaFile)) {
-      return null;
-    }
     LOG.debug("Running " + (isOnTheFly ? "on the fly" : "offline") + " inspection for " + file);
 
-    PsiJavaFile javaFile = (PsiJavaFile) file;
     Sonar sonar = SonarUtils.getSonar(file.getProject());
-    String text = javaFile.getText();
+    String text = file.getText();
     Collection<Violation> violations = ViolationsLoader.getViolations(
         sonar,
-        IdeaResourceUtils.getInstance().getResourceKey(javaFile),
+        IdeaResourceUtils.getInstance().getFileKey(file),
         text
     );
 

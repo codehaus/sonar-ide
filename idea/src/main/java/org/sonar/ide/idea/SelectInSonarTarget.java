@@ -4,7 +4,10 @@ import com.intellij.ide.BrowserUtil;
 import com.intellij.ide.SelectInContext;
 import com.intellij.ide.SelectInTarget;
 import com.intellij.openapi.project.Project;
+import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiFile;
 import org.jetbrains.annotations.Nullable;
+import org.sonar.ide.idea.utils.IdeaResourceUtils;
 import org.sonar.ide.idea.utils.SonarUtils;
 import org.sonar.ide.shared.SonarUrlUtils;
 
@@ -32,11 +35,16 @@ public class SelectInSonarTarget implements SelectInTarget {
 
   @Nullable
   private String getSonarUrl(Object selector, Project project) {
-    // TODO implement go to project, go to package, go to file
-    return SonarUrlUtils.getDashboard(
-        SonarUtils.getSonarSettings(project).getServer().getHost(),
-        ""
-    );
+    if (selector instanceof PsiElement) {
+      PsiElement psiElement = (PsiElement) selector;
+      PsiFile psiFile = psiElement.getContainingFile();
+      String resourceKey = IdeaResourceUtils.getInstance().getFileKey(psiFile);
+      return SonarUrlUtils.getDashboard(
+          SonarUtils.getSonarSettings(project).getServer().getHost(),
+          resourceKey
+      );
+    }
+    return null;
   }
 
   @Override
