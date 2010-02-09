@@ -19,9 +19,7 @@ public class SonarTestServer {
   public void start() throws Exception {
     tester = new ServletTester();
     tester.setContextPath("/");
-    /* TODO SONARIDE-14
     tester.addServlet(VersionServlet.class, "/api/server/version");
-    */
     tester.addServlet(ViolationServlet.class, "/api/violations");
     tester.addServlet(SourceServlet.class, "/api/sources");
 
