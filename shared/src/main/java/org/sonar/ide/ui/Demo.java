@@ -24,7 +24,8 @@ public final class Demo {
     JFrame frame = new JFrame("SonarIDE Demo");
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     //Create and set up the content pane.
-    frame.setContentPane(createContent());
+//    frame.setContentPane(createContent());
+    frame.setContentPane(new SonarConfigPanel());
     //Display the window.
     frame.pack();
     frame.setVisible(true);

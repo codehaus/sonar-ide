@@ -17,19 +17,19 @@
     <component>
       <implementation-class>org.sonar.ide.idea.IdeaSonarApplicationComponent</implementation-class>
     </component>
-    <component>
-      <implementation-class>org.sonar.ide.idea.SonarInspectionProvider</implementation-class>
-    </component>
   </application-components>
 
   <project-components>
     <component>
       <implementation-class>org.sonar.ide.idea.IdeaSonarProjectComponent</implementation-class>
     </component>
-    <component>
-      <implementation-class>org.sonar.ide.idea.SonarWorkspaceSettingsComponent</implementation-class>
-    </component>
   </project-components>
+
+  <module-components>
+    <component>
+      <implementation-class>org.sonar.ide.idea.IdeaSonarModuleComponent</implementation-class>
+    </component>
+  </module-components>
 
   <actions>
     <action id="Sonar.ShowMeasures"

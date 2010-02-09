@@ -1,62 +1,50 @@
 package org.sonar.ide.idea;
 
-import com.intellij.openapi.components.ProjectComponent;
 import com.intellij.openapi.editor.EditorFactory;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.startup.StartupManager;
-import org.jetbrains.annotations.NotNull;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.sonar.ide.idea.autoupdate.PluginDownloader;
 import org.sonar.ide.idea.editor.SonarEditorListener;
+import org.sonar.ide.shared.SonarProperties;
+import org.sonar.ide.ui.AbstractConfigPanel;
+import org.sonar.ide.ui.SonarConfigPanel;
 
 /**
  * Per-project plugin component.
  *
  * @author Evgeny Mandrikov
  */
-public class IdeaSonarProjectComponent implements ProjectComponent {
-  private static final Logger LOG = LoggerFactory.getLogger(IdeaSonarProjectComponent.class);
+public class IdeaSonarProjectComponent extends AbstractConfigurableComponent {
+  private SonarProperties settings;
+
+  public static IdeaSonarProjectComponent getInstance(Project project) {
+    return project.getComponent(IdeaSonarProjectComponent.class);
+  }
 
   public IdeaSonarProjectComponent(Project project) {
+    getLog().info("Loaded component for {}", project);
     StartupManager.getInstance(project).registerPostStartupActivity(new Runnable() {
       public void run() {
-        LOG.info("Start: project initializing");
+        getLog().info("Start: project initializing");
         initPlugin();
-        LOG.info("End: project initialized");
+        getLog().info("End: project initialized");
       }
     });
   }
 
-  @NotNull
-  public String getComponentName() {
-    return getClass().getSimpleName();
+  @Override
+  protected AbstractConfigPanel initConfigPanel() {
+    return new SonarConfigPanel();
   }
 
   private void initPlugin() {
-    LOG.info("Init plugin");
+    getLog().info("Init plugin");
+    settings = new SonarProperties(SonarProperties.getDefaultPath());
     PluginDownloader.checkUpdate();
     EditorFactory.getInstance().addEditorFactoryListener(new SonarEditorListener());
   }
 
-  public void projectOpened() {
-    LOG.info("Project opened");
-    // TODO
+  public SonarProperties getSettings() {
+    return settings;
   }
-
-  public void projectClosed() {
-    LOG.info("Project closed");
-    // TODO
-  }
-
-  public void initComponent() {
-    LOG.info("Init component");
-    // TODO
-  }
-
-  public void disposeComponent() {
-    LOG.info("Dispose component");
-    // TODO
-  }
-
 }

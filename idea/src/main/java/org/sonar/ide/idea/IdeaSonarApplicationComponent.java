@@ -1,30 +1,40 @@
 package org.sonar.ide.idea;
 
+import com.intellij.codeInspection.InspectionToolProvider;
 import com.intellij.openapi.components.ApplicationComponent;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.sonar.ide.idea.inspection.SonarInspection;
 
 /**
  * Per-application plugin component.
  *
  * @author Evgeny Mandrikov
  */
-public class IdeaSonarApplicationComponent implements ApplicationComponent {
+public class IdeaSonarApplicationComponent implements ApplicationComponent, InspectionToolProvider {
   private static final Logger LOG = LoggerFactory.getLogger(IdeaSonarApplicationComponent.class);
 
   @NotNull
+  @Override
   public String getComponentName() {
     return getClass().getSimpleName();
   }
 
+  @Override
   public void initComponent() {
     LOG.info("Init component");
-    // TODO
   }
 
+  @Override
   public void disposeComponent() {
     LOG.info("Dispose component");
-    // TODO
+  }
+
+  @Override
+  public Class[] getInspectionClasses() {
+    return new Class[]{
+        SonarInspection.class
+    };
   }
 }

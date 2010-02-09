@@ -3,7 +3,7 @@ package org.sonar.ide.idea.utils;
 import com.intellij.openapi.project.Project;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.sonar.ide.idea.SonarWorkspaceSettingsComponent;
+import org.sonar.ide.idea.IdeaSonarProjectComponent;
 import org.sonar.ide.shared.SonarProperties;
 import org.sonar.wsclient.Host;
 import org.sonar.wsclient.Sonar;
@@ -22,7 +22,7 @@ public final class SonarUtils {
   }
 
   public static SonarProperties getSonarSettings(Project project) {
-    return SonarWorkspaceSettingsComponent.getInstance(project).getSettings();
+    return IdeaSonarProjectComponent.getInstance(project).getSettings();
   }
 
   public static Sonar getSonar(Project project) {
