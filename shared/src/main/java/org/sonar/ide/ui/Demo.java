@@ -1,6 +1,7 @@
 package org.sonar.ide.ui;
 
 import org.sonar.ide.client.SonarClient;
+import org.sonar.ide.shared.Logs;
 
 import javax.swing.*;
 import java.awt.*;
@@ -14,7 +15,7 @@ public final class Demo {
     SonarClient sonarClient = new SonarClient("http://localhost:9000");
     String resourceKey = "1";
     MeasuresViewer viewer = new MeasuresViewer(sonarClient, iconLoader, resourceKey);
-    System.out.println(sonarClient.getServerTrips());
+    Logs.INFO.info("Server trips: {}", sonarClient.getServerTrips());
     return viewer;
   }
 
@@ -35,5 +36,8 @@ public final class Demo {
         createAndShowGUI();
       }
     });
+  }
+
+  private Demo() {
   }
 }

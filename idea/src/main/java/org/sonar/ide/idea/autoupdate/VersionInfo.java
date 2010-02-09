@@ -1,11 +1,5 @@
 package org.sonar.ide.idea.autoupdate;
 
-import com.intellij.ide.plugins.IdeaPluginDescriptor;
-import com.intellij.ide.plugins.PluginManager;
-import com.intellij.openapi.application.ApplicationManager;
-import com.intellij.openapi.extensions.PluginId;
-import com.intellij.openapi.ui.DialogWrapper;
-import com.intellij.openapi.ui.Messages;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.jetbrains.annotations.Nullable;
 
@@ -24,29 +18,6 @@ public final class VersionInfo {
 
   private final String version;
   private final String downloadUrl;
-
-  public static void checkUpdate() {
-    final PluginId pluginId = PluginManager.getPluginByClassName(VersionInfo.class.getName());
-    final IdeaPluginDescriptor pluginDescriptor = PluginManager.getPlugin(pluginId);
-    if (pluginDescriptor == null) {
-      // should never happen
-      return;
-    }
-    final VersionInfo versionInfo = getLatestPluginVersion();
-    if (versionInfo != null && !pluginDescriptor.getVersion().equals(versionInfo.getVersion())) {
-      ApplicationManager.getApplication().invokeLater(new Runnable() {
-        public void run() {
-          String title = "New Sonar Plugin";
-          String message = "New Sonar Plugin version " + versionInfo.getVersion() + " is available.\n" +
-              "Do you want to upgrade from " + pluginDescriptor.getVersion() + "?";
-          int answer = Messages.showYesNoDialog(message, title, Messages.getQuestionIcon());
-          if (answer == DialogWrapper.OK_EXIT_CODE) {
-            new PluginDownloader().run(versionInfo);
-          }
-        }
-      });
-    }
-  }
 
   @Nullable
   public static VersionInfo getLatestPluginVersion() {

@@ -12,6 +12,7 @@ import com.intellij.openapi.util.io.FileUtil;
 import com.intellij.openapi.util.io.StreamUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.sonar.ide.shared.SonarIdeException;
 
 import java.io.*;
 import java.net.HttpURLConnection;
@@ -22,7 +23,9 @@ import java.net.URLConnection;
  * @author Evgeny Mandrikov
  */
 public class PluginDownloader {
-  public static final Logger LOG = LoggerFactory.getLogger(PluginDownloader.class);
+  private static final Logger LOG = LoggerFactory.getLogger(PluginDownloader.class);
+
+  private static final int TIMEOUT = 15000;
 
   /*
   Document doc = new SAXReader().read("http://snapshots.repository.codehaus.org/org/codehaus/sonar-plugins/sonar-ldap-plugin/maven-metadata.xml");
@@ -34,7 +37,7 @@ public class PluginDownloader {
     try {
       downloadAndInstall(versionInfo);
     } catch (IOException e) {
-      throw new RuntimeException(e);
+      throw new SonarIdeException("Unable to download and install new plugin version", e);
     }
   }
 
@@ -60,25 +63,25 @@ public class PluginDownloader {
     try {
       downloadedFile = FileUtil.createTempFile("temp_", "tmp");
     } catch (IOException e) {
-      throw new RuntimeException("Unable to create temp file", e);
+      throw new SonarIdeException("Unable to create temp file", e);
     }
     LOG.info("Downloading plugin archive from: {}", pluginUrl);
     URLConnection connection;
     try {
       URL url = new URL(pluginUrl);
       connection = url.openConnection();
-      connection.setReadTimeout(15000);
-      connection.setConnectTimeout(15000);
+      connection.setReadTimeout(TIMEOUT);
+      connection.setConnectTimeout(TIMEOUT);
       connection.connect();
     } catch (IOException e) {
-      throw new RuntimeException("Unable to open connection for " + pluginUrl, e);
+      throw new SonarIdeException("Unable to open connection for " + pluginUrl, e);
     }
     try {
       inputStream = connection.getInputStream();
       outputStream = new FileOutputStream(downloadedFile);
       StreamUtil.copyStreamContent(inputStream, outputStream);
     } catch (IOException e) {
-      throw new RuntimeException("Unable to download plugin from " + pluginUrl + " to " + downloadedFile, e);
+      throw new SonarIdeException("Unable to download plugin from " + pluginUrl + " to " + downloadedFile, e);
     } finally {
       if (inputStream != null) {
         try {
@@ -111,7 +114,7 @@ public class PluginDownloader {
       try {
         FileUtil.copy(oldFile, newFile);
       } catch (IOException e) {
-        throw new RuntimeException("Renaming file from " + oldFile + " to " + newFile + " failed", e);
+        throw new SonarIdeException("Renaming file from " + oldFile + " to " + newFile + " failed", e);
       } finally {
         if (!oldFile.delete()) {
           LOG.warn("Deleting of file [{}] failed", oldFile);
@@ -128,6 +131,7 @@ public class PluginDownloader {
       StartupActionScriptManager.addActionCommand(deleteOld);
     } else {
       // we should not be here
+      throw new SonarIdeException("WTF? Plugin not installed?");
     }
 
     File pluginsPath = new File(PathManager.getPluginsPath());
@@ -154,4 +158,26 @@ public class PluginDownloader {
     });
   }
 
+  public static void checkUpdate() {
+    final PluginId pluginId = PluginManager.getPluginByClassName(VersionInfo.class.getName());
+    final IdeaPluginDescriptor pluginDescriptor = PluginManager.getPlugin(pluginId);
+    if (pluginDescriptor == null) {
+      // should never happen
+      return;
+    }
+    final VersionInfo versionInfo = VersionInfo.getLatestPluginVersion();
+    if (versionInfo != null && !pluginDescriptor.getVersion().equals(versionInfo.getVersion())) {
+      ApplicationManager.getApplication().invokeLater(new Runnable() {
+        public void run() {
+          String title = "New Sonar Plugin";
+          String message = "New Sonar Plugin version " + versionInfo.getVersion() + " is available.\n" +
+              "Do you want to upgrade from " + pluginDescriptor.getVersion() + "?";
+          int answer = Messages.showYesNoDialog(message, title, Messages.getQuestionIcon());
+          if (answer == DialogWrapper.OK_EXIT_CODE) {
+            new PluginDownloader().run(versionInfo);
+          }
+        }
+      });
+    }
+  }
 }

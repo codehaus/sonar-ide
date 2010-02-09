@@ -7,7 +7,7 @@ import com.intellij.openapi.startup.StartupManager;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.sonar.ide.idea.autoupdate.VersionInfo;
+import org.sonar.ide.idea.autoupdate.PluginDownloader;
 import org.sonar.ide.idea.editor.SonarEditorListener;
 
 /**
@@ -35,7 +35,7 @@ public class IdeaSonarProjectComponent implements ProjectComponent {
 
   private void initPlugin() {
     LOG.info("Init plugin");
-    VersionInfo.checkUpdate();
+    PluginDownloader.checkUpdate();
     EditorFactory.getInstance().addEditorFactoryListener(new SonarEditorListener());
   }
 
