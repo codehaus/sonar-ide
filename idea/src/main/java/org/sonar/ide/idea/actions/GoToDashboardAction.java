@@ -4,6 +4,7 @@ import com.intellij.ide.BrowserUtil;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import org.sonar.ide.idea.utils.actions.SonarAction;
 import org.sonar.ide.idea.utils.actions.SonarActionUtils;
+import org.sonar.ide.shared.SonarUrlUtils;
 
 /**
  * @author Evgeny Mandrikov
@@ -12,10 +13,10 @@ import org.sonar.ide.idea.utils.actions.SonarActionUtils;
 public final class GoToDashboardAction extends SonarAction {
   @Override
   public void actionPerformed(AnActionEvent event) {
-    String projectKey = SonarActionUtils.getResourceKey(event);
-    String url = new StringBuilder(SonarActionUtils.getSonarServer(event).getHost())
-        .append("/project/index/").append(projectKey)
-        .toString();
+    String url = SonarUrlUtils.getDashboard(
+        SonarActionUtils.getSonarServer(event).getHost(),
+        SonarActionUtils.getResourceKey(event)
+    );
     BrowserUtil.launchBrowser(url);
   }
 }

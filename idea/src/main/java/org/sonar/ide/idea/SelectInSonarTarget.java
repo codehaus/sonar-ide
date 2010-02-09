@@ -6,6 +6,7 @@ import com.intellij.ide.SelectInTarget;
 import com.intellij.openapi.project.Project;
 import org.jetbrains.annotations.Nullable;
 import org.sonar.ide.idea.utils.SonarUtils;
+import org.sonar.ide.shared.SonarUrlUtils;
 
 /**
  * @author Evgeny Mandrikov
@@ -32,7 +33,10 @@ public class SelectInSonarTarget implements SelectInTarget {
   @Nullable
   private String getSonarUrl(Object selector, Project project) {
     // TODO implement go to project, go to package, go to file
-    return SonarUtils.getSonarSettings(project).getServer().getHost();
+    return SonarUrlUtils.getDashboard(
+        SonarUtils.getSonarSettings(project).getServer().getHost(),
+        ""
+    );
   }
 
   @Override
