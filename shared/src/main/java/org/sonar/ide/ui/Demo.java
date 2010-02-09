@@ -11,8 +11,8 @@ import java.awt.*;
 public final class Demo {
   private static Container createContent() {
     AbstractIconLoader iconLoader = new DefaultIconLoader();
-    SonarClient sonarClient = new SonarClient("http://nemo.sonarsource.org");
-    String resourceKey = "225687";
+    SonarClient sonarClient = new SonarClient("http://localhost:9000");
+    String resourceKey = "1";
     MeasuresViewer viewer = new MeasuresViewer(sonarClient, iconLoader, resourceKey);
     System.out.println(sonarClient.getServerTrips());
     return viewer;

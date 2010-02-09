@@ -10,6 +10,8 @@ import org.jetbrains.idea.maven.project.MavenProjectsManager;
 import org.sonar.ide.shared.AbstractResourceUtils;
 
 /**
+ * TODO use {@link com.intellij.openapi.vfs.VirtualFile} instead of {@link com.intellij.psi.PsiJavaFile}
+ *
  * @author Evgeny Mandrikov
  */
 public final class IdeaResourceUtils extends AbstractResourceUtils<PsiJavaFile> {
