@@ -13,7 +13,7 @@ import org.sonar.ide.shared.AbstractResourceUtils;
 /**
  * @author Evgeny Mandrikov
  */
-public final class IdeaResourceUtils extends AbstractResourceUtils<PsiFile> {
+public class IdeaResourceUtils extends AbstractResourceUtils<PsiFile> {
   private static IdeaResourceUtils instance;
 
   public static IdeaResourceUtils getInstance() {
