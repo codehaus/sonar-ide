@@ -17,8 +17,10 @@
       <modules>
         <module>parent</module>
         <module>shared</module>
+
         <module>idea</module>
         <module>netbeans</module>
+        <module>jdeveloper</module>
       </modules>
     </profile>
 
