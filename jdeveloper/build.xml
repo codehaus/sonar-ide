@@ -1,0 +1,25 @@
+<project>
+
+  <target name="deploy">
+    <delete file="${user.home}/applications/jdeveloper/ide/extensions/"/>
+
+    <mvn args="-o package -Dtest=false -DfailIfNoTests=false"/>
+
+    <copy file="target/jdeveloper-sonar-plugin-0.1-SNAPSHOT.jar"
+          todir="${user.home}/applications/jdeveloper/ide/extensions/"/>
+  </target>
+
+  <macrodef name="mvn">
+    <attribute name="args" default=""/>
+
+    <sequential>
+      <exec failonerror="true" executable="mvn" osfamily="unix">
+        <arg line="@{args}"/>
+      </exec>
+      <exec failonerror="true" executable="mvn.bat" osfamily="Windows">
+        <arg line="@{args}"/>
+      </exec>
+    </sequential>
+  </macrodef>
+
+</project>

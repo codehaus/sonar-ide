@@ -16,22 +16,86 @@
   <name>Sonar IDEs :: JDeveloper Plugin</name>
   <description>JDeveloper Plugin for Sonar.</description>
 
+  <properties>
+    <jdeveloper.version>20091030</jdeveloper.version>
+  </properties>
+
   <dependencies>
     <dependency>
       <groupId>${project.groupId}</groupId>
-      <artifactId>shared</artifactId>
+      <artifactId>sonar-ide-commons</artifactId>
       <version>${project.version}</version>
+    </dependency>
+
+    <!-- === JDeveloper === -->
+    <dependency>
+      <groupId>com.oracle.jdeveloper</groupId>
+      <artifactId>ide</artifactId>
+      <version>${jdeveloper.version}</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>com.oracle.jdeveloper</groupId>
+      <artifactId>jewt4</artifactId>
+      <version>${jdeveloper.version}</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>com.oracle.jdeveloper</groupId>
+      <artifactId>uic</artifactId>
+      <version>${jdeveloper.version}</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>com.oracle.jdeveloper</groupId>
+      <artifactId>javatools</artifactId>
+      <version>${jdeveloper.version}</version>
     </dependency>
 
     <!-- === Unit tests === -->
     <dependency>
       <groupId>${project.groupId}</groupId>
-      <artifactId>shared</artifactId>
+      <artifactId>sonar-ide-commons</artifactId>
       <version>${project.version}</version>
       <type>test-jar</type>
       <scope>test</scope>
     </dependency>
   </dependencies>
+
+  <build>
+    <resources>
+      <resource>
+        <directory>src/main/resources</directory>
+        <excludes>
+          <exclude>META-INF/extension.xml</exclude>
+        </excludes>
+      </resource>
+      <resource>
+        <directory>src/main/resources</directory>
+        <includes>
+          <include>META-INF/extension.xml</include>
+        </includes>
+        <filtering>true</filtering>
+      </resource>
+    </resources>
+  </build>
+
+  <repositories>
+    <repository>
+      <id>sonar</id>
+      <name>Sonar</name>
+      <url>http://repository.sonarsource.org/content/repositories/sonar</url>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+    </repository>
+  </repositories>
 
   <scm>
     <connection>scm:svn:http://svn.codehaus.org/sonar-ide/trunk/jdeveloper</connection>
