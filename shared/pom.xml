@@ -10,10 +10,10 @@
 
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.codehaus.sonar-ide</groupId>
-  <artifactId>shared</artifactId>
+  <artifactId>sonar-ide-commons</artifactId>
   <packaging>jar</packaging>
   <version>0.1-SNAPSHOT</version>
-  <name>Sonar IDEs :: Shared Library</name>
+  <name>Sonar IDEs :: Commons Library</name>
 
   <properties>
     <sonar.version>1.13-SNAPSHOT</sonar.version>
@@ -49,6 +49,12 @@
     <dependency>
       <groupId>commons-lang</groupId>
       <artifactId>commons-lang</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>jdom</groupId>
+      <artifactId>jdom</artifactId>
+      <version>1.1</version>
     </dependency>
 
     <dependency>

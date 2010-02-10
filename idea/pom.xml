@@ -40,7 +40,7 @@
   <dependencies>
     <dependency>
       <groupId>${project.groupId}</groupId>
-      <artifactId>shared</artifactId>
+      <artifactId>sonar-ide-commons</artifactId>
       <version>${project.version}</version>
     </dependency>
 
@@ -85,7 +85,7 @@
     <!-- === Unit tests === -->
     <dependency>
       <groupId>${project.groupId}</groupId>
-      <artifactId>shared</artifactId>
+      <artifactId>sonar-ide-commons</artifactId>
       <version>${project.version}</version>
       <type>test-jar</type>
       <scope>test</scope>
