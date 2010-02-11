@@ -28,10 +28,13 @@ public class SonarConfigPanel extends AbstractConfigPanel {
     formBuilder.appendColumn("right:pref");
     formBuilder.appendColumn("3dlu");
     formBuilder.appendColumn("fill:p:g");
+    formBuilder.appendColumn("3dlu");
+    formBuilder.appendColumn("pref");
     formBuilder.append("Host:", host);
-    formBuilder.append("Username:", username);
-    formBuilder.append("Password:", password);
     formBuilder.append(testConnection);
+    formBuilder.append("Username:", username);
+    formBuilder.nextRow();
+    formBuilder.append("Password:", password);
 
     add(formBuilder.getPanel());
   }
