@@ -1,32 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <extension xmlns="http://jcp.org/jsr/198/extension-manifest"
-           id="${project.groupId}.${project.artifactId}" version="0.1"
+           id="org.codehaus.sonar-ide.jdeveloper" version="0.1"
            esdk-version="1.0">
 
+  <!-- NOTE: id should match filename -->
   <!-- NOTE: version can't be 0.1-SNAPSHOT -->
 
-  <name>Sonar</name>
+  <name>Sonar JDeveloper Extension</name>
 
   <owner><!--TODO--></owner>
 
   <dependencies>
-    <import>oracle.ide</import>
+    <import>oracle.jdeveloper</import>
+    <import>oracle.javacore</import>
+    <import>oracle.ide.ceditor</import>
   </dependencies>
+
   <classpaths>
+    <classpath>org.codehaus.sonar-ide.jdeveloper/lib/sonar-ide-commons-shaded.jar</classpath>
     <classpath>../../ide/lib/uic.jar</classpath>
     <classpath>../../jlib/jewt4.jar</classpath>
   </classpaths>
+
   <hooks>
-    <feature-hook>
-      <part-of>oracle.ide.extsamples.allsamples</part-of>
-      <description>Shows how to display a notification balloon in the IDE's status bar area.</description>
-      <optional>true</optional>
-    </feature-hook>
     <jdeveloper-hook xmlns="http://xmlns.oracle.com/jdeveloper/1013/extension">
       <addins>
-        <addin>org.sonar.ide.jdeveloper.SampleBalloonAddin</addin>
+        <addin>org.sonar.ide.jdeveloper.SonarJDeveloperPlugin</addin>
       </addins>
     </jdeveloper-hook>
+    <feature-hook>
+      <description>Provides integrated support for Sonar in JDeveloper.</description>
+      <optional>false</optional>
+    </feature-hook>
   </hooks>
 
 </extension>

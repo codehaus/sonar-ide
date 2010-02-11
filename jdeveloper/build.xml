@@ -1,12 +1,29 @@
-<project>
+<project name="jdeveloper-sonar-plugin"
+         default="default">
+
+  <property name="jdeveloper.home" value="${user.home}/applications/jdeveloper"/>
+
+  <target name="default">
+    <antcall target="compile"/>
+    <antcall target="deploy"/>
+    <!--<antcall target="start"/>-->
+  </target>
+
+  <target name="compile">
+    <mvn args="-o package -Dtest=false -DfailIfNoTests=false"/>
+  </target>
 
   <target name="deploy">
-    <delete file="${user.home}/applications/jdeveloper/ide/extensions/"/>
+    <delete file="${jdeveloper.home}/ide/extensions/org.codehaus.sonar-ide.jdeveloper.jar"/>
+    <delete dir="${jdeveloper.home}/ide/extensions/org.codehaus.sonar-ide.jdeveloper/"/>
 
-    <mvn args="-o package -Dtest=false -DfailIfNoTests=false"/>
+    <unzip src="target/jdeveloper-sonar-plugin-0.1-SNAPSHOT.zip"
+           dest="${jdeveloper.home}/ide/extensions/"/>
+  </target>
 
-    <copy file="target/jdeveloper-sonar-plugin-0.1-SNAPSHOT.jar"
-          todir="${user.home}/applications/jdeveloper/ide/extensions/"/>
+  <target name="start">
+    <exec executable="${jdeveloper.home}/jdev/bin/jdev" osfamily="unix"/>
+    <exec executable="${jdeveloper.home}/jdev/bin/jdev.exe" osfamily="windows"/>
   </target>
 
   <macrodef name="mvn">
