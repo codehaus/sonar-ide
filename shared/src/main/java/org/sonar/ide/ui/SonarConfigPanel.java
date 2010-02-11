@@ -1,5 +1,8 @@
 package org.sonar.ide.ui;
 
+import com.jgoodies.forms.builder.DefaultFormBuilder;
+import com.jgoodies.forms.layout.FormLayout;
+
 import javax.swing.*;
 import java.util.Properties;
 
@@ -7,18 +10,30 @@ import java.util.Properties;
  * @author Evgeny Mandrikov
  */
 public class SonarConfigPanel extends AbstractConfigPanel {
-  private JTextField host;
-  private JTextField username;
-  private JPasswordField password;
+  private final JTextField host;
+  private final JTextField username;
+  private final JPasswordField password;
 
   public SonarConfigPanel() {
     super();
+
     host = new JTextField();
     username = new JTextField();
     password = new JPasswordField();
-    add(host);
-    add(username);
-    add(password);
+    JButton testConnection = new JButton("Test connection");
+    testConnection.setEnabled(false);
+
+    DefaultFormBuilder formBuilder = new DefaultFormBuilder(new FormLayout(""));
+    formBuilder.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+    formBuilder.appendColumn("right:pref");
+    formBuilder.appendColumn("3dlu");
+    formBuilder.appendColumn("fill:p:g");
+    formBuilder.append("Host:", host);
+    formBuilder.append("Username:", username);
+    formBuilder.append("Password:", password);
+    formBuilder.append(testConnection);
+
+    add(formBuilder.getPanel());
   }
 
   @Override

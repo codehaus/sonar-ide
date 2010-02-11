@@ -10,7 +10,6 @@ public abstract class AbstractConfigPanel extends JPanel {
   public AbstractConfigPanel() {
     super();
     setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-    setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
   }
 
   /**
