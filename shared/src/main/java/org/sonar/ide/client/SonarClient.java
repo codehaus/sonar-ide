@@ -19,7 +19,11 @@ public class SonarClient extends Sonar {
   private int serverTrips = 0;
 
   public SonarClient(String host) {
-    super(ConnectorFactory.create(new Host(host)));
+    this(host, "", "");
+  }
+
+  public SonarClient(String host, String username, String password) {
+    super(ConnectorFactory.create(new Host(host, username, password)));
     connect();
   }
 

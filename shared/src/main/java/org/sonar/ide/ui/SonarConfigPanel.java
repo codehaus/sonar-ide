@@ -2,8 +2,11 @@ package org.sonar.ide.ui;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 import com.jgoodies.forms.layout.FormLayout;
+import org.sonar.ide.client.SonarClient;
 
 import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Properties;
 
 /**
@@ -21,7 +24,26 @@ public class SonarConfigPanel extends AbstractConfigPanel {
     username = new JTextField();
     password = new JPasswordField();
     JButton testConnection = new JButton("Test connection");
-    testConnection.setEnabled(false);
+    testConnection.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        SonarClient sonar = new SonarClient(getHost(), getUsername(), getPassword());
+        if (!sonar.isAvailable()) {
+          JOptionPane.showMessageDialog(
+              SonarConfigPanel.this,
+              "Unable to connect",
+              "Test Connection",
+              JOptionPane.ERROR_MESSAGE
+          );
+        } else {
+          JOptionPane.showMessageDialog(
+              SonarConfigPanel.this,
+              "Succesfully connected",
+              "Test Connection",
+              JOptionPane.INFORMATION_MESSAGE
+          );
+        }
+      }
+    });
 
     DefaultFormBuilder formBuilder = new DefaultFormBuilder(new FormLayout(""));
     formBuilder.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
@@ -47,9 +69,21 @@ public class SonarConfigPanel extends AbstractConfigPanel {
 
   public Properties getProperties() {
     Properties properties = new Properties();
-    properties.setProperty("host", host.getText());
-    properties.setProperty("username", username.getText());
-    properties.setProperty("password", new String(password.getPassword()));
+    properties.setProperty("host", getHost());
+    properties.setProperty("username", getUsername());
+    properties.setProperty("password", getPassword());
     return properties;
+  }
+
+  private String getHost() {
+    return host.getText();
+  }
+
+  private String getUsername() {
+    return username.getText();
+  }
+
+  private String getPassword() {
+    return new String(password.getPassword());
   }
 }
