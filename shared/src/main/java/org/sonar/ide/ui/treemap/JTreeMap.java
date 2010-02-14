@@ -32,9 +32,9 @@ public class JTreeMap<MODEL> extends JComponent {
   private AbstractSplitStrategy strategy;
 
   /**
-   * Tooltip builder.
+   * Tooltip provider.
    */
-  private TooltipProvider<MODEL> tooltipBuilder;
+  private TooltipProvider<MODEL> tooltipProvider;
 
   /**
    * Color provider.
@@ -74,13 +74,13 @@ public class JTreeMap<MODEL> extends JComponent {
   }
 
   /**
-   * Sets tooltip builder.
+   * Sets tooltip provider.
    *
-   * @param tooltipBuilder new tooltip builder
+   * @param tooltipProvider new tooltip provider
    * @return this, for method chaining
    */
-  public JTreeMap<MODEL> setTooltipBuilder(TooltipProvider<MODEL> tooltipBuilder) {
-    this.tooltipBuilder = tooltipBuilder;
+  public JTreeMap<MODEL> setTooltipProvider(TooltipProvider<MODEL> tooltipProvider) {
+    this.tooltipProvider = tooltipProvider;
     return this;
   }
 
@@ -111,7 +111,7 @@ public class JTreeMap<MODEL> extends JComponent {
    */
   public void setActiveLeaf(TreeMapNode<MODEL> activeLeaf) {
     this.activeLeaf = activeLeaf;
-    setToolTipText(tooltipBuilder.getToolTipText(activeLeaf.getUserObject()));
+    setToolTipText(tooltipProvider.getToolTipText(activeLeaf.getUserObject()));
   }
 
   /**
@@ -138,13 +138,6 @@ public class JTreeMap<MODEL> extends JComponent {
       drawNode(g, displayedRoot);
       drawLabels(g, displayedRoot);
     }
-  }
-
-  @Override
-  public JToolTip createToolTip() {
-    return super.createToolTip();
-    //return tooltip;
-//    return tooltipBuilder.getToolTip();
   }
 
   @Override
@@ -194,10 +187,6 @@ public class JTreeMap<MODEL> extends JComponent {
     // TODO
     g.setColor(Color.BLACK);
     g.drawString(node.getUserObject().toString(), node.getX() + 5, node.getY() + 20);
-  }
-
-  public void setTooltip(JToolTip tooltip) {
-    this.tooltip = tooltip;
   }
 
   private class MouseMotionHandler extends MouseMotionAdapter {

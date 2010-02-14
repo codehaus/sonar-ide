@@ -84,7 +84,7 @@ public class TreeMapExample {
     JTreeMap<Resource> treeMap = new JTreeMap<Resource>(build())
         .setStrategy(new SplitByWeight())
         .setColorProvider(new ResourceColorProvider())
-        .setTooltipBuilder(new ResourceTooltipBuilder());
+        .setTooltipProvider(new ResourceTooltipBuilder());
     frame.setContentPane(treeMap);
     //Display the window.
     frame.setSize(400, 400);
