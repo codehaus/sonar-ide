@@ -2,7 +2,6 @@ package org.sonar.ide.idea.utils;
 
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiJavaFile;
-import org.apache.commons.lang.NotImplementedException;
 import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.idea.maven.project.MavenId;
@@ -52,7 +51,8 @@ public class IdeaResourceUtils extends AbstractResourceUtils<PsiFile> {
   @Override
   protected String getDirectoryPath(PsiFile file) {
     // TODO implement me
-    throw new NotImplementedException("Currently only java files supported");
+//    throw new NotImplementedException("Currently only java files supported");
+    return null;
   }
 
   @Nullable
