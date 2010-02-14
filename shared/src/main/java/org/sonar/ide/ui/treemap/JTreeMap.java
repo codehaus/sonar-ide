@@ -40,7 +40,6 @@ public class JTreeMap<MODEL> extends JComponent {
    * Color provider.
    */
   private ColorProvider<MODEL> colorProvider;
-  private JToolTip tooltip;
 
   /**
    * @param root root of this tree
