@@ -16,7 +16,7 @@
   <name>Sonar IDEs :: Commons Library</name>
 
   <properties>
-    <sonar.version>1.13-SNAPSHOT</sonar.version>
+    <sonar.version>2.0RC1</sonar.version>
   </properties>
 
   <build>
