@@ -52,4 +52,18 @@
     <url>http://jira.codehaus.org/browse/SONARIDE</url>
   </issueManagement>
 
+  <distributionManagement>
+    <!-- disable accidental deployment -->
+    <repository>
+      <id>localhost</id>
+      <name>dumping to target</name>
+      <url>file://${basedir}/target/repo/</url>
+    </repository>
+    <snapshotRepository>
+      <id>localhost</id>
+      <name>dumping to target</name>
+      <url>file://${basedir}/target/repo/</url>
+    </snapshotRepository>
+  </distributionManagement>
+
 </project>

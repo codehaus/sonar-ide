@@ -15,6 +15,10 @@
   <version>0.1-SNAPSHOT</version>
   <name>Sonar IDEs :: Commons Library</name>
 
+  <!-- !!! IMPORTANT !!!
+  After making changes in dependencies, you shouldn't forget about upgrade eclipse/org.sonar.ide.eclipse.sonar_embedder
+  -->
+
   <properties>
     <sonar.version>2.0RC1</sonar.version>
   </properties>
