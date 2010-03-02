@@ -8,6 +8,7 @@ import com.intellij.openapi.progress.ProgressIndicator;
 import com.intellij.openapi.progress.Task;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Key;
+import com.intellij.util.ui.UIUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.sonar.ide.idea.utils.SonarUtils;
@@ -16,7 +17,6 @@ import org.sonar.ide.shared.ViolationsLoader;
 import org.sonar.wsclient.Sonar;
 import org.sonar.wsclient.services.Violation;
 
-import javax.swing.*;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -47,9 +47,10 @@ public class ShowViolationsTask extends Task.Backgroundable {
     final Collection<Violation> violations = ViolationsLoader.getViolations(sonar, resourceKey, text);
     final Map<Integer, List<Violation>> violationsByLine = ViolationUtils.splitByLines(violations);
     final MarkupModel markupModel = document.getMarkupModel(project);
-    SwingUtilities.invokeLater(new Runnable() {
+    UIUtil.invokeLaterIfNeeded(new Runnable() {
       @Override
       public void run() {
+        removeSonarHighlighters(document.getMarkupModel(getProject())); // see SONARIDE-30
         for (Map.Entry<Integer, List<Violation>> entry : violationsByLine.entrySet()) {
           addHighlighter(markupModel, entry.getKey() - 1, entry.getValue());
         }
@@ -88,6 +89,11 @@ public class ShowViolationsTask extends Task.Backgroundable {
     highlighter.setErrorStripeTooltip(renderer.getTooltipText());
   }
 
+  /**
+   * Removes Sonar highlighters. Should be called before adding new markers to avoid duplicate markers.
+   *
+   * @param markupModel markup model
+   */
   protected static void removeSonarHighlighters(MarkupModel markupModel) {
     for (RangeHighlighter rangeHighlighter : markupModel.getAllHighlighters()) {
       Boolean marker = rangeHighlighter.getUserData(ShowViolationsTask.SONAR_DATA_KEY);
