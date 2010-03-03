@@ -51,7 +51,13 @@ public class IdeaSonarProjectComponent extends AbstractConfigurableComponent {
   private String getConfigFilename() {
     VirtualFile baseDir = project.getBaseDir();
     getLog().info("Project BaseDir: {}", baseDir);
-    return baseDir == null ? null : baseDir.getPath() + File.separator + SonarProperties.FILENAME;
+    if (baseDir == null) {
+      // Template settings
+      return SonarProperties.getDefaultPath();
+    } else {
+      // Project settings
+      return baseDir.getPath() + File.separator + SonarProperties.FILENAME;
+    }
   }
 
   private void initPlugin() {

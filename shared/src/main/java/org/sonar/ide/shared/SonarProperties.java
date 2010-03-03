@@ -26,6 +26,10 @@ public final class SonarProperties {
   private String path;
   private Host server;
 
+  /**
+   * @return instance of SonarProperties
+   * @deprecated but still here for netbeans plugin
+   */
   public static synchronized SonarProperties getInstance() {
     if (instance == null) {
       instance = new SonarProperties(getDefaultPath());
