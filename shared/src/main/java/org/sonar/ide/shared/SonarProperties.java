@@ -13,6 +13,8 @@ import java.util.Properties;
 public final class SonarProperties {
   public static final Logger LOG = LoggerFactory.getLogger(SonarProperties.class);
 
+  public static final String FILENAME = ".sonar-ide.properties";
+
   public static final String HOST_DEFAULT = "http://localhost:9000";
 
   public static final String HOST_PROPERTY = "host";
@@ -42,21 +44,7 @@ public final class SonarProperties {
   }
 
   public void reload() {
-    Properties properties = new Properties();
-    if (path != null) {
-      File file = new File(path);
-      if (file.exists()) {
-        FileInputStream inputStream = null;
-        try {
-          inputStream = new FileInputStream(file);
-          properties.load(inputStream);
-        } catch (IOException e) {
-          LOG.error(e.getMessage(), e);
-        } finally {
-          closeStream(inputStream);
-        }
-      }
-    }
+    Properties properties = load(path);
     server.setHost(properties.getProperty(HOST_PROPERTY, HOST_DEFAULT));
     server.setPassword(properties.getProperty(PASSWORD_PROPERTY));
     server.setUsername(properties.getProperty(USERNAME_PROPERTY));
@@ -73,9 +61,37 @@ public final class SonarProperties {
     addProperty(properties, HOST_PROPERTY, server.getHost());
     addProperty(properties, USERNAME_PROPERTY, server.getUsername());
     addProperty(properties, PASSWORD_PROPERTY, server.getPassword());
+    save(properties, path);
+  }
+
+  public static Properties load(String filename) {
+    LOG.info("Loading settings from '{}'", filename);
+    Properties properties = new Properties();
+    if (filename == null) {
+      return properties;
+    }
+    FileInputStream inputStream = null;
+    File file = new File(filename);
+    if (file.exists()) {
+      try {
+        inputStream = new FileInputStream(filename);
+        properties.load(inputStream);
+      } catch (IOException e) {
+        LOG.error(e.getMessage(), e);
+      } finally {
+        closeStream(inputStream);
+      }
+    } else {
+      LOG.warn("File doesn't exists");
+    }
+    return properties;
+  }
+
+  public static void save(Properties properties, String filename) {
+    LOG.info("Saving settings to '{}'", filename);
     FileOutputStream outputStream = null;
     try {
-      outputStream = new FileOutputStream(path);
+      outputStream = new FileOutputStream(filename);
       properties.store(outputStream, "Sonar Settings");
     } catch (FileNotFoundException e) {
       LOG.error(e.getMessage(), e);
@@ -87,10 +103,10 @@ public final class SonarProperties {
   }
 
   public static String getDefaultPath() {
-    return System.getProperty("user.home") + File.separator + ".sonar-ide.properties";
+    return System.getProperty("user.home") + File.separator + FILENAME;
   }
 
-  protected void closeStream(Closeable stream) {
+  public static void closeStream(Closeable stream) {
     if (stream != null) {
       try {
         stream.close();

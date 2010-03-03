@@ -10,6 +10,8 @@ import org.sonar.ide.shared.SonarProperties;
 import org.sonar.ide.ui.AbstractConfigPanel;
 import org.sonar.ide.ui.SonarConfigPanel;
 
+import java.io.File;
+
 /**
  * Per-project plugin component.
  *
@@ -37,19 +39,20 @@ public class IdeaSonarProjectComponent extends AbstractConfigurableComponent {
 
   @Override
   protected AbstractConfigPanel initConfigPanel() {
-    return new SonarConfigPanel();
+    SonarConfigPanel configPanel = new SonarConfigPanel();
+    configPanel.setProperties(SonarProperties.load(getConfigFilename()));
+    return configPanel;
   }
 
   @Override
   protected void saveConfig(AbstractConfigPanel configPanel) {
+    SonarProperties.save(configPanel.getProperties(), getConfigFilename());
+  }
+
+  private String getConfigFilename() {
     VirtualFile baseDir = project.getBaseDir();
     getLog().info("Project BaseDir: {}", baseDir);
-    if (baseDir == null) {
-      // Template settings
-    } else {
-      // Project settings
-      getLog().info(baseDir.getPath());
-    }
+    return baseDir == null ? null : baseDir.getPath() + File.separator + SonarProperties.FILENAME;
   }
 
   private void initPlugin() {
@@ -60,6 +63,7 @@ public class IdeaSonarProjectComponent extends AbstractConfigurableComponent {
   }
 
   public SonarProperties getSettings() {
+    // TODO return saved settings
     return settings;
   }
 }
