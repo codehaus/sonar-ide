@@ -1,7 +1,7 @@
 package org.sonar.ide.ui;
 
+import org.sonar.ide.api.Logs;
 import org.sonar.ide.client.SonarClient;
-import org.sonar.ide.shared.Logs;
 
 import javax.swing.*;
 import java.awt.*;

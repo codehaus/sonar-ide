@@ -2,7 +2,7 @@ package org.sonar.ide.idea.autoupdate;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.jetbrains.annotations.Nullable;
-import org.sonar.ide.shared.SonarIdeException;
+import org.sonar.ide.api.SonarIdeException;
 
 import java.io.IOException;
 import java.io.InputStream;

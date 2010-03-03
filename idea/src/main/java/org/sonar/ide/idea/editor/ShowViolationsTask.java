@@ -22,11 +22,12 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * Task for loading violations.
+ *
  * @author Evgeny Mandrikov
  */
 public class ShowViolationsTask extends Task.Backgroundable {
-
-  protected static final Key<Boolean> SONAR_DATA_KEY = Key.create("SONAR_DATA_KEY");
+  private static final Key<Boolean> SONAR_DATA_KEY = Key.create("SONAR_DATA_KEY");
 
   private Document document;
   private String resourceKey;
@@ -47,10 +48,11 @@ public class ShowViolationsTask extends Task.Backgroundable {
     final Collection<Violation> violations = ViolationsLoader.getViolations(sonar, resourceKey, text);
     final Map<Integer, List<Violation>> violationsByLine = ViolationUtils.splitByLines(violations);
     final MarkupModel markupModel = document.getMarkupModel(project);
+
     UIUtil.invokeLaterIfNeeded(new Runnable() {
       @Override
       public void run() {
-        removeSonarHighlighters(document.getMarkupModel(getProject())); // see SONARIDE-30
+        removeSonarHighlighters(document.getMarkupModel(getProject()));
         for (Map.Entry<Integer, List<Violation>> entry : violationsByLine.entrySet()) {
           addHighlighter(markupModel, entry.getKey() - 1, entry.getValue());
         }
@@ -81,6 +83,13 @@ public class ShowViolationsTask extends Task.Backgroundable {
     return highlighter;
   }
 
+  /**
+   * Adds highlighter for specified violations.
+   *
+   * @param markupModel markup model
+   * @param line        number of line
+   * @param violations  violations
+   */
   protected static void addHighlighter(MarkupModel markupModel, int line, List<Violation> violations) {
     RangeHighlighter highlighter = addSonarHighlighter(markupModel, line, HighlighterLayer.ERROR + 1);
     ViolationGutterIconRenderer renderer = new ViolationGutterIconRenderer(violations);
@@ -90,7 +99,7 @@ public class ShowViolationsTask extends Task.Backgroundable {
   }
 
   /**
-   * Removes Sonar highlighters. Should be called before adding new markers to avoid duplicate markers.
+   * Removes all Sonar highlighters. Should be called before adding new markers to avoid duplicate markers.
    *
    * @param markupModel markup model
    */

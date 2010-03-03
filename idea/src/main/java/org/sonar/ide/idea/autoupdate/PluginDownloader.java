@@ -12,7 +12,7 @@ import com.intellij.openapi.util.io.FileUtil;
 import com.intellij.openapi.util.io.StreamUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.sonar.ide.shared.SonarIdeException;
+import org.sonar.ide.api.SonarIdeException;
 
 import java.io.*;
 import java.net.HttpURLConnection;

@@ -1,4 +1,4 @@
-package org.sonar.ide.shared;
+package org.sonar.ide.api;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
