@@ -36,23 +36,6 @@
           </execution>
         </executions>
       </plugin>
-
-      <plugin>
-        <!-- We need shaded artifact for JDeveloper plugin. -->
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-shade-plugin</artifactId>
-        <executions>
-          <execution>
-            <phase>package</phase>
-            <goals>
-              <goal>shade</goal>
-            </goals>
-          </execution>
-        </executions>
-        <configuration>
-          <shadedArtifactAttached>true</shadedArtifactAttached>
-        </configuration>
-      </plugin>
     </plugins>
   </build>
 

@@ -20,7 +20,7 @@
 
         <module>idea</module>
         <module>netbeans</module>
-        <module>jdeveloper</module>
+        <!--<module>jdeveloper</module>-->
       </modules>
     </profile>
 
@@ -32,6 +32,10 @@
 
         <module>idea</module>
         <module>netbeans</module>
+
+        <!-- We can't include eclipse plugin to stable profile due to SONAR-1265
+        <module>eclipse/org.sonar.ide.eclipse.parent</module>
+        -->
       </modules>
     </profile>
   </profiles>
