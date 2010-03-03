@@ -18,7 +18,6 @@ import java.io.File;
  * @author Evgeny Mandrikov
  */
 public class IdeaSonarProjectComponent extends AbstractConfigurableComponent {
-  private SonarProperties settings;
   private Project project;
 
   public static IdeaSonarProjectComponent getInstance(Project project) {
@@ -57,13 +56,11 @@ public class IdeaSonarProjectComponent extends AbstractConfigurableComponent {
 
   private void initPlugin() {
     getLog().info("Init plugin");
-    settings = new SonarProperties(SonarProperties.getDefaultPath());
     PluginDownloader.checkUpdate();
     EditorFactory.getInstance().addEditorFactoryListener(new SonarEditorListener());
   }
 
   public SonarProperties getSettings() {
-    // TODO return saved settings
-    return settings;
+    return new SonarProperties(getConfigFilename());
   }
 }
