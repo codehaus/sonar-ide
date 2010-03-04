@@ -12,12 +12,22 @@
 
   <groupId>org.codehaus.sonar-ide</groupId>
   <artifactId>idea-sonar-plugin</artifactId>
-  <packaging>jar</packaging>
   <version>0.1-SNAPSHOT</version>
+  <packaging>jar</packaging>
+
   <name>Sonar IDEs :: IntelliJ IDEA Plugin</name>
   <description>An IntelliJ IDEA Plugin for Sonar.</description>
 
+  <scm>
+    <connection>scm:svn:http://svn.codehaus.org/sonar-ide/trunk/idea</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/sonar-ide/trunk/idea</developerConnection>
+    <url>http://svn.codehaus.org/sonar-ide</url>
+  </scm>
+
   <properties>
+    <!-- maven.build.timestamp since 2.1.0-M1 -->
+    <maven.min.version>2.1.0</maven.min.version>
+
     <!-- Idea requires JDK 1.6 -->
     <jdk.min.version>1.6</jdk.min.version>
 
@@ -32,11 +42,6 @@
     <plugin.vendor.url>${project.organization.url}</plugin.vendor.url>
     <plugin.vendor.email>user@sonar.codehaus.org</plugin.vendor.email>
   </properties>
-
-  <prerequisites>
-    <!-- maven.build.timestamp since 2.1.0-M1-->
-    <maven>2.1.0</maven>
-  </prerequisites>
 
   <dependencies>
     <dependency>
@@ -138,22 +143,5 @@
       </plugin>
     </plugins>
   </build>
-
-  <scm>
-    <connection>scm:svn:http://svn.codehaus.org/sonar-ide/trunk/idea</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/sonar-ide/trunk/idea</developerConnection>
-    <url>http://svn.codehaus.org/sonar-ide</url>
-  </scm>
-
-  <developers>
-    <developer>
-      <id>godin</id>
-      <name>Evgeny Mandrikov</name>
-      <timezone>+3</timezone>
-      <roles>
-        <role>developer</role>
-      </roles>
-    </developer>
-  </developers>
 
 </project>

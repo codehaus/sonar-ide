@@ -12,9 +12,13 @@
 
   <groupId>org.codehaus.sonar-ide</groupId>
   <artifactId>sonar-ide-commons</artifactId>
-  <packaging>jar</packaging>
   <version>0.1-SNAPSHOT</version>
+  <packaging>jar</packaging>
+
   <name>Sonar IDEs :: Commons Library</name>
+  <description>
+    <!-- TODO -->
+  </description>
 
   <!-- !!! IMPORTANT !!!
   After making changes in dependencies, you shouldn't forget about upgrade eclipse/org.sonar.ide.eclipse.sonar_embedder
@@ -23,22 +27,6 @@
   <properties>
     <sonar.version>2.0RC1</sonar.version>
   </properties>
-
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-jar-plugin</artifactId>
-        <executions>
-          <execution>
-            <goals>
-              <goal>test-jar</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-    </plugins>
-  </build>
 
   <dependencies>
     <dependency>
@@ -138,5 +126,21 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <executions>
+          <execution>
+            <goals>
+              <goal>test-jar</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
 
 </project>

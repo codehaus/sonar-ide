@@ -5,8 +5,8 @@
 
   <groupId>org.codehaus.sonar-ide</groupId>
   <artifactId>sonar-ide-parent</artifactId>
-  <packaging>pom</packaging>
   <version>1-SNAPSHOT</version>
+  <packaging>pom</packaging>
 
   <name>Sonar IDEs :: Parent</name>
   <description>
@@ -14,28 +14,91 @@
   </description>
   <url>http://sonar-ide.codehaus.org</url>
   <inceptionYear>2010</inceptionYear>
-
   <organization>
     <name>Evgeny Mandrikov</name>
     <url>http://godin.net.ru/</url>
   </organization>
+  <licenses>
+    <license>
+      <name>The Apache Software License, Version 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
 
+  <developers>
+    <developer>
+      <id>godin</id>
+      <name>Evgeny Mandrikov</name>
+      <timezone>+3</timezone>
+      <roles>
+        <role>Project Leader</role>
+      </roles>
+    </developer>
+  </developers>
+
+  <mailingLists>
+    <mailingList>
+      <name>Sonar Users List</name>
+      <subscribe>http://xircles.codehaus.org/lists/user@sonar.codehaus.org/subscribe</subscribe>
+      <unsubscribe>http://xircles.codehaus.org/lists/user@sonar.codehaus.org/unsubscribe</unsubscribe>
+      <post>user@sonar.codehaus.org</post>
+      <archive>http://archive.codehaus.org/lists/org.codehaus.sonar.user</archive>
+      <otherArchives>
+        <otherArchive>http://markmail.org/list/org.codehaus.sonar.user</otherArchive>
+        <otherArchive>http://www.nabble.com/Sonar-f30151.html</otherArchive>
+      </otherArchives>
+    </mailingList>
+    <mailingList>
+      <name>Sonar Developers List</name>
+      <subscribe>http://xircles.codehaus.org/lists/dev@sonar.codehaus.org/subscribe</subscribe>
+      <unsubscribe>http://xircles.codehaus.org/lists/dev@sonar.codehaus.org/unsubscribe</unsubscribe>
+      <post>dev@sonar.codehaus.org</post>
+      <archive>http://archive.codehaus.org/lists/org.codehaus.sonar.dev</archive>
+      <otherArchives>
+        <otherArchive>http://markmail.org/list/org.codehaus.sonar.dev</otherArchive>
+        <otherArchive>http://n2.nabble.com/Sonar-dev-f2602134.html</otherArchive>
+      </otherArchives>
+    </mailingList>
+    <mailingList>
+      <name>Sonar Notifications List</name>
+      <subscribe>http://xircles.codehaus.org/lists/scm@sonar.codehaus.org/subscribe</subscribe>
+      <unsubscribe>http://xircles.codehaus.org/lists/scm@sonar.codehaus.org/unsubscribe</unsubscribe>
+      <archive>http://archive.codehaus.org/lists/org.codehaus.sonar.scm</archive>
+      <otherArchives>
+        <otherArchive>http://markmail.org/list/org.codehaus.sonar.scm</otherArchive>
+      </otherArchives>
+    </mailingList>
+  </mailingLists>
+
+  <prerequisites>
+    <maven>${maven.min.version}</maven>
+  </prerequisites>
+
+  <scm>
+    <connection>scm:svn:http://svn.codehaus.org/sonar-ide/trunk/parent</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/sonar-ide/trunk/parent</developerConnection>
+    <url>http://svn.codehaus.org/sonar-ide/trunk/parent</url>
+  </scm>
   <issueManagement>
     <system>jira</system>
     <url>http://jira.codehaus.org/browse/SONARIDE</url>
   </issueManagement>
-
+  <ciManagement>
+    <system>bamboo</system>
+    <url>http://bamboo.ci.codehaus.org/browse/SONARIDE</url>
+  </ciManagement>
   <distributionManagement>
     <repository>
       <id>sonar-ide</id>
       <name>Sonar IDEs repository</name>
-      <url>dav:https://dav.codehaus.org/repository/sonar-ide</url>
+      <url>${sonar-ide.releases}</url>
     </repository>
     <snapshotRepository>
       <id>sonar-ide</id>
       <name>Sonar IDEs snapshot repository</name>
       <uniqueVersion>false</uniqueVersion>
-      <url>dav:https://dav.codehaus.org/snapshots.repository/sonar-ide</url>
+      <url>${sonar-ide.snapshots}</url>
     </snapshotRepository>
   </distributionManagement>
 
@@ -47,6 +110,10 @@
 
     <slf4j.version>1.5.11</slf4j.version>
     <logback.version>0.9.18</logback.version>
+
+    <!-- disable accidental deployment -->
+    <sonar-ide.snapshots>http://localhost</sonar-ide.snapshots>
+    <sonar-ide.releases>http://localhost</sonar-ide.releases>
   </properties>
 
   <dependencyManagement>
@@ -88,7 +155,6 @@
       </dependency>
     </dependencies>
   </dependencyManagement>
-
   <dependencies>
     <dependency>
       <groupId>junit</groupId>
@@ -106,6 +172,20 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
+
+  <repositories>
+    <repository>
+      <id>sonar</id>
+      <name>Sonar</name>
+      <url>http://repository.sonarsource.org/content/repositories/sonar</url>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+    </repository>
+  </repositories>
 
   <build>
     <pluginManagement>
@@ -393,72 +473,5 @@
       </build>
     </profile>
   </profiles>
-
-  <repositories>
-    <repository>
-      <id>sonar</id>
-      <name>Sonar</name>
-      <url>http://repository.sonarsource.org/content/repositories/sonar</url>
-      <releases>
-        <enabled>true</enabled>
-      </releases>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-    </repository>
-  </repositories>
-
-  <mailingLists>
-    <mailingList>
-      <name>Sonar Users List</name>
-      <subscribe>http://xircles.codehaus.org/lists/user@sonar.codehaus.org/subscribe</subscribe>
-      <unsubscribe>http://xircles.codehaus.org/lists/user@sonar.codehaus.org/unsubscribe</unsubscribe>
-      <post>user@sonar.codehaus.org</post>
-      <archive>http://archive.codehaus.org/lists/org.codehaus.sonar.user</archive>
-      <otherArchives>
-        <otherArchive>http://markmail.org/list/org.codehaus.sonar.user</otherArchive>
-        <otherArchive>http://www.nabble.com/Sonar-f30151.html</otherArchive>
-      </otherArchives>
-    </mailingList>
-    <mailingList>
-      <name>Sonar Developers List</name>
-      <subscribe>http://xircles.codehaus.org/lists/dev@sonar.codehaus.org/subscribe</subscribe>
-      <unsubscribe>http://xircles.codehaus.org/lists/dev@sonar.codehaus.org/unsubscribe</unsubscribe>
-      <post>dev@sonar.codehaus.org</post>
-      <archive>http://archive.codehaus.org/lists/org.codehaus.sonar.dev</archive>
-      <otherArchives>
-        <otherArchive>http://markmail.org/list/org.codehaus.sonar.dev</otherArchive>
-        <otherArchive>http://n2.nabble.com/Sonar-dev-f2602134.html</otherArchive>
-      </otherArchives>
-    </mailingList>
-    <mailingList>
-      <name>Sonar Notifications List</name>
-      <subscribe>http://xircles.codehaus.org/lists/scm@sonar.codehaus.org/subscribe</subscribe>
-      <unsubscribe>http://xircles.codehaus.org/lists/scm@sonar.codehaus.org/unsubscribe</unsubscribe>
-      <archive>http://archive.codehaus.org/lists/org.codehaus.sonar.scm</archive>
-      <otherArchives>
-        <otherArchive>http://markmail.org/list/org.codehaus.sonar.scm</otherArchive>
-      </otherArchives>
-    </mailingList>
-  </mailingLists>
-
-  <licenses>
-    <license>
-      <name>The Apache Software License, Version 2.0</name>
-      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
-      <distribution>repo</distribution>
-    </license>
-  </licenses>
-
-  <scm>
-    <connection>scm:svn:http://svn.codehaus.org/sonar-ide/trunk/parent</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/sonar-ide/trunk/parent</developerConnection>
-    <url>http://svn.codehaus.org/sonar-ide/trunk/parent</url>
-  </scm>
-
-  <ciManagement>
-    <system>bamboo</system>
-    <url>http://bamboo.ci.codehaus.org/browse/SONARIDE</url>
-  </ciManagement>
 
 </project>
