@@ -31,14 +31,18 @@ public class SonarClient extends Sonar {
     try {
       ServerQuery serverQuery = new ServerQuery();
       Server server = find(serverQuery);
-      available = checkVersion(server.getVersion());
+      available = checkVersion(server);
     } catch (ConnectionException e) {
       available = false;
     }
   }
 
-  private boolean checkVersion(String version) {
-    return version.equalsIgnoreCase("1.13-SNAPSHOT") || version.equalsIgnoreCase("2.0");
+  private boolean checkVersion(Server server) {
+    if (server == null) {
+      return false;
+    }
+    String version = server.getVersion();
+    return version != null && version.startsWith("2.");
   }
 
   @Override
