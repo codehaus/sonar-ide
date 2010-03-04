@@ -4,16 +4,17 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>org.codehaus.sonar-ide</groupId>
-  <!-- TODO Godin: I think that we should change groupId to something like sonar-ide-parent -->
-  <artifactId>parent</artifactId>
+  <artifactId>sonar-ide-parent</artifactId>
   <packaging>pom</packaging>
   <version>1-SNAPSHOT</version>
 
   <name>Sonar IDEs :: Parent</name>
-
+  <description>
+    Sonar-IDE aims to integrate Sonar into standard IDEs.
+  </description>
   <url>http://sonar-ide.codehaus.org</url>
-
   <inceptionYear>2010</inceptionYear>
+
   <organization>
     <name>Evgeny Mandrikov</name>
     <url>http://godin.net.ru/</url>
@@ -109,7 +110,7 @@
   <build>
     <pluginManagement>
       <plugins>
-        <!-- Plugins ordered by shortname (archetype, assembly ...) -->
+        <!-- Set versions of common plugins for reproducibility, ordered alphabetically by shortname (archetype, assembly ...) -->
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-assembly-plugin</artifactId>
@@ -273,6 +274,8 @@
             <configuration>
               <rules>
                 <bannedDependencies>
+                  <message>Don't use banned dependencies</message>
+                  <searchTransitive>true</searchTransitive>
                   <excludes>
                     <exclude>commons-logging:commons-logging</exclude>
                   </excludes>
@@ -295,9 +298,10 @@
         <artifactId>maven-jar-plugin</artifactId>
         <configuration>
           <archive>
-            <manifestEntries>
-              <Version>${project.version}</Version>
-            </manifestEntries>
+            <manifest>
+              <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
+              <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+            </manifest>
           </archive>
         </configuration>
       </plugin>
@@ -314,35 +318,6 @@
           </execution>
         </executions>
       </plugin>
-      <!-- TODO enable in future
-      <plugin>
-        <groupId>com.mycila.maven-license-plugin</groupId>
-        <artifactId>maven-license-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>check-license</id>
-            <goals>
-              <goal>check</goal>
-            </goals>
-            <configuration>
-              <header>src/license-header.txt</header>
-              <includes>
-                <include>src/main/java/**</include>
-                <include>src/test/java/**</include>
-              </includes>
-              <mapping>
-                <java>SLASHSTAR_STYLE</java>
-              </mapping>
-              <properties>
-                <year>${project.inceptionYear}</year>
-                <name>${project.organization.name}</name>
-              </properties>
-              <encoding>${project.build.sourceEncoding}</encoding>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-      -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
@@ -360,6 +335,25 @@
           <aggregate>true</aggregate>
           <linkJavadoc>true</linkJavadoc>
           <javadocDir>${project.reporting.outputDirectory}/${project.version}/apidocs</javadocDir>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>com.mycila.maven-license-plugin</groupId>
+        <artifactId>maven-license-plugin</artifactId>
+        <configuration>
+          <header>src/license-header.txt</header>
+          <includes>
+            <include>src/main/java/**</include>
+            <include>src/test/java/**</include>
+          </includes>
+          <mapping>
+            <java>SLASHSTAR_STYLE</java>
+          </mapping>
+          <properties>
+            <year>${project.inceptionYear}</year>
+            <name>${project.organization.name}</name>
+          </properties>
+          <encoding>${project.build.sourceEncoding}</encoding>
         </configuration>
       </plugin>
     </plugins>
@@ -416,16 +410,35 @@
 
   <mailingLists>
     <mailingList>
-      <name>Sonar dev mailing list</name>
-      <subscribe>http://xircles.codehaus.org/projects/sonar/lists</subscribe>
-      <unsubscribe>http://xircles.codehaus.org/projects/sonar/lists</unsubscribe>
-      <post>dev@sonar.codehaus.org</post>
+      <name>Sonar Users List</name>
+      <subscribe>http://xircles.codehaus.org/lists/user@sonar.codehaus.org/subscribe</subscribe>
+      <unsubscribe>http://xircles.codehaus.org/lists/user@sonar.codehaus.org/unsubscribe</unsubscribe>
+      <post>user@sonar.codehaus.org</post>
+      <archive>http://archive.codehaus.org/lists/org.codehaus.sonar.user</archive>
+      <otherArchives>
+        <otherArchive>http://markmail.org/list/org.codehaus.sonar.user</otherArchive>
+        <otherArchive>http://www.nabble.com/Sonar-f30151.html</otherArchive>
+      </otherArchives>
     </mailingList>
     <mailingList>
-      <name>Sonar users mailing list</name>
-      <subscribe>http://xircles.codehaus.org/projects/sonar/lists</subscribe>
-      <unsubscribe>http://xircles.codehaus.org/projects/sonar/lists</unsubscribe>
-      <post>user@sonar.codehaus.org</post>
+      <name>Sonar Developers List</name>
+      <subscribe>http://xircles.codehaus.org/lists/dev@sonar.codehaus.org/subscribe</subscribe>
+      <unsubscribe>http://xircles.codehaus.org/lists/dev@sonar.codehaus.org/unsubscribe</unsubscribe>
+      <post>dev@sonar.codehaus.org</post>
+      <archive>http://archive.codehaus.org/lists/org.codehaus.sonar.dev</archive>
+      <otherArchives>
+        <otherArchive>http://markmail.org/list/org.codehaus.sonar.dev</otherArchive>
+        <otherArchive>http://n2.nabble.com/Sonar-dev-f2602134.html</otherArchive>
+      </otherArchives>
+    </mailingList>
+    <mailingList>
+      <name>Sonar Notifications List</name>
+      <subscribe>http://xircles.codehaus.org/lists/scm@sonar.codehaus.org/subscribe</subscribe>
+      <unsubscribe>http://xircles.codehaus.org/lists/scm@sonar.codehaus.org/unsubscribe</unsubscribe>
+      <archive>http://archive.codehaus.org/lists/org.codehaus.sonar.scm</archive>
+      <otherArchives>
+        <otherArchive>http://markmail.org/list/org.codehaus.sonar.scm</otherArchive>
+      </otherArchives>
     </mailingList>
   </mailingLists>
 
