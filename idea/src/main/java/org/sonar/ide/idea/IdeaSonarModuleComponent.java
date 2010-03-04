@@ -36,7 +36,7 @@ public class IdeaSonarModuleComponent extends AbstractConfigurableComponent impl
       MavenProject mavenProject = mavenProjectsManager.findContainingProject(moduleFile);
       isMavenModule = mavenProject != null;
     }
-    // TODO
+    // TODO http://jira.codehaus.org/browse/SONARIDE-38
     return new MyConfigPanel(isMavenModule ?
         "This is a Maven module, so Sonar will be enabled for this module." :
         "Currently non-Maven modules not supported, so Sonar will be disabled for this module."
