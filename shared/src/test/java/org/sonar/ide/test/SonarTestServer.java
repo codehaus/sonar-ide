@@ -19,10 +19,9 @@ public class SonarTestServer {
   public void start() throws Exception {
     tester = new ServletTester();
     tester.setContextPath("/");
-    // TODO Godin: it would be better to have these path as constants in sonar-ws-client
-    tester.addServlet(VersionServlet.class, "/api/server/index");
-    tester.addServlet(ViolationServlet.class, "/api/violations");
-    tester.addServlet(SourceServlet.class, "/api/sources");
+    tester.addServlet(VersionServlet.class, ServerQuery.BASE_URL);
+    tester.addServlet(ViolationServlet.class, ViolationQuery.BASE_URL);
+    tester.addServlet(SourceServlet.class, SourceQuery.BASE_URL);
 
     baseUrl = tester.createSocketConnector(true);
     tester.start();

@@ -9,7 +9,7 @@ import org.sonar.wsclient.services.Query;
 import org.sonar.wsclient.services.Server;
 import org.sonar.wsclient.services.ServerQuery;
 
-import java.util.Collection;
+import java.util.List;
 
 /**
  * @author Evgeny Mandrikov
@@ -52,7 +52,7 @@ public class SonarClient extends Sonar {
   }
 
   @Override
-  public <MODEL extends Model> Collection<MODEL> findAll(Query<MODEL> query) {
+  public <MODEL extends Model> List<MODEL> findAll(Query<MODEL> query) {
     serverTrips++;
     return super.findAll(query);
   }
