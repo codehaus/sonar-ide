@@ -304,15 +304,11 @@
             <configuration>
               <rules>
                 <requireMavenVersion>
-                  <message>
-                    To build this project Maven ${maven.min.version} (or upper) is required. Please install it.
-                  </message>
+                  <message>To build this project Maven ${maven.min.version} (or upper) is required. Please install it.</message>
                   <version>${maven.min.version}</version>
                 </requireMavenVersion>
                 <requireJavaVersion>
-                  <message>
-                    To build this project JDK ${jdk.min.version} (or upper) is required. Please install it.
-                  </message>
+                  <message>To build this project JDK ${jdk.min.version} (or upper) is required. Please install it.</message>
                   <version>${jdk.min.version}</version>
                 </requireJavaVersion>
                 <requirePluginVersions>
