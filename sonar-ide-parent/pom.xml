@@ -92,13 +92,13 @@
     <repository>
       <id>sonar-ide</id>
       <name>Sonar IDEs repository</name>
-      <url>${sonar-ide.releases}</url>
+      <url>dav:https://dav.codehaus.org/repository/sonar-ide</url>
     </repository>
     <snapshotRepository>
       <id>sonar-ide</id>
       <name>Sonar IDEs snapshot repository</name>
       <uniqueVersion>false</uniqueVersion>
-      <url>${sonar-ide.snapshots}</url>
+      <url>dav:https://dav.codehaus.org/snapshots.repository/sonar-ide</url>
     </snapshotRepository>
     <!-- Site omitted
     <site>
@@ -117,11 +117,6 @@
 
     <slf4j.version>1.5.11</slf4j.version>
     <logback.version>0.9.18</logback.version>
-
-    <!-- disable accidental deployment -->
-    <sonar-ide.snapshots>dav:http://localhost</sonar-ide.snapshots>
-    <sonar-ide.releases>dav:http://localhost</sonar-ide.releases>
-    <sonar-ide.site>dav:http://localhost</sonar-ide.site>
   </properties>
 
   <dependencyManagement>
@@ -403,27 +398,4 @@
       </plugin>
     </plugins>
   </build>
-
-  <profiles>
-    <profile>
-      <id>release</id>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-javadoc-plugin</artifactId>
-            <executions>
-              <execution>
-                <id>attach-javadocs</id>
-                <goals>
-                  <goal>jar</goal>
-                </goals>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-  </profiles>
-
 </project>
