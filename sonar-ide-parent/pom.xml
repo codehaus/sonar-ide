@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>org.codehaus.sonar-ide</groupId>
   <artifactId>sonar-ide-parent</artifactId>
-  <version>1-SNAPSHOT</version>
+  <version>1</version>
   <packaging>pom</packaging>
 
   <name>Sonar IDEs :: Parent</name>
@@ -76,9 +75,9 @@
   </prerequisites>
 
   <scm>
-    <connection>scm:svn:http://svn.codehaus.org/sonar-ide/trunk/sonar-ide-parent</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/sonar-ide/trunk/sonar-ide-parent</developerConnection>
-    <url>http://svn.codehaus.org/sonar-ide/trunk/sonar-ide-parent</url>
+    <connection>scm:svn:http://svn.codehaus.org/sonar-ide/tags/sonar-ide-parent-1</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/sonar-ide/tags/sonar-ide-parent-1</developerConnection>
+    <url>http://svn.codehaus.org/sonar-ide/tags/sonar-ide-parent-1</url>
   </scm>
   <issueManagement>
     <system>jira</system>
