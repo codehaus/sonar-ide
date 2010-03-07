@@ -103,6 +103,22 @@
     </dependency>
   </dependencies>
 
+  <!-- TODO Godin: probably we shouldn't define repository here -->
+  <!-- See FAQ on http://maven.apache.org/guides/mini/guide-central-repository-upload.html -->
+  <repositories>
+    <repository>
+      <id>sonar</id>
+      <name>Sonar</name>
+      <url>http://repository.sonarsource.org/content/repositories/sonar</url>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+    </repository>
+  </repositories>
+
   <build>
     <resources>
       <resource>

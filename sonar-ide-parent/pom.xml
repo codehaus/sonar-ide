@@ -179,20 +179,6 @@
     </dependency>
   </dependencies>
 
-  <repositories>
-    <repository>
-      <id>sonar</id>
-      <name>Sonar</name>
-      <url>http://repository.sonarsource.org/content/repositories/sonar</url>
-      <releases>
-        <enabled>true</enabled>
-      </releases>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-    </repository>
-  </repositories>
-
   <build>
     <extensions>
       <extension>
@@ -314,23 +300,7 @@
         <artifactId>maven-enforcer-plugin</artifactId>
         <executions>
           <execution>
-            <id>enforce-java-version</id>
-            <goals>
-              <goal>enforce</goal>
-            </goals>
-            <configuration>
-              <rules>
-                <requireJavaVersion>
-                  <message>
-                    To build this project JDK ${jdk.min.version} (or upper) is required. Please install it.
-                  </message>
-                  <version>${jdk.min.version}</version>
-                </requireJavaVersion>
-              </rules>
-            </configuration>
-          </execution>
-          <execution>
-            <id>enforce-maven-version</id>
+            <id>enforce</id>
             <goals>
               <goal>enforce</goal>
             </goals>
@@ -342,32 +312,18 @@
                   </message>
                   <version>${maven.min.version}</version>
                 </requireMavenVersion>
-              </rules>
-            </configuration>
-          </execution>
-          <execution>
-            <id>enforce-plugin-versions</id>
-            <goals>
-              <goal>enforce</goal>
-            </goals>
-            <configuration>
-              <rules>
+                <requireJavaVersion>
+                  <message>
+                    To build this project JDK ${jdk.min.version} (or upper) is required. Please install it.
+                  </message>
+                  <version>${jdk.min.version}</version>
+                </requireJavaVersion>
                 <requirePluginVersions>
                   <message>Build reproducibility : always define plugin versions</message>
                   <banLatest>true</banLatest>
                   <banRelease>true</banRelease>
                   <phases>clean,deploy</phases>
                 </requirePluginVersions>
-              </rules>
-            </configuration>
-          </execution>
-          <execution>
-            <id>ban-bad-dependencies</id>
-            <goals>
-              <goal>enforce</goal>
-            </goals>
-            <configuration>
-              <rules>
                 <bannedDependencies>
                   <message>Don't use banned dependencies</message>
                   <searchTransitive>true</searchTransitive>
