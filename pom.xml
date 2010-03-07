@@ -16,7 +16,7 @@
       </activation>
       <modules>
         <module>sonar-ide-parent</module>
-        <module>shared</module>
+        <module>sonar-ide-commons</module>
 
         <module>idea</module>
         <module>netbeans</module>
@@ -28,7 +28,7 @@
       <id>stable</id>
       <modules>
         <module>sonar-ide-parent</module>
-        <module>shared</module>
+        <module>sonar-ide-commons</module>
 
         <module>idea</module>
         <module>netbeans</module>
