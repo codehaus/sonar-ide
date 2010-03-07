@@ -76,9 +76,9 @@
   </prerequisites>
 
   <scm>
-    <connection>scm:svn:http://svn.codehaus.org/sonar-ide/trunk/parent</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/sonar-ide/trunk/parent</developerConnection>
-    <url>http://svn.codehaus.org/sonar-ide/trunk/parent</url>
+    <connection>scm:svn:http://svn.codehaus.org/sonar-ide/trunk/sonar-ide-parent</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/sonar-ide/trunk/sonar-ide-parent</developerConnection>
+    <url>http://svn.codehaus.org/sonar-ide/trunk/sonar-ide-parent</url>
   </scm>
   <issueManagement>
     <system>jira</system>
@@ -100,11 +100,13 @@
       <uniqueVersion>false</uniqueVersion>
       <url>${sonar-ide.snapshots}</url>
     </snapshotRepository>
+    <!-- Site omitted
     <site>
       <id>sonar-ide</id>
       <name>Sonar IDEs website</name>
       <url>${sonar-ide.site}</url>
     </site>
+    -->
   </distributionManagement>
 
   <properties>
@@ -411,19 +413,6 @@
       <id>release</id>
       <build>
         <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-gpg-plugin</artifactId>
-            <executions>
-              <execution>
-                <id>sign-artifacts</id>
-                <phase>verify</phase>
-                <goals>
-                  <goal>sign</goal>
-                </goals>
-              </execution>
-            </executions>
-          </plugin>
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-javadoc-plugin</artifactId>
