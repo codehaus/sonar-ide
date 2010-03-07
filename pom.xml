@@ -15,7 +15,7 @@
         <activeByDefault>true</activeByDefault>
       </activation>
       <modules>
-        <module>parent</module>
+        <module>sonar-ide-parent</module>
         <module>shared</module>
 
         <module>idea</module>
