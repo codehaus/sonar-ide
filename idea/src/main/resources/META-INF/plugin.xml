@@ -9,7 +9,7 @@
 
   <idea-version since-build="${idea.build}"/>
 
-  <vendor url="${plugin.vendor.url}" email="${plugin.vendor.email}">${plugin.vendor}</vendor>
+  <vendor logo="/org/sonar/ide/images/sonarLogo.png" url="${plugin.vendor.url}" email="${plugin.vendor.email}">${plugin.vendor}</vendor>
 
   <depends>org.jetbrains.idea.maven</depends>
 
