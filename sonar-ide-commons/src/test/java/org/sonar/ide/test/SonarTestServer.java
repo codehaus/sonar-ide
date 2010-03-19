@@ -69,10 +69,13 @@ Data:67=100%;69=100%;73=100%
     SonarTestServer server = new SonarTestServer();
     server.start();
 
-    SonarProperties properties = SonarProperties.getInstance();
-    properties.getServer().setHost(server.getBaseUrl());
-    properties.save();
+    System.out.println(server.getBaseUrl());
 
+//    SonarProperties properties = SonarProperties.getInstance();
+//    properties.getServer().setHost(server.getBaseUrl());
+//    properties.save();
+
+    /*
     String key = "test:test:[default].ClassOnDefaultPackage";
 
     sonar = server.getSonar();
@@ -82,6 +85,7 @@ Data:67=100%;69=100%;73=100%
     SourceQuery sourceQuery = new SourceQuery(key);
     Source source = sonar.find(sourceQuery);
     System.out.println(source.getLines());
+     */
 
     /* TODO SONARIDE-14
     VersionQuery versionQuery = new VersionQuery();
