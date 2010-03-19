@@ -2,8 +2,7 @@
 <idea-plugin version="2" url="${project.url}">
   <name>Sonar</name>
 
-  <!-- TODO id should be org.sonar.ide.idea -->
-  <id>${project.groupId}.${project.artifactId}</id>
+  <id>org.sonar.ide.idea</id>
   <version>${project.version}, ${plugin.timestamp}</version>
 
   <description><![CDATA[${project.description}]]></description>
