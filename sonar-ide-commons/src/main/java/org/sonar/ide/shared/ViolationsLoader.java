@@ -88,7 +88,11 @@ public final class ViolationsLoader {
       }
       String originalSourceLine = source.getLine(originalLine);
       int originalHashCode = getHashCode(originalSourceLine);
-      boolean found = hashCodes[originalLine - 1] == originalHashCode;
+      boolean found = false;
+      // Violation can be reported on line, which doesn't exists in local copy
+      if (originalLine - 1 < hashCodes.length) {
+        found = hashCodes[originalLine - 1] == originalHashCode;
+      }
       if (!found) {
         for (int i = 0; i < hashCodes.length; i++) {
           if (hashCodes[i] == originalHashCode) {

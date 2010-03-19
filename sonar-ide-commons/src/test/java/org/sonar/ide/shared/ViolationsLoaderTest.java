@@ -44,6 +44,20 @@ public class ViolationsLoaderTest {
   }
 
   @Test
+  public void test() {
+    // Violation reported on line, which doesn't exists in local copy
+    Violation violation = newViolation(LINES.length + 10);
+    Source source = new Source();
+    source.addLine(LINES.length + 10, LINES[1]);
+    
+    ViolationsLoader.convertLines(
+        Collections.singleton(violation),
+        source,
+        LINES
+    );
+  }
+
+  @Test
   public void testGetHashCode() {
     int hash1 = ViolationsLoader.getHashCode("int i;");
     int hash2 = ViolationsLoader.getHashCode("int\ti;");
