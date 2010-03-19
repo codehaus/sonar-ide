@@ -55,6 +55,10 @@ public class ViolationsLoaderTest {
         source,
         LINES
     );
+
+    verify(violation).getLine();
+    verify(violation).setLine(2);
+    verifyNoMoreInteractions(violation);
   }
 
   @Test
@@ -73,8 +77,7 @@ public class ViolationsLoaderTest {
 
   @Test
   public void testConvertLines() {
-    Violation violation = mock(Violation.class);
-    when(violation.getLine()).thenReturn(1);
+    Violation violation = newViolation(1);
     Source source = new Source();
     source.addLine(1, LINES[1]);
 
@@ -127,8 +130,8 @@ public class ViolationsLoaderTest {
   }
 
   protected Violation newViolation(int line) {
-    Violation violation = new Violation();
-    violation.setLine(line);
+    Violation violation = mock(Violation.class);
+    when(violation.getLine()).thenReturn(line);
     return violation;
   }
 }
