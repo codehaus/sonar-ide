@@ -40,24 +40,28 @@ public class ShowViolationsTask extends Task.Backgroundable {
 
   @Override
   public void run(@NotNull ProgressIndicator progressIndicator) {
-    Project project = getProject();
-    final Sonar sonar = SonarUtils.getSonar(project);
+    try {
+      Project project = getProject();
+      final Sonar sonar = SonarUtils.getSonar(project);
 
-    // Violations
-    String text = document.getText();
-    final Collection<Violation> violations = ViolationsLoader.getViolations(sonar, resourceKey, text);
-    final Map<Integer, List<Violation>> violationsByLine = ViolationUtils.splitByLines(violations);
-    final MarkupModel markupModel = document.getMarkupModel(project);
+      // Violations
+      String text = document.getText();
+      final Collection<Violation> violations = ViolationsLoader.getViolations(sonar, resourceKey, text);
+      final Map<Integer, List<Violation>> violationsByLine = ViolationUtils.splitByLines(violations);
+      final MarkupModel markupModel = document.getMarkupModel(project);
 
-    UIUtil.invokeLaterIfNeeded(new Runnable() {
-      @Override
-      public void run() {
-        removeSonarHighlighters(document.getMarkupModel(getProject()));
-        for (Map.Entry<Integer, List<Violation>> entry : violationsByLine.entrySet()) {
-          addHighlighter(markupModel, entry.getKey() - 1, entry.getValue());
+      UIUtil.invokeLaterIfNeeded(new Runnable() {
+        @Override
+        public void run() {
+          removeSonarHighlighters(document.getMarkupModel(getProject()));
+          for (Map.Entry<Integer, List<Violation>> entry : violationsByLine.entrySet()) {
+            addHighlighter(markupModel, entry.getKey() - 1, entry.getValue());
+          }
         }
-      }
-    });
+      });
+    } catch (Exception e) {
+      // ignore
+    }
   }
 
   /*
