@@ -36,7 +36,7 @@ public final class ViolationsLoader {
     LOG.info("Loading violations for {}", resourceKey);
     ViolationQuery query = ViolationQuery.createForResource(resourceKey);
     Collection<Violation> violations = sonar.findAll(query);
-    LOG.info("Loaded {} violations", violations.size());
+    LOG.info("Loaded {} violations: {}", violations.size(), ViolationUtils.toString(violations));
     return violations;
   }
 
@@ -81,11 +81,12 @@ public final class ViolationsLoader {
     List<Violation> result = new ArrayList<Violation>();
     int[] hashCodes = getHashCodes(lines);
     for (Violation violation : violations) {
-      int originalLine = violation.getLine();
-      if (originalLine == 0) {
+      if (violation.getLine() == null || violation.getLine() == 0) {
         // skip violation on whole file
+        // TODO Godin: we can show them on first line
         continue;
       }
+      int originalLine = violation.getLine();
       String originalSourceLine = source.getLine(originalLine);
       int originalHashCode = getHashCode(originalSourceLine);
       boolean found = false;
@@ -126,7 +127,7 @@ public final class ViolationsLoader {
     LOG.info("Loading violations for {}", resourceKey);
     ViolationQuery violationQuery = ViolationQuery.createForResource(resourceKey);
     Collection<Violation> violations = sonar.findAll(violationQuery);
-    LOG.info("Loaded {} violations", violations.size());
+    LOG.info("Loaded {} violations: {}", violations.size(), ViolationUtils.toString(violations));
     SourceQuery sourceQuery = new SourceQuery(resourceKey);
     Source source = sonar.find(sourceQuery);
     return convertLines(violations, source, lines);

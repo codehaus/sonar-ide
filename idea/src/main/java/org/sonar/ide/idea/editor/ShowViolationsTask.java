@@ -60,7 +60,8 @@ public class ShowViolationsTask extends Task.Backgroundable {
         }
       });
     } catch (Exception e) {
-      // ignore
+      // Ignore, because notification about exception is very annoying.
+      e.printStackTrace();
     }
   }
 

@@ -1,5 +1,6 @@
 package org.sonar.ide.shared;
 
+import org.apache.commons.lang.builder.ToStringBuilder;
 import org.sonar.wsclient.services.Violation;
 
 import java.util.*;
@@ -71,6 +72,35 @@ public final class ViolationUtils {
       int p2 = convertPriority(o2.getPriority());
       return p1 - p2;
     }
+  }
+
+  /**
+   * @param violations collection to convert to string
+   * @return string representation of collection
+   * @see #toString(org.sonar.wsclient.services.Violation)
+   */
+  public static String toString(Collection<Violation> violations) {
+    StringBuilder sb = new StringBuilder().append('[');
+    for (Violation violation : violations) {
+      sb.append(toString(violation)).append(',');
+    }
+    sb.append(']');
+    return sb.toString();
+  }
+
+  /**
+   * TODO Godin: can we include this method into sonar-ws-client for debug purposes ?
+   *
+   * @param violation violation to convert to string
+   * @return string representation of violation
+   * @see #toString(java.util.Collection)
+   */
+  public static String toString(Violation violation) {
+    return new ToStringBuilder(violation)
+        .append("message", violation.getMessage())
+        .append("priority", violation.getPriority())
+        .append("line", violation.getLine())
+        .toString();
   }
 
   /**
