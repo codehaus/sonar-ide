@@ -49,7 +49,7 @@ public class ViolationsLoaderTest {
     Violation violation = newViolation(LINES.length + 10);
     Source source = new Source();
     source.addLine(LINES.length + 10, LINES[1]);
-    
+
     ViolationsLoader.convertLines(
         Collections.singleton(violation),
         source,
@@ -116,6 +116,27 @@ public class ViolationsLoaderTest {
     assertThat(violation1.getLine(), not(equalTo(violation2.getLine())));
   }
 
+  /**
+   * See http://jira.codehaus.org/browse/SONARIDE-52
+   */
+  @Test
+  public void testViolationOnFile() {
+    Violation violation1 = newViolation(0);
+    Violation violation2 = newViolation(null);
+    String line = "/* comment */";
+    final String[] lines = {line};
+    Source source = new Source()
+        .addLine(1, line);
+
+    List<Violation> violations = ViolationsLoader.convertLines(
+        Arrays.asList(violation1, violation2),
+        source,
+        lines
+    );
+
+    assertThat(violations.size(), is(0));
+  }
+
   @Test
   public void testGetViolations() throws Exception {
     SonarTestServer testServer = new SonarTestServer();
@@ -129,7 +150,7 @@ public class ViolationsLoaderTest {
     testServer.stop();
   }
 
-  protected Violation newViolation(int line) {
+  protected Violation newViolation(Integer line) {
     Violation violation = mock(Violation.class);
     when(violation.getLine()).thenReturn(line);
     return violation;
