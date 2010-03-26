@@ -33,7 +33,7 @@ public class ShowViolationsTask extends Task.Backgroundable {
   private String resourceKey;
 
   public ShowViolationsTask(@Nullable Project project, Document document, String resourceKey) {
-    super(project, "Loading violations from Sonar");
+    super(project, "Loading violations from Sonar for " + resourceKey);
     this.document = document;
     this.resourceKey = resourceKey;
   }
