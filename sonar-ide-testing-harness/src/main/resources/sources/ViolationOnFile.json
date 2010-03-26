@@ -1,0 +1,7 @@
+[
+  {
+    "1":"public class ViolationOnFile {",
+    "2":"  public static String INSTANCE;",
+    "3":"}"
+  }
+]
