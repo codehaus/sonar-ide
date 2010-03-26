@@ -16,6 +16,7 @@
       </activation>
       <modules>
         <module>sonar-ide-parent</module>
+        <module>sonar-ide-testing-harness</module>
         <module>sonar-ide-commons</module>
 
         <module>idea</module>
@@ -28,6 +29,7 @@
       <id>stable</id>
       <modules>
         <module>sonar-ide-parent</module>
+        <module>sonar-ide-testing-harness</module>
         <module>sonar-ide-commons</module>
 
         <module>idea</module>
