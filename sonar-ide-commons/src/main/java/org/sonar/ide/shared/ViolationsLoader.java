@@ -81,12 +81,12 @@ public final class ViolationsLoader {
     List<Violation> result = new ArrayList<Violation>();
     int[] hashCodes = getHashCodes(lines);
     for (Violation violation : violations) {
-      if (violation.getLine() == null || violation.getLine() == 0) {
+      Integer originalLine = violation.getLine();
+      if (originalLine == null || originalLine == 0) {
         // skip violation on whole file
         // TODO Godin: we can show them on first line
         continue;
       }
-      int originalLine = violation.getLine();
       String originalSourceLine = source.getLine(originalLine);
       int originalHashCode = getHashCode(originalSourceLine);
       boolean found = false;
