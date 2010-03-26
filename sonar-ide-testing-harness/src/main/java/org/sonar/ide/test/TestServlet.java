@@ -2,7 +2,6 @@ package org.sonar.ide.test;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
-import org.sonar.ide.shared.AbstractResourceUtils;
 
 import javax.servlet.GenericServlet;
 import javax.servlet.ServletException;
@@ -15,13 +14,15 @@ import java.io.PrintWriter;
  * @author Evgeny Mandrikov
  */
 public abstract class TestServlet extends GenericServlet {
+  private static final String DEFAULT_PACKAGE_NAME = "[default]";
+
   protected String getClassKey(ServletRequest request) {
     String resourceKey = request.getParameter("resource");
     String[] parts = resourceKey.split(":");
     String groupId = parts[0];
     String artifactId = parts[1];
     String classKey = parts[2];
-    if (classKey.startsWith(AbstractResourceUtils.DEFAULT_PACKAGE_NAME)) {
+    if (classKey.startsWith(DEFAULT_PACKAGE_NAME)) {
       classKey = StringUtils.substringAfter(classKey, ".");
     }
     return classKey;

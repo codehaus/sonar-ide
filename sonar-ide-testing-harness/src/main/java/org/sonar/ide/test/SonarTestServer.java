@@ -1,7 +1,6 @@
 package org.sonar.ide.test;
 
 import org.mortbay.jetty.testing.ServletTester;
-import org.sonar.ide.shared.SonarProperties;
 import org.sonar.wsclient.Host;
 import org.sonar.wsclient.Sonar;
 import org.sonar.wsclient.connectors.HttpClient4Connector;
