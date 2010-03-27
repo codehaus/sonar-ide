@@ -101,4 +101,20 @@ public class ViolationsLoaderTest extends AbstractSonarIdeTest {
     assertThat(violations.size(), is(1));
     assertThat(violations.get(0).getLine(), is(2));
   }
+
+  @Test
+  public void testMoreThanOneMatch() throws Exception {
+    init(); // TODO remove from here
+    File project = getProject("SimpleProject");
+
+    List<Violation> violations = ViolationsLoader.getViolations(
+        getTestServer().getSonar(),
+        getProjectKey(project) + ":[default].MoreThanOneMatch",
+        FileUtils.readFileToString(getProjectFile(project, "/src/main/java/MoreThanOneMatch.java"))
+    );
+
+    assertThat(violations.size(), is(2));
+    assertThat(violations.get(0).getLine(), is(4));
+    assertThat(violations.get(1).getLine(), is(4));
+  }
 }
