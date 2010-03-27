@@ -1,8 +1,0 @@
-[
-  {
-    "message":"ViolationOnFile.INSTANCE should be package protected",
-    "priority":"MAJOR",
-    "rule":{"key":"findbugs:MS_PKGPROTECT","name":"Malicious code vulnerability - Field should be package protected","category":"Reliability"},
-    "resource":{"key":"org.codehaus.sonar-ide.test-project:module1:[default].ViolationOnFile","name":"ViolationOnFile","scope":"FIL","qualifier":"CLA","language":"java"}
-  }
-]
