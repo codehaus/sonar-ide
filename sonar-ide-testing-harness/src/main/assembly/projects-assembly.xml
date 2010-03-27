@@ -16,6 +16,11 @@
       <directory>./projects</directory>
       <outputDirectory>projects-source</outputDirectory>
     </fileSet>
+
+    <fileSet>
+      <directory>./sonar-data</directory>
+      <outputDirectory>sonar-data</outputDirectory>
+    </fileSet>
   </fileSets>
 
 </assembly>
