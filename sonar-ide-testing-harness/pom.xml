@@ -27,6 +27,7 @@
       <groupId>org.codehaus.sonar</groupId>
       <artifactId>sonar-ws-client</artifactId>
       <version>${sonar.version}</version>
+      <scope>provided</scope>
     </dependency>
 
     <dependency>
