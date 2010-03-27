@@ -13,7 +13,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
  *
  * @author Evgeny Mandrikov
  */
-public class AbstractSonarIdeTest {
+public abstract class AbstractSonarIdeTest {
   private static final ReadWriteLock copyProjectLock = new ReentrantReadWriteLock();
 
   protected static File projectsSource;
@@ -52,6 +52,24 @@ public class AbstractSonarIdeTest {
       testServer.start();
     }
     return testServer;
+  }
+
+  /**
+   * @param project project (see {@link #getProject(String)})
+   * @return Sonar key for specified project
+   */
+  protected static String getProjectKey(File project) {
+    String projectName = project.getName();
+    return "org.sonar-ide.tests." + projectName + ":" + projectName;
+  }
+
+  /**
+   * @param project  project (see {@link #getProject(String)})
+   * @param filename filename
+   * @return specified file from specified project
+   */
+  protected static File getProjectFile(File project, String filename) {
+    return new File(project, filename);
   }
 
   /**

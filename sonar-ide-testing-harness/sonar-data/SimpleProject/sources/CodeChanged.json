@@ -1,8 +1,8 @@
 [
   {
-    "1":"public class ClassOnDefaultPackage {",
+    "1":"public class CodeChanged {",
     "2":"",
-    "3":"  public ClassOnDefaultPackage(int i) {",
+    "3":"  public CodeChanged(int i) {",
     "4":"    int j = i++;",
     "5":"  }",
     "6":"",
