@@ -3,6 +3,9 @@ package org.sonar.ide.idea.editor;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.editor.markup.GutterIconRenderer;
+import com.intellij.openapi.ui.popup.JBPopupFactory;
+import com.intellij.openapi.ui.popup.PopupStep;
+import com.intellij.openapi.ui.popup.util.BaseListPopupStep;
 import com.intellij.openapi.util.IconLoader;
 import org.jetbrains.annotations.NotNull;
 import org.sonar.ide.shared.ViolationUtils;
@@ -11,6 +14,7 @@ import org.sonar.wsclient.services.Violation;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -45,7 +49,20 @@ public class ViolationGutterIconRenderer extends GutterIconRenderer {
     return new AnAction() {
       @Override
       public void actionPerformed(AnActionEvent event) {
-        ViolationsTooltipPanel.showTooltipPanel(event, violations);
+        List<String> text = new ArrayList<String>();
+        List<Icon> icons = new ArrayList<Icon>();
+        for (Violation violation : violations) {
+          text.add(violation.getRuleName() + " : " + violation.getMessage());
+          icons.add(IconLoader.getIcon(IconsUtils.getPriorityIconPath(violation)));
+        }
+
+        JBPopupFactory.getInstance().createListPopup(new BaseListPopupStep<String>("Violations", text, icons) {
+          @Override
+          public PopupStep onChosen(String selectedValue, boolean finalChoice) {
+            // TODO show rule description
+            return super.onChosen(selectedValue, finalChoice);
+          }
+        }).showInBestPositionFor(event.getDataContext());
       }
     };
   }

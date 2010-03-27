@@ -11,6 +11,7 @@
   </target>
 
   <target name="deploy">
+    <delete dir="${user.home}/.IntelliJIdea90/system/plugins-sandbox/plugins/plugin"/>
     <delete dir="${user.home}/.IntelliJIdea90/system/plugins-sandbox/plugins/idea-sonar-plugin"/>
     <unzip src="target/idea-sonar-plugin-0.1-SNAPSHOT.zip"
            dest="${user.home}/.IntelliJIdea90/system/plugins-sandbox/plugins/"/>
