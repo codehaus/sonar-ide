@@ -5,64 +5,19 @@ import org.junit.Test;
 import org.sonar.ide.test.AbstractSonarIdeTest;
 import org.sonar.wsclient.Sonar;
 import org.sonar.wsclient.connectors.ConnectionException;
-import org.sonar.wsclient.services.Source;
 import org.sonar.wsclient.services.Violation;
 
 import java.io.File;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
-import static org.hamcrest.CoreMatchers.*;
-import static org.hamcrest.Matchers.hasItems;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.*;
 
 /**
  * @author Evgeny Mandrikov
  */
 public class ViolationsLoaderTest extends AbstractSonarIdeTest {
-  private static final String RESOURCE_KEY = "test:test:[default].ClassOnDefaultPackage";
-
-  private static final String[] LINES = {
-      "/* This comment was added after analyze. */",
-      "public class ClassOnDefaultPackage {",
-      "",
-      "  public ClassOnDefaultPackage(int i) {",
-      "    /* Next line was changed */",
-      "    //int j = i++;",
-      "  }",
-      "",
-      "  /* Next method was renamed */",
-      "  private String myMethod2() {",
-      "    return \"hello\";",
-      "  }",
-      "}"
-  };
-
-  @Test(expected = ConnectionException.class)
-  public void testServerUnavailable() throws Exception {
-    ViolationsLoader.getViolations(Sonar.create("http://localhost:9999"), RESOURCE_KEY, LINES);
-  }
-
-  @Test
-  public void test() {
-    // Violation reported on line, which doesn't exists in local copy
-    Violation violation = newViolation(LINES.length + 10);
-    Source source = new Source();
-    source.addLine(LINES.length + 10, LINES[1]);
-
-    ViolationsLoader.convertLines(
-        Collections.singleton(violation),
-        source,
-        LINES
-    );
-
-    verify(violation).getLine();
-    verify(violation).setLine(2);
-    verifyNoMoreInteractions(violation);
-  }
-
   @Test
   public void testGetHashCode() {
     int hash1 = ViolationsLoader.getHashCode("int i;");
@@ -77,45 +32,9 @@ public class ViolationsLoaderTest extends AbstractSonarIdeTest {
     assertThat(hash5, equalTo(hash1));
   }
 
-  @Test
-  public void testConvertLines() {
-    Violation violation = newViolation(1);
-    Source source = new Source();
-    source.addLine(1, LINES[1]);
-
-    ViolationsLoader.convertLines(
-        Collections.singleton(violation),
-        source,
-        LINES
-    );
-
-    verify(violation).getLine();
-    verify(violation).setLine(2);
-    verifyNoMoreInteractions(violation);
-  }
-
-  @Test
-  public void testSimilarViolations() {
-    final String line = "int j = i++;";
-    final String[] lines = {
-        line,
-        line
-    };
-    Violation violation1 = newViolation(1);
-    Violation violation2 = newViolation(2);
-    Source source = new Source()
-        .addLine(1, line)
-        .addLine(2, line);
-
-    List<Violation> violations = ViolationsLoader.convertLines(
-        Arrays.asList(violation1, violation2),
-        source,
-        lines
-    );
-
-    assertThat(violations.size(), is(2));
-    assertThat(violations, hasItems(violation1, violation2));
-    assertThat(violation1.getLine(), not(equalTo(violation2.getLine())));
+  @Test(expected = ConnectionException.class)
+  public void testServerUnavailable() throws Exception {
+    ViolationsLoader.getViolations(Sonar.create("http://localhost:9999"), "test:test:[default].ClassOnDefaultPackage", "");
   }
 
   @Test
@@ -168,9 +87,18 @@ public class ViolationsLoaderTest extends AbstractSonarIdeTest {
     assertThat(violations.get(0).getLine(), is(4));
   }
 
-  protected Violation newViolation(Integer line) {
-    Violation violation = mock(Violation.class);
-    when(violation.getLine()).thenReturn(line);
-    return violation;
+  @Test
+  public void testLineForViolationDoesntExists() throws Exception {
+    init(); // TODO remove from here
+    File project = getProject("SimpleProject");
+
+    List<Violation> violations = ViolationsLoader.getViolations(
+        getTestServer().getSonar(),
+        getProjectKey(project) + ":[default].LineForViolationDoesntExists",
+        FileUtils.readFileToString(getProjectFile(project, "/src/main/java/LineForViolationDoesntExists.java"))
+    );
+
+    assertThat(violations.size(), is(1));
+    assertThat(violations.get(0).getLine(), is(2));
   }
 }

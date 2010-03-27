@@ -27,7 +27,7 @@ public final class ViolationsLoader {
    * @param sonar       sonar
    * @param resourceKey resource key
    * @return violations
-   * @deprecated because returns incorrect line numbers, use
+   * @deprecated returns incorrect line numbers, use more accurate
    *             {@link #getViolations(org.sonar.wsclient.Sonar, String, String[])}
    *             or {@link #getViolations(org.sonar.wsclient.Sonar, String, String)} instead
    */
