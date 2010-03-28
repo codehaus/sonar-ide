@@ -20,12 +20,9 @@ import static org.junit.Assert.assertThat;
  * @author Evgeny Mandrikov
  */
 public class ViolationsLoaderTest extends AbstractSonarIdeTest {
-  private static File project;
-
   @BeforeClass
   public static void init() throws Exception {
     AbstractSonarIdeTest.init();
-    project = getProject("SimpleProject");
   }
 
   @AfterClass
@@ -52,7 +49,7 @@ public class ViolationsLoaderTest extends AbstractSonarIdeTest {
     ViolationsLoader.getViolations(Sonar.create("http://localhost:9999"), "test:test:[default].ClassOnDefaultPackage", "");
   }
 
-  private List<Violation> getViolations(String className) throws Exception {
+  private List<Violation> getViolations(File project, String className) throws Exception {
     return ViolationsLoader.getViolations(
         getTestServer().getSonar(),
         getProjectKey(project) + ":[default]." + className,
@@ -62,7 +59,7 @@ public class ViolationsLoaderTest extends AbstractSonarIdeTest {
 
   @Test
   public void testGetViolations() throws Exception {
-    List<Violation> violations = getViolations("ClassOnDefaultPackage");
+    List<Violation> violations = getViolations(getProject("SimpleProject"), "ClassOnDefaultPackage");
 
     assertThat(violations.size(), is(4));
     // TODO assert lines
@@ -73,7 +70,7 @@ public class ViolationsLoaderTest extends AbstractSonarIdeTest {
    */
   @Test
   public void testViolationOnFile() throws Exception {
-    List<Violation> violations = getViolations("ViolationOnFile");
+    List<Violation> violations = getViolations(getProject("SimpleProject"), "ViolationOnFile");
 
     assertThat(violations.size(), is(0));
   }
@@ -83,7 +80,7 @@ public class ViolationsLoaderTest extends AbstractSonarIdeTest {
    */
   @Test
   public void testCodeChanged() throws Exception {
-    List<Violation> violations = getViolations("CodeChanged");
+    List<Violation> violations = getViolations(getProject("code-changed"), "CodeChanged");
 
     assertThat(violations.size(), is(1));
     assertThat(violations.get(0).getLine(), is(4));
@@ -91,7 +88,7 @@ public class ViolationsLoaderTest extends AbstractSonarIdeTest {
 
   @Test
   public void testLineForViolationDoesntExists() throws Exception {
-    List<Violation> violations = getViolations("LineForViolationDoesntExists");
+    List<Violation> violations = getViolations(getProject("code-changed"), "LineForViolationDoesntExists");
 
     assertThat(violations.size(), is(1));
     assertThat(violations.get(0).getLine(), is(2));
@@ -99,7 +96,7 @@ public class ViolationsLoaderTest extends AbstractSonarIdeTest {
 
   @Test
   public void testMoreThanOneMatch() throws Exception {
-    List<Violation> violations = getViolations("MoreThanOneMatch");
+    List<Violation> violations = getViolations(getProject("code-changed"), "MoreThanOneMatch");
 
     assertThat(violations.size(), is(2));
     assertThat(violations.get(0).getLine(), is(4));
