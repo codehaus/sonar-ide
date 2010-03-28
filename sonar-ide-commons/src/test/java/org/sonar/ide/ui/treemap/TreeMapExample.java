@@ -1,8 +1,7 @@
 package org.sonar.ide.ui.treemap;
 
+import org.sonar.ide.ui.SwingAppRunner;
 import org.sonar.ide.ui.treemap.split.SplitByWeight;
-
-import javax.swing.*;
 
 /**
  * @author Evgeny Mandrikov
@@ -80,25 +79,10 @@ public class TreeMapExample {
   }
 
   public static void main(String[] args) {
-    SwingUtilities.invokeLater(new Runnable() {
-      public void run() {
-        createAndShowGUI();
-      }
-    });
-  }
-
-  private static void createAndShowGUI() {
-    //Create and set up the window.
-    JFrame frame = new JFrame("SonarIDE Demo");
-    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    //Create and set up the content pane.
     JTreeMap<Resource> treeMap = new JTreeMap<Resource>(build())
         .setStrategy(new SplitByWeight())
         .setColorProvider(new ResourceColorProvider())
         .setTooltipProvider(new ResourceTooltipBuilder());
-    frame.setContentPane(treeMap);
-    //Display the window.
-    frame.setSize(400, 400);
-    frame.setVisible(true);
+    SwingAppRunner.run(treeMap);
   }
 }
