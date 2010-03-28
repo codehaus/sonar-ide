@@ -1,6 +1,8 @@
 package org.sonar.ide.test;
 
 import org.mortbay.jetty.testing.ServletTester;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.sonar.wsclient.Host;
 import org.sonar.wsclient.Sonar;
 import org.sonar.wsclient.connectors.HttpClient4Connector;
@@ -12,6 +14,8 @@ import org.sonar.wsclient.services.ViolationQuery;
  * @author Evgeny Mandrikov
  */
 public class SonarTestServer {
+  protected static final Logger LOG = LoggerFactory.getLogger(SonarTestServer.class);
+
   private ServletTester tester;
   private String baseUrl;
 
@@ -24,10 +28,12 @@ public class SonarTestServer {
 
     baseUrl = tester.createSocketConnector(true);
     tester.start();
+    LOG.info("Sonar test server started: {}", getBaseUrl());
   }
 
   public void stop() throws Exception {
     tester.stop();
+    LOG.info("Sonar test server stopped: {}", getBaseUrl());
   }
 
   public String getBaseUrl() {

@@ -2,6 +2,8 @@ package org.sonar.ide.test;
 
 import org.apache.commons.io.FileUtils;
 import org.junit.Assert;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
@@ -14,6 +16,8 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
  * @author Evgeny Mandrikov
  */
 public abstract class AbstractSonarIdeTest {
+  private static final Logger LOG = LoggerFactory.getLogger(AbstractSonarIdeTest.class);
+
   private static final ReadWriteLock copyProjectLock = new ReentrantReadWriteLock();
 
   protected static File projectsSource;
@@ -24,7 +28,7 @@ public abstract class AbstractSonarIdeTest {
 
 //  @BeforeClass
 
-  public static void init() {
+  public static void init() throws Exception {
     projectsSource = new File("target/projects-source");
     projectsWorkdir = new File("target/projects-target");
   }
@@ -98,6 +102,9 @@ public abstract class AbstractSonarIdeTest {
           "Project " + projectName + " folder not found.\n" + projectFolder.getAbsolutePath(),
           projectFolder.isDirectory()
       );
+      if (destDir.isDirectory()) {
+        LOG.warn("Directory for project already exists: {}", destDir);
+      }
 
       // TODO interpolate files
 //      FileUtils.copyDirectory(projectFolder, destDir, HiddenFileFilter.VISIBLE);

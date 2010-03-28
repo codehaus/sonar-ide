@@ -33,6 +33,7 @@ public abstract class TestServlet extends GenericServlet {
       String groupId = parts[0];
       String artifactId = parts[1];
       String classKey = parts[2];
+      SonarTestServer.LOG.debug("Loading data for {}:{}:{}", new Object[]{groupId, artifactId, classKey});
       if (classKey.startsWith(DEFAULT_PACKAGE_NAME)) {
         classKey = StringUtils.substringAfter(classKey, ".");
       }

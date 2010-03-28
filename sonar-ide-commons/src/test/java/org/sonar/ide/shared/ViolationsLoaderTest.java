@@ -1,6 +1,8 @@
 package org.sonar.ide.shared;
 
 import org.apache.commons.io.FileUtils;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.sonar.ide.test.AbstractSonarIdeTest;
 import org.sonar.wsclient.Sonar;
@@ -18,6 +20,19 @@ import static org.junit.Assert.assertThat;
  * @author Evgeny Mandrikov
  */
 public class ViolationsLoaderTest extends AbstractSonarIdeTest {
+  private static File project;
+
+  @BeforeClass
+  public static void init() throws Exception {
+    AbstractSonarIdeTest.init();
+    project = getProject("SimpleProject");
+  }
+
+  @AfterClass
+  public static void cleanup() throws Exception {
+    AbstractSonarIdeTest.cleanup();
+  }
+
   @Test
   public void testGetHashCode() {
     int hash1 = ViolationsLoader.getHashCode("int i;");
@@ -37,16 +52,17 @@ public class ViolationsLoaderTest extends AbstractSonarIdeTest {
     ViolationsLoader.getViolations(Sonar.create("http://localhost:9999"), "test:test:[default].ClassOnDefaultPackage", "");
   }
 
+  private List<Violation> getViolations(String className) throws Exception {
+    return ViolationsLoader.getViolations(
+        getTestServer().getSonar(),
+        getProjectKey(project) + ":[default]." + className,
+        FileUtils.readFileToString(getProjectFile(project, "/src/main/java/" + className + ".java"))
+    );
+  }
+
   @Test
   public void testGetViolations() throws Exception {
-    init(); // TODO remove from here
-    File project = getProject("SimpleProject");
-
-    List<Violation> violations = ViolationsLoader.getViolations(
-        getTestServer().getSonar(),
-        getProjectKey(project) + ":[default].ClassOnDefaultPackage",
-        FileUtils.readFileToString(getProjectFile(project, "/src/main/java/ClassOnDefaultPackage.java"))
-    );
+    List<Violation> violations = getViolations("ClassOnDefaultPackage");
 
     assertThat(violations.size(), is(4));
     // TODO assert lines
@@ -57,14 +73,7 @@ public class ViolationsLoaderTest extends AbstractSonarIdeTest {
    */
   @Test
   public void testViolationOnFile() throws Exception {
-    init(); // TODO remove from here
-    File project = getProject("SimpleProject");
-
-    List<Violation> violations = ViolationsLoader.getViolations(
-        getTestServer().getSonar(),
-        getProjectKey(project) + ":[default].ViolationOnFile",
-        FileUtils.readFileToString(getProjectFile(project, "/src/main/java/ViolationOnFile.java"))
-    );
+    List<Violation> violations = getViolations("ViolationOnFile");
 
     assertThat(violations.size(), is(0));
   }
@@ -74,14 +83,7 @@ public class ViolationsLoaderTest extends AbstractSonarIdeTest {
    */
   @Test
   public void testCodeChanged() throws Exception {
-    init(); // TODO remove from here
-    File project = getProject("SimpleProject");
-
-    List<Violation> violations = ViolationsLoader.getViolations(
-        getTestServer().getSonar(),
-        getProjectKey(project) + ":[default].CodeChanged",
-        FileUtils.readFileToString(getProjectFile(project, "/src/main/java/CodeChanged.java"))
-    );
+    List<Violation> violations = getViolations("CodeChanged");
 
     assertThat(violations.size(), is(1));
     assertThat(violations.get(0).getLine(), is(4));
@@ -89,14 +91,7 @@ public class ViolationsLoaderTest extends AbstractSonarIdeTest {
 
   @Test
   public void testLineForViolationDoesntExists() throws Exception {
-    init(); // TODO remove from here
-    File project = getProject("SimpleProject");
-
-    List<Violation> violations = ViolationsLoader.getViolations(
-        getTestServer().getSonar(),
-        getProjectKey(project) + ":[default].LineForViolationDoesntExists",
-        FileUtils.readFileToString(getProjectFile(project, "/src/main/java/LineForViolationDoesntExists.java"))
-    );
+    List<Violation> violations = getViolations("LineForViolationDoesntExists");
 
     assertThat(violations.size(), is(1));
     assertThat(violations.get(0).getLine(), is(2));
@@ -104,14 +99,7 @@ public class ViolationsLoaderTest extends AbstractSonarIdeTest {
 
   @Test
   public void testMoreThanOneMatch() throws Exception {
-    init(); // TODO remove from here
-    File project = getProject("SimpleProject");
-
-    List<Violation> violations = ViolationsLoader.getViolations(
-        getTestServer().getSonar(),
-        getProjectKey(project) + ":[default].MoreThanOneMatch",
-        FileUtils.readFileToString(getProjectFile(project, "/src/main/java/MoreThanOneMatch.java"))
-    );
+    List<Violation> violations = getViolations("MoreThanOneMatch");
 
     assertThat(violations.size(), is(2));
     assertThat(violations.get(0).getLine(), is(4));
