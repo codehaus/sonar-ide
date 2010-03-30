@@ -10,6 +10,7 @@
     <relativePath>../sonar-ide-parent/pom.xml</relativePath>
   </parent>
 
+  <!-- TODO groupId should be org.codehaus.sonar-ide.jdeveloper -->
   <groupId>org.codehaus.sonar-ide</groupId>
   <artifactId>jdeveloper-sonar-plugin</artifactId>
   <packaging>jar</packaging>

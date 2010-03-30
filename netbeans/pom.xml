@@ -10,6 +10,7 @@
     <relativePath>../sonar-ide-parent/pom.xml</relativePath>
   </parent>
 
+  <!-- TODO groupId should be org.codehaus.sonar-ide.netbeans -->
   <groupId>org.codehaus.sonar-ide</groupId>
   <artifactId>netbeans-sonar-plugin</artifactId>
   <packaging>nbm</packaging>

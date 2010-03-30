@@ -10,6 +10,7 @@
     <relativePath>../sonar-ide-parent/pom.xml</relativePath>
   </parent>
 
+  <!-- TODO Godin: groupId should be org.codehaus.sonar-ide.idea -->
   <groupId>org.codehaus.sonar-ide</groupId>
   <artifactId>idea-sonar-plugin</artifactId>
   <version>0.1-SNAPSHOT</version>
