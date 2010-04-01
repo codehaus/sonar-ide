@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.codehaus.sonar-ide</groupId>
+        <artifactId>sonar-ide-parent</artifactId>
+        <version>1</version>
+        <relativePath>../sonar-ide-parent/pom.xml</relativePath>
+    </parent>
+
+    <groupId>org.codehaus.sonar-ide</groupId>
+    <artifactId>sonar-ide-shared-components</artifactId>
+    <version>0.1-SNAPSHOT</version>
+    <packaging>pom</packaging>
+
+    <name>Sonar IDEs :: Shared Components</name>
+
+    <modules>
+        <module>../sonar-ide-commons</module>
+        <module>../sonar-ide-testing-harness</module>
+    </modules>
+
+</project>
