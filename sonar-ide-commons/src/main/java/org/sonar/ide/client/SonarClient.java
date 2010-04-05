@@ -32,17 +32,20 @@ public class SonarClient extends Sonar {
 
   private void connect() {
     try {
-      console.logRequest("Connect");
+      if (console != null) {
+        console.logRequest("Connect");
+      }
       ServerQuery serverQuery = new ServerQuery();
       Server server = find(serverQuery);
       available = checkVersion(server);
-      if (available)
-        console.logResponse("Connected to " + server.getId() + "(" + server.getVersion() + ")");
-      else
-        console.logResponse("Unable to connect.");
+      if (console != null) {
+        console.logResponse(available ? "Connected to " + server.getId() + "(" + server.getVersion() + ")" : "Unable to connect.");
+      }
     } catch (ConnectionException e) {
       available = false;
-      console.logError("Unable to connect.", e);
+      if (console != null) {
+        console.logError("Unable to connect.", e);
+      }
     }
   }
 
@@ -57,18 +60,26 @@ public class SonarClient extends Sonar {
   @Override
   public <MODEL extends Model> MODEL find(Query<MODEL> query) {
     serverTrips++;
-    console.logRequest("find : " + query.getUrl());
+    if (console != null) {
+      console.logRequest("find : " + query.getUrl());
+    }
     MODEL model = super.find(query);
-    console.logResponse(model.toString());
+    if (console != null) {
+      console.logResponse(model.toString());
+    }
     return model;
   }
-  
+
   @Override
   public <MODEL extends Model> List<MODEL> findAll(Query<MODEL> query) {
     serverTrips++;
-    console.logRequest("find : " + query.getUrl());
+    if (console != null) {
+      console.logRequest("find : " + query.getUrl());
+    }
     List<MODEL> result = super.findAll(query);
-    console.logResponse("Retrieved " + result.size() + " elements.");
+    if (console != null) {
+      console.logResponse("Retrieved " + result.size() + " elements.");
+    }
     return result;
   }
 
