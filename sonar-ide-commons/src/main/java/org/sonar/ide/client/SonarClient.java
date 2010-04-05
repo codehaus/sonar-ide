@@ -19,33 +19,26 @@ import java.util.List;
 public class SonarClient extends Sonar {
   private boolean       available;
   private int           serverTrips = 0;
-  private ISonarConsole console;
 
   public SonarClient(String host) {
     this(host, "", "");
   }
 
   public SonarClient(String host, String username, String password) {
-    super(ConnectorFactory.create(new Host(host, username, password)));
+    super(ConnectorFactory.create(new Host(host, username, password)));   
     connect();
   }
 
   private void connect() {
     try {
-      if (console != null) {
-        console.logRequest("Connect");
-      }
+      ConsoleManager.getConsole().logRequest("Connect");
       ServerQuery serverQuery = new ServerQuery();
       Server server = find(serverQuery);
       available = checkVersion(server);
-      if (console != null) {
-        console.logResponse(available ? "Connected to " + server.getId() + "(" + server.getVersion() + ")" : "Unable to connect.");
-      }
+      ConsoleManager.getConsole().logResponse(available ? "Connected to " + server.getId() + "(" + server.getVersion() + ")" : "Unable to connect.");      
     } catch (ConnectionException e) {
       available = false;
-      if (console != null) {
-        console.logError("Unable to connect.", e);
-      }
+      ConsoleManager.getConsole().logError("Unable to connect.", e);
     }
   }
 
@@ -60,26 +53,18 @@ public class SonarClient extends Sonar {
   @Override
   public <MODEL extends Model> MODEL find(Query<MODEL> query) {
     serverTrips++;
-    if (console != null) {
-      console.logRequest("find : " + query.getUrl());
-    }
+    ConsoleManager.getConsole().logRequest("find : " + query.getUrl());
     MODEL model = super.find(query);
-    if (console != null) {
-      console.logResponse(model.toString());
-    }
+    ConsoleManager.getConsole().logResponse(model.toString());
     return model;
   }
 
   @Override
   public <MODEL extends Model> List<MODEL> findAll(Query<MODEL> query) {
     serverTrips++;
-    if (console != null) {
-      console.logRequest("find : " + query.getUrl());
-    }
+    ConsoleManager.getConsole().logRequest("find : " + query.getUrl());
     List<MODEL> result = super.findAll(query);
-    if (console != null) {
-      console.logResponse("Retrieved " + result.size() + " elements.");
-    }
+    ConsoleManager.getConsole().logResponse("Retrieved " + result.size() + " elements.");
     return result;
   }
 
