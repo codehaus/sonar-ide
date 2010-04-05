@@ -1,5 +1,7 @@
 package org.sonar.ide.client;
 
+import org.sonar.ide.ui.ConsoleManager;
+import org.sonar.ide.ui.ISonarConsole;
 import org.sonar.wsclient.Host;
 import org.sonar.wsclient.Sonar;
 import org.sonar.wsclient.connectors.ConnectionException;
@@ -15,8 +17,9 @@ import java.util.List;
  * @author Evgeny Mandrikov
  */
 public class SonarClient extends Sonar {
-  private boolean available;
-  private int serverTrips = 0;
+  private boolean       available;
+  private int           serverTrips = 0;
+  private ISonarConsole console;
 
   public SonarClient(String host) {
     this(host, "", "");
@@ -29,11 +32,17 @@ public class SonarClient extends Sonar {
 
   private void connect() {
     try {
+      console.logRequest("Connect");
       ServerQuery serverQuery = new ServerQuery();
       Server server = find(serverQuery);
       available = checkVersion(server);
+      if (available)
+        console.logResponse("Connected to " + server.getId() + "(" + server.getVersion() + ")");
+      else
+        console.logResponse("Unable to connect.");
     } catch (ConnectionException e) {
       available = false;
+      console.logError("Unable to connect.", e);
     }
   }
 
@@ -48,13 +57,19 @@ public class SonarClient extends Sonar {
   @Override
   public <MODEL extends Model> MODEL find(Query<MODEL> query) {
     serverTrips++;
-    return super.find(query);
+    console.logRequest("find : " + query.getUrl());
+    MODEL model = super.find(query);
+    console.logResponse(model.toString());
+    return model;
   }
-
+  
   @Override
   public <MODEL extends Model> List<MODEL> findAll(Query<MODEL> query) {
     serverTrips++;
-    return super.findAll(query);
+    console.logRequest("find : " + query.getUrl());
+    List<MODEL> result = super.findAll(query);
+    console.logResponse("Retrieved " + result.size() + " elements.");
+    return result;
   }
 
   public int getServerTrips() {
