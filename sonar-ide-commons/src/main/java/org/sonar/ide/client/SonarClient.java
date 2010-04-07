@@ -1,7 +1,7 @@
 package org.sonar.ide.client;
 
-import org.sonar.ide.ui.ConsoleManager;
-import org.sonar.ide.ui.ISonarConsole;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.sonar.wsclient.Host;
 import org.sonar.wsclient.Sonar;
 import org.sonar.wsclient.connectors.ConnectionException;
@@ -17,28 +17,30 @@ import java.util.List;
  * @author Evgeny Mandrikov
  */
 public class SonarClient extends Sonar {
-  private boolean       available;
-  private int           serverTrips = 0;
+  private static final Logger LOG = LoggerFactory.getLogger(SonarClient.class);
+
+  private boolean available;
+  private int serverTrips = 0;
 
   public SonarClient(String host) {
     this(host, "", "");
   }
 
   public SonarClient(String host, String username, String password) {
-    super(ConnectorFactory.create(new Host(host, username, password)));   
+    super(ConnectorFactory.create(new Host(host, username, password)));
     connect();
   }
 
   private void connect() {
     try {
-      ConsoleManager.getConsole().logRequest("Connect");
+      LOG.info("Connect");
       ServerQuery serverQuery = new ServerQuery();
       Server server = find(serverQuery);
       available = checkVersion(server);
-      ConsoleManager.getConsole().logResponse(available ? "Connected to " + server.getId() + "(" + server.getVersion() + ")" : "Unable to connect.");      
+      LOG.info(available ? "Connected to " + server.getId() + "(" + server.getVersion() + ")" : "Unable to connect");
     } catch (ConnectionException e) {
       available = false;
-      ConsoleManager.getConsole().logError("Unable to connect.", e);
+      LOG.error("Unable to connect", e);
     }
   }
 
@@ -53,18 +55,18 @@ public class SonarClient extends Sonar {
   @Override
   public <MODEL extends Model> MODEL find(Query<MODEL> query) {
     serverTrips++;
-    ConsoleManager.getConsole().logRequest("find : " + query.getUrl());
+    LOG.info("find : {}", query.getUrl());
     MODEL model = super.find(query);
-    ConsoleManager.getConsole().logResponse(model.toString());
+    LOG.info(model.toString());
     return model;
   }
 
   @Override
   public <MODEL extends Model> List<MODEL> findAll(Query<MODEL> query) {
     serverTrips++;
-    ConsoleManager.getConsole().logRequest("find : " + query.getUrl());
+    LOG.info("find : {}", query.getUrl());
     List<MODEL> result = super.findAll(query);
-    ConsoleManager.getConsole().logResponse("Retrieved " + result.size() + " elements.");
+    LOG.info("Retrieved {} elements.", result.size());
     return result;
   }
 
