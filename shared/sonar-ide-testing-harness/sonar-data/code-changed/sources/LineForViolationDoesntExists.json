@@ -1,0 +1,13 @@
+[
+    {
+        "1":"public class LineForViolationDoesntExists {",
+        "2":"",
+        "3":"",
+        "6":"",
+        "7":"",
+        "8":"  private String myMethod() {",
+        "9":"    return \"hello\";",
+        "10":"  }",
+        "11":"}"
+    }
+]

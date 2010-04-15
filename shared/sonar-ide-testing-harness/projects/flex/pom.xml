@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>org.sonar-ide.tests.flex</groupId>
+    <artifactId>flex</artifactId>
+    <version>1.0-SNAPSHOT</version>
+
+    <packaging>swf</packaging>
+
+    <properties>
+        <sonar.language>flex</sonar.language>
+        <sonar.dynamicAnalysis>false</sonar.dynamicAnalysis>
+        <sonar.flex.file.suffixes>mxml,as</sonar.flex.file.suffixes>
+    </properties>
+
+    <build>
+        <sourceDirectory>src/main/flex</sourceDirectory>
+
+        <plugins>
+            <plugin>
+                <!-- Flex (SWC and SWF) compilation -->
+                <groupId>org.sonatype.flexmojos</groupId>
+                <artifactId>flexmojos-maven-plugin</artifactId>
+                <version>3.0.0</version>
+                <extensions>true</extensions>
+            </plugin>
+        </plugins>
+    </build>
+
+    <repositories>
+        <repository>
+            <id>sonatype-forge</id>
+            <url>http://repository.sonatype.org/content/groups/forge/</url>
+        </repository>
+    </repositories>
+    <pluginRepositories>
+        <pluginRepository>
+            <id>sonatype-forge</id>
+            <url>http://repository.sonatype.org/content/groups/forge/</url>
+        </pluginRepository>
+        <pluginRepository>
+            <id>flexpmd.opensource.adobe</id>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <name>FlexPMD repository on opensource.adobe.com</name>
+            <url>http://opensource.adobe.com/svn/opensource/flexpmd/maven-repository/release/</url>
+        </pluginRepository>
+    </pluginRepositories>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.adobe.flex.framework</groupId>
+            <artifactId>flex-framework</artifactId>
+            <version>3.0.0.477</version>
+            <type>pom</type>
+        </dependency>
+    </dependencies>
+
+</project>

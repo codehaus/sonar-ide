@@ -1,0 +1,16 @@
+[
+    {
+        "message":"Assignment of parameter 'i' is not allowed.",
+        "line":3,
+        "priority":"MAJOR",
+        "rule":{"key":"checkstyle:com.puppycrawl.tools.checkstyle.checks.coding.ParameterAssignmentCheck","name":"Parameter Assignment","category":"Usability"},
+        "resource":{"key":"org.codehaus.sonar-ide.test-project:module1:[default].ClassOnDefaultPackage","name":"ClassOnDefaultPackage","scope":"FIL","qualifier":"CLA","language":"java"}
+    },
+    {
+        "message":"Assignment of parameter 'i' is not allowed.",
+        "line":7,
+        "priority":"MAJOR",
+        "rule":{"key":"checkstyle:com.puppycrawl.tools.checkstyle.checks.coding.ParameterAssignmentCheck","name":"Parameter Assignment","category":"Usability"},
+        "resource":{"key":"org.codehaus.sonar-ide.test-project:module1:[default].ClassOnDefaultPackage","name":"ClassOnDefaultPackage","scope":"FIL","qualifier":"CLA","language":"java"}
+    }
+]

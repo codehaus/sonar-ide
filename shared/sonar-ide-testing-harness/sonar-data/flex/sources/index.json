@@ -1,0 +1,12 @@
+[
+    {
+        "1":"<?xml version=\"1.0\" encoding=\"UTF-8\"?>",
+        "2":"<mx:Application xmlns:mx=\"http:\/\/www.adobe.com\/2006\/mxml\" layout=\"absolute\">",
+        "3":"  <mx:Script>",
+        "4":"    var i:int = 0;",
+        "5":"  <\/mx:Script>",
+        "6":"",
+        "7":"  <mx:Label text=\"Hello World\"\/>",
+        "8":"<\/mx:Application>"
+    }
+]

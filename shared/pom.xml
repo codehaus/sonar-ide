@@ -18,8 +18,8 @@
     <name>Sonar IDEs :: Shared Components</name>
 
     <modules>
-        <module>../sonar-ide-commons</module>
-        <module>../sonar-ide-testing-harness</module>
+        <module>sonar-ide-commons</module>
+        <module>sonar-ide-testing-harness</module>
     </modules>
 
 </project>

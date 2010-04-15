@@ -1,0 +1,9 @@
+[
+    {
+        "message":"Avoid unused private methods such as 'myMethod()'.",
+        "line":8,
+        "priority":"MAJOR",
+        "rule":{"key":"pmd:UnusedPrivateMethod","name":"Unused private method","category":"Maintainability"},
+        "resource":{"key":"org.codehaus.sonar-ide.test-project:module1:[default].LineForViolationDoesntExists","name":"LineForViolationDoesntExists","scope":"FIL","qualifier":"CLA","language":"java"}
+    }
+]
