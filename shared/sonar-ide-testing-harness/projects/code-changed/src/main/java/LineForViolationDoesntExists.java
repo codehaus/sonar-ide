@@ -1,5 +1,5 @@
 public class LineForViolationDoesntExists {
-    private String myMethod() {
-        return "hello";
-    }
+  private String myMethod() {
+    return "hello";
+  }
 }

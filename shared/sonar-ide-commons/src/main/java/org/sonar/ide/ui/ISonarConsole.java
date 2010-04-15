@@ -7,11 +7,11 @@ package org.sonar.ide.ui;
  */
 public interface ISonarConsole {
 
-    public void logRequest(String request);
+  public void logRequest(String request);
 
-    public void logResponse(String response);
+  public void logResponse(String response);
 
-    public void logError(String error);
+  public void logError(String error);
 
-    public void logError(String error, Throwable ex);
+  public void logError(String error, Throwable ex);
 }

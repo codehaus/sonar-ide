@@ -19,136 +19,136 @@ import java.util.List;
  * @author Evgeny Mandrikov
  */
 public final class ViolationsLoader {
-    private static final Logger LOG = LoggerFactory.getLogger(ViolationsLoader.class);
+  private static final Logger LOG = LoggerFactory.getLogger(ViolationsLoader.class);
 
-    /**
-     * Returns violations from specified sonar for specified resource.
-     *
-     * @param sonar       sonar
-     * @param resourceKey resource key
-     * @return violations
-     * @deprecated returns incorrect line numbers, use more accurate
-     *             {@link #getViolations(org.sonar.wsclient.Sonar, String, String[])}
-     *             or {@link #getViolations(org.sonar.wsclient.Sonar, String, String)} instead
-     */
-    @Deprecated
-    public static Collection<Violation> getViolations(Sonar sonar, String resourceKey) {
-        LOG.info("Loading violations for {}", resourceKey);
-        ViolationQuery query = ViolationQuery.createForResource(resourceKey);
-        Collection<Violation> violations = sonar.findAll(query);
-        LOG.info("Loaded {} violations: {}", violations.size(), ViolationUtils.toString(violations));
-        return violations;
+  /**
+   * Returns violations from specified sonar for specified resource.
+   *
+   * @param sonar       sonar
+   * @param resourceKey resource key
+   * @return violations
+   * @deprecated returns incorrect line numbers, use more accurate
+   *             {@link #getViolations(org.sonar.wsclient.Sonar, String, String[])}
+   *             or {@link #getViolations(org.sonar.wsclient.Sonar, String, String)} instead
+   */
+  @Deprecated
+  public static Collection<Violation> getViolations(Sonar sonar, String resourceKey) {
+    LOG.info("Loading violations for {}", resourceKey);
+    ViolationQuery query = ViolationQuery.createForResource(resourceKey);
+    Collection<Violation> violations = sonar.findAll(query);
+    LOG.info("Loaded {} violations: {}", violations.size(), ViolationUtils.toString(violations));
+    return violations;
+  }
+
+  /**
+   * Returns hash code for specified string after removing whitespaces.
+   *
+   * @param str string
+   * @return hash code for specified string after removing whitespaces
+   */
+  public static int getHashCode(String str) {
+    return StringUtils.deleteWhitespace(str).hashCode();
+  }
+
+  /**
+   * Returns hash codes for specified strings after removing whitespaces.
+   *
+   * @param str strings
+   * @return hash codes for specified strings after removing whitespaces
+   */
+  public static int[] getHashCodes(String[] str) {
+    int[] hashCodes = new int[str.length];
+    for (int i = 0; i < str.length; i++) {
+      hashCodes[i] = getHashCode(str[i]);
     }
+    return hashCodes;
+  }
 
-    /**
-     * Returns hash code for specified string after removing whitespaces.
-     *
-     * @param str string
-     * @return hash code for specified string after removing whitespaces
-     */
-    public static int getHashCode(String str) {
-        return StringUtils.deleteWhitespace(str).hashCode();
-    }
-
-    /**
-     * Returns hash codes for specified strings after removing whitespaces.
-     *
-     * @param str strings
-     * @return hash codes for specified strings after removing whitespaces
-     */
-    public static int[] getHashCodes(String[] str) {
-        int[] hashCodes = new int[str.length];
-        for (int i = 0; i < str.length; i++) {
-            hashCodes[i] = getHashCode(str[i]);
-        }
-        return hashCodes;
-    }
-
-    /**
-     * Sets proper line numbers for violations by matching modified source code with code from server.
-     * Actually this is an implementation of heuristic algorithm - magic happens here.
-     * <p>
-     * Currently this method just compares hash codes (see {@link #getHashCode(String)}).
-     * Works for O(V*L) time, where V - number of violations and L - number of lines in modified source code.
-     * </p>
-     *
-     * @param violations violations
-     * @param source     source code from server
-     * @param lines      source code
-     * @return violations with proper line numbers
-     */
-    public static List<Violation> convertLines(Collection<Violation> violations, Source source, String[] lines) {
-        List<Violation> result = new ArrayList<Violation>();
-        int[] hashCodes = getHashCodes(lines);
-        for (Violation violation : violations) {
-            Integer originalLine = violation.getLine();
-            if (originalLine == null || originalLine == 0) {
-                // skip violation on whole file
-                // TODO Godin: we can show them on first line
-                continue;
-            }
-            String originalSourceLine = source.getLine(originalLine);
-            int originalHashCode = getHashCode(originalSourceLine);
-            boolean found = false;
-            // Violation can be reported on line, which doesn't exists in local copy
-            if (originalLine - 1 < hashCodes.length) {
-                found = hashCodes[originalLine - 1] == originalHashCode;
-            }
-            if (!found) {
-                for (int i = 0; i < hashCodes.length; i++) {
-                    if (hashCodes[i] == originalHashCode) {
-                        if (found) {
-                            // may be more than one match, but we take into account only first
-                            LOG.warn("Found more than one match for violation");
-                            break;
-                        }
-                        violation.setLine(i + 1);
-                        found = true;
-                    }
-                }
-            }
-            // skip violation, which doesn't match any line
+  /**
+   * Sets proper line numbers for violations by matching modified source code with code from server.
+   * Actually this is an implementation of heuristic algorithm - magic happens here.
+   * <p>
+   * Currently this method just compares hash codes (see {@link #getHashCode(String)}).
+   * Works for O(V*L) time, where V - number of violations and L - number of lines in modified source code.
+   * </p>
+   *
+   * @param violations violations
+   * @param source     source code from server
+   * @param lines      source code
+   * @return violations with proper line numbers
+   */
+  public static List<Violation> convertLines(Collection<Violation> violations, Source source, String[] lines) {
+    List<Violation> result = new ArrayList<Violation>();
+    int[] hashCodes = getHashCodes(lines);
+    for (Violation violation : violations) {
+      Integer originalLine = violation.getLine();
+      if (originalLine == null || originalLine == 0) {
+        // skip violation on whole file
+        // TODO Godin: we can show them on first line
+        continue;
+      }
+      String originalSourceLine = source.getLine(originalLine);
+      int originalHashCode = getHashCode(originalSourceLine);
+      boolean found = false;
+      // Violation can be reported on line, which doesn't exists in local copy
+      if (originalLine - 1 < hashCodes.length) {
+        found = hashCodes[originalLine - 1] == originalHashCode;
+      }
+      if (!found) {
+        for (int i = 0; i < hashCodes.length; i++) {
+          if (hashCodes[i] == originalHashCode) {
             if (found) {
-                result.add(violation);
+              // may be more than one match, but we take into account only first
+              LOG.warn("Found more than one match for violation");
+              break;
             }
+            violation.setLine(i + 1);
+            found = true;
+          }
         }
-        return result;
+      }
+      // skip violation, which doesn't match any line
+      if (found) {
+        result.add(violation);
+      }
     }
+    return result;
+  }
 
-    /**
-     * Returns violations from specified sonar for specified resource and source code.
-     *
-     * @param sonar       sonar
-     * @param resourceKey resource key
-     * @param lines       source code
-     * @return violations
-     */
-    public static List<Violation> getViolations(Sonar sonar, String resourceKey, String[] lines) {
-        LOG.info("Loading violations for {}", resourceKey);
-        ViolationQuery violationQuery = ViolationQuery.createForResource(resourceKey);
-        Collection<Violation> violations = sonar.findAll(violationQuery);
-        LOG.info("Loaded {} violations: {}", violations.size(), ViolationUtils.toString(violations));
-        SourceQuery sourceQuery = new SourceQuery(resourceKey);
-        Source source = sonar.find(sourceQuery);
-        return convertLines(violations, source, lines);
-    }
+  /**
+   * Returns violations from specified sonar for specified resource and source code.
+   *
+   * @param sonar       sonar
+   * @param resourceKey resource key
+   * @param lines       source code
+   * @return violations
+   */
+  public static List<Violation> getViolations(Sonar sonar, String resourceKey, String[] lines) {
+    LOG.info("Loading violations for {}", resourceKey);
+    ViolationQuery violationQuery = ViolationQuery.createForResource(resourceKey);
+    Collection<Violation> violations = sonar.findAll(violationQuery);
+    LOG.info("Loaded {} violations: {}", violations.size(), ViolationUtils.toString(violations));
+    SourceQuery sourceQuery = new SourceQuery(resourceKey);
+    Source source = sonar.find(sourceQuery);
+    return convertLines(violations, source, lines);
+  }
 
-    /**
-     * Returns violations from specified sonar for specified resource and source code.
-     *
-     * @param sonar       sonar
-     * @param resourceKey resource key
-     * @param text        source code
-     * @return violations
-     */
-    public static List<Violation> getViolations(Sonar sonar, String resourceKey, String text) {
-        String[] lines = text.split("\n");
-        return getViolations(sonar, resourceKey, lines);
-    }
+  /**
+   * Returns violations from specified sonar for specified resource and source code.
+   *
+   * @param sonar       sonar
+   * @param resourceKey resource key
+   * @param text        source code
+   * @return violations
+   */
+  public static List<Violation> getViolations(Sonar sonar, String resourceKey, String text) {
+    String[] lines = text.split("\n");
+    return getViolations(sonar, resourceKey, lines);
+  }
 
-    /**
-     * Hide utility-class constructor.
-     */
-    private ViolationsLoader() {
-    }
+  /**
+   * Hide utility-class constructor.
+   */
+  private ViolationsLoader() {
+  }
 }

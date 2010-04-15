@@ -6,6 +6,6 @@ import javax.swing.*;
  * @author Evgeny Mandrikov
  */
 public abstract class AbstractIconLoader {
-    public abstract Icon getIcon(String path);
+  public abstract Icon getIcon(String path);
 
 }

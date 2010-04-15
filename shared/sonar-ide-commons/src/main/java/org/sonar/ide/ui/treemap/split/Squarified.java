@@ -11,8 +11,8 @@ import java.util.List;
  * @author Evgeny Mandrikov
  */
 public class Squarified extends AbstractSplitStrategy {
-    @Override
-    protected void split(List<TreeMapNode> items, List<TreeMapNode> r1, List<TreeMapNode> r2) {
-        // TODO
-    }
+  @Override
+  protected void split(List<TreeMapNode> items, List<TreeMapNode> r1, List<TreeMapNode> r2) {
+    // TODO
+  }
 }

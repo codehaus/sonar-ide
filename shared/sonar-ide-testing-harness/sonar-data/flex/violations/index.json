@@ -1,15 +1,15 @@
 [
-    {
-        "message":"This variable name is too short (3 characters minimum, but 1 actually)",
-        "line":4,
-        "priority":"INFO",
-        "rule":{"key":"flexplugin:com.adobe.ac.pmd.rules.naming.TooShortVariableRule","name":"This variable name is too short ({0} characters minimum, but {1} actually)","category":"Maintainability"},
-        "resource":{"key":"org.sonar-ide.tests.flex:flex:[default].index","name":"index","scope":"FIL","qualifier":"CLA","language":"flex"}
-    },
-    {
-        "message":"The copyright header is missing in this file",
-        "priority":"INFO",
-        "rule":{"key":"flexplugin:com.adobe.ac.pmd.rules.style.CopyrightMissingRule","name":"The copyright header is missing in this file","category":"Usability"},
-        "resource":{"key":"org.sonar-ide.tests.flex:flex:[default].index","name":"index","scope":"FIL","qualifier":"CLA","language":"flex"}
-    }
+  {
+    "message":"This variable name is too short (3 characters minimum, but 1 actually)",
+    "line":4,
+    "priority":"INFO",
+    "rule":{"key":"flexplugin:com.adobe.ac.pmd.rules.naming.TooShortVariableRule","name":"This variable name is too short ({0} characters minimum, but {1} actually)","category":"Maintainability"},
+    "resource":{"key":"org.sonar-ide.tests.flex:flex:[default].index","name":"index","scope":"FIL","qualifier":"CLA","language":"flex"}
+  },
+  {
+    "message":"The copyright header is missing in this file",
+    "priority":"INFO",
+    "rule":{"key":"flexplugin:com.adobe.ac.pmd.rules.style.CopyrightMissingRule","name":"The copyright header is missing in this file","category":"Usability"},
+    "resource":{"key":"org.sonar-ide.tests.flex:flex:[default].index","name":"index","scope":"FIL","qualifier":"CLA","language":"flex"}
+  }
 ]

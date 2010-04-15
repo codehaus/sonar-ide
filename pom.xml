@@ -1,74 +1,74 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
-    <groupId>org.codehaus.sonar-ide</groupId>
-    <artifactId>aggregator</artifactId>
-    <version>0.1-SNAPSHOT</version>
-    <packaging>pom</packaging>
-    <name>Sonar IDEs</name>
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.codehaus.sonar-ide</groupId>
+  <artifactId>aggregator</artifactId>
+  <version>0.1-SNAPSHOT</version>
+  <packaging>pom</packaging>
+  <name>Sonar IDEs</name>
 
-    <profiles>
-        <profile>
-            <id>all</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
-            <modules>
-                <module>sonar-ide-parent</module>
+  <profiles>
+    <profile>
+      <id>all</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <modules>
+        <module>sonar-ide-parent</module>
 
-                <module>shared</module>
+        <module>shared</module>
 
-                <module>idea</module>
-                <module>netbeans</module>
-            </modules>
-        </profile>
+        <module>idea</module>
+        <module>netbeans</module>
+      </modules>
+    </profile>
 
-        <profile>
-            <id>stable</id>
-            <modules>
-                <module>sonar-ide-parent</module>
+    <profile>
+      <id>stable</id>
+      <modules>
+        <module>sonar-ide-parent</module>
 
-                <module>shared</module>
+        <module>shared</module>
 
-                <module>idea</module>
-                <module>netbeans</module>
+        <module>idea</module>
+        <module>netbeans</module>
 
-                <!-- We can't include eclipse plugin to stable profile due to SONAR-1265
-                <module>eclipse/org.sonar.ide.eclipse.parent</module>
-                -->
-            </modules>
-        </profile>
-    </profiles>
+        <!-- We can't include eclipse plugin to stable profile due to SONAR-1265
+        <module>eclipse/org.sonar.ide.eclipse.parent</module>
+        -->
+      </modules>
+    </profile>
+  </profiles>
 
-    <scm>
-        <connection>scm:svn:http://svn.codehaus.org/sonar-ide/trunk</connection>
-        <developerConnection>scm:svn:https://svn.codehaus.org/sonar-ide/trunk</developerConnection>
-        <url>http://svn.codehaus.org/sonar-ide</url>
-    </scm>
+  <scm>
+    <connection>scm:svn:http://svn.codehaus.org/sonar-ide/trunk</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/sonar-ide/trunk</developerConnection>
+    <url>http://svn.codehaus.org/sonar-ide</url>
+  </scm>
 
-    <ciManagement>
-        <system>Bamboo</system>
-        <url>http://bamboo.ci.codehaus.org/browse/SONARIDE</url>
-    </ciManagement>
+  <ciManagement>
+    <system>Bamboo</system>
+    <url>http://bamboo.ci.codehaus.org/browse/SONARIDE</url>
+  </ciManagement>
 
-    <issueManagement>
-        <system>jira</system>
-        <url>http://jira.codehaus.org/browse/SONARIDE</url>
-    </issueManagement>
+  <issueManagement>
+    <system>jira</system>
+    <url>http://jira.codehaus.org/browse/SONARIDE</url>
+  </issueManagement>
 
-    <distributionManagement>
-        <!-- disable accidental deployment -->
-        <repository>
-            <id>localhost</id>
-            <name>dumping to target</name>
-            <url>file://${basedir}/target/repo/</url>
-        </repository>
-        <snapshotRepository>
-            <id>localhost</id>
-            <name>dumping to target</name>
-            <url>file://${basedir}/target/repo/</url>
-        </snapshotRepository>
-    </distributionManagement>
+  <distributionManagement>
+    <!-- disable accidental deployment -->
+    <repository>
+      <id>localhost</id>
+      <name>dumping to target</name>
+      <url>file://${basedir}/target/repo/</url>
+    </repository>
+    <snapshotRepository>
+      <id>localhost</id>
+      <name>dumping to target</name>
+      <url>file://${basedir}/target/repo/</url>
+    </snapshotRepository>
+  </distributionManagement>
 
 </project>

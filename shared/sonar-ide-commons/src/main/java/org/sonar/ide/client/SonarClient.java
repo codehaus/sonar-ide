@@ -17,64 +17,64 @@ import java.util.List;
  * @author Evgeny Mandrikov
  */
 public class SonarClient extends Sonar {
-    private static final Logger LOG = LoggerFactory.getLogger(SonarClient.class);
+  private static final Logger LOG = LoggerFactory.getLogger(SonarClient.class);
 
-    private boolean available;
-    private int serverTrips = 0;
+  private boolean available;
+  private int serverTrips = 0;
 
-    public SonarClient(String host) {
-        this(host, "", "");
+  public SonarClient(String host) {
+    this(host, "", "");
+  }
+
+  public SonarClient(String host, String username, String password) {
+    super(ConnectorFactory.create(new Host(host, username, password)));
+    connect();
+  }
+
+  private void connect() {
+    try {
+      LOG.info("Connect");
+      ServerQuery serverQuery = new ServerQuery();
+      Server server = find(serverQuery);
+      available = checkVersion(server);
+      LOG.info(available ? "Connected to " + server.getId() + "(" + server.getVersion() + ")" : "Unable to connect");
+    } catch (ConnectionException e) {
+      available = false;
+      LOG.error("Unable to connect", e);
     }
+  }
 
-    public SonarClient(String host, String username, String password) {
-        super(ConnectorFactory.create(new Host(host, username, password)));
-        connect();
+  private boolean checkVersion(Server server) {
+    if (server == null) {
+      return false;
     }
+    String version = server.getVersion();
+    return version != null && version.startsWith("2.");
+  }
 
-    private void connect() {
-        try {
-            LOG.info("Connect");
-            ServerQuery serverQuery = new ServerQuery();
-            Server server = find(serverQuery);
-            available = checkVersion(server);
-            LOG.info(available ? "Connected to " + server.getId() + "(" + server.getVersion() + ")" : "Unable to connect");
-        } catch (ConnectionException e) {
-            available = false;
-            LOG.error("Unable to connect", e);
-        }
-    }
+  @Override
+  public <MODEL extends Model> MODEL find(Query<MODEL> query) {
+    serverTrips++;
+    LOG.info("find : {}", query.getUrl());
+    MODEL model = super.find(query);
+    LOG.info(model.toString());
+    return model;
+  }
 
-    private boolean checkVersion(Server server) {
-        if (server == null) {
-            return false;
-        }
-        String version = server.getVersion();
-        return version != null && version.startsWith("2.");
-    }
+  @Override
+  public <MODEL extends Model> List<MODEL> findAll(Query<MODEL> query) {
+    serverTrips++;
+    LOG.info("find : {}", query.getUrl());
+    List<MODEL> result = super.findAll(query);
+    LOG.info("Retrieved {} elements.", result.size());
+    return result;
+  }
 
-    @Override
-    public <MODEL extends Model> MODEL find(Query<MODEL> query) {
-        serverTrips++;
-        LOG.info("find : {}", query.getUrl());
-        MODEL model = super.find(query);
-        LOG.info(model.toString());
-        return model;
-    }
+  public int getServerTrips() {
+    return serverTrips;
+  }
 
-    @Override
-    public <MODEL extends Model> List<MODEL> findAll(Query<MODEL> query) {
-        serverTrips++;
-        LOG.info("find : {}", query.getUrl());
-        List<MODEL> result = super.findAll(query);
-        LOG.info("Retrieved {} elements.", result.size());
-        return result;
-    }
-
-    public int getServerTrips() {
-        return serverTrips;
-    }
-
-    public boolean isAvailable() {
-        return available;
-    }
+  public boolean isAvailable() {
+    return available;
+  }
 }

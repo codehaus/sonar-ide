@@ -9,20 +9,20 @@ import org.sonar.ide.api.Logs;
  */
 public class DefaultConsole implements ISonarConsole {
 
-    public void logRequest(String request) {
-        Logs.INFO.info(request);
-    }
+  public void logRequest(String request) {
+    Logs.INFO.info(request);
+  }
 
-    public void logResponse(String response) {
-        Logs.INFO.info(response);
-    }
+  public void logResponse(String response) {
+    Logs.INFO.info(response);
+  }
 
-    public void logError(String error) {
-        Logs.INFO.error(error);
-    }
+  public void logError(String error) {
+    Logs.INFO.error(error);
+  }
 
-    public void logError(String error, Throwable ex) {
-        Logs.INFO.error(error, ex);
-    }
+  public void logError(String error, Throwable ex) {
+    Logs.INFO.error(error, ex);
+  }
 
 }

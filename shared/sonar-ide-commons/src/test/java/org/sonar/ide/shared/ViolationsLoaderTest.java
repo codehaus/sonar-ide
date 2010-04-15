@@ -20,86 +20,86 @@ import static org.junit.Assert.assertThat;
  * @author Evgeny Mandrikov
  */
 public class ViolationsLoaderTest extends AbstractSonarIdeTest {
-    @BeforeClass
-    public static void init() throws Exception {
-        AbstractSonarIdeTest.init();
-    }
+  @BeforeClass
+  public static void init() throws Exception {
+    AbstractSonarIdeTest.init();
+  }
 
-    @AfterClass
-    public static void cleanup() throws Exception {
-        AbstractSonarIdeTest.cleanup();
-    }
+  @AfterClass
+  public static void cleanup() throws Exception {
+    AbstractSonarIdeTest.cleanup();
+  }
 
-    @Test
-    public void testGetHashCode() {
-        int hash1 = ViolationsLoader.getHashCode("int i;");
-        int hash2 = ViolationsLoader.getHashCode("int\ti;");
-        int hash3 = ViolationsLoader.getHashCode("int i;\n");
-        int hash4 = ViolationsLoader.getHashCode("int i;\r\n");
-        int hash5 = ViolationsLoader.getHashCode("int i;\r");
+  @Test
+  public void testGetHashCode() {
+    int hash1 = ViolationsLoader.getHashCode("int i;");
+    int hash2 = ViolationsLoader.getHashCode("int\ti;");
+    int hash3 = ViolationsLoader.getHashCode("int i;\n");
+    int hash4 = ViolationsLoader.getHashCode("int i;\r\n");
+    int hash5 = ViolationsLoader.getHashCode("int i;\r");
 
-        assertThat(hash2, equalTo(hash1));
-        assertThat(hash3, equalTo(hash1));
-        assertThat(hash4, equalTo(hash1));
-        assertThat(hash5, equalTo(hash1));
-    }
+    assertThat(hash2, equalTo(hash1));
+    assertThat(hash3, equalTo(hash1));
+    assertThat(hash4, equalTo(hash1));
+    assertThat(hash5, equalTo(hash1));
+  }
 
-    @Test(expected = ConnectionException.class)
-    public void testServerUnavailable() throws Exception {
-        ViolationsLoader.getViolations(Sonar.create("http://localhost:9999"), "test:test:[default].ClassOnDefaultPackage", "");
-    }
+  @Test(expected = ConnectionException.class)
+  public void testServerUnavailable() throws Exception {
+    ViolationsLoader.getViolations(Sonar.create("http://localhost:9999"), "test:test:[default].ClassOnDefaultPackage", "");
+  }
 
-    private List<Violation> getViolations(File project, String className) throws Exception {
-        return ViolationsLoader.getViolations(
-                getTestServer().getSonar(),
-                getProjectKey(project) + ":[default]." + className,
-                FileUtils.readFileToString(getProjectFile(project, "/src/main/java/" + className + ".java"))
-        );
-    }
+  private List<Violation> getViolations(File project, String className) throws Exception {
+    return ViolationsLoader.getViolations(
+        getTestServer().getSonar(),
+        getProjectKey(project) + ":[default]." + className,
+        FileUtils.readFileToString(getProjectFile(project, "/src/main/java/" + className + ".java"))
+    );
+  }
 
-    @Test
-    public void testGetViolations() throws Exception {
-        List<Violation> violations = getViolations(getProject("SimpleProject"), "ClassOnDefaultPackage");
+  @Test
+  public void testGetViolations() throws Exception {
+    List<Violation> violations = getViolations(getProject("SimpleProject"), "ClassOnDefaultPackage");
 
-        assertThat(violations.size(), is(4));
-        // TODO assert lines
-    }
+    assertThat(violations.size(), is(4));
+    // TODO assert lines
+  }
 
-    /**
-     * See <a href="http://jira.codehaus.org/browse/SONARIDE-52">SONARIDE-52</a>
-     */
-    @Test
-    public void testViolationOnFile() throws Exception {
-        List<Violation> violations = getViolations(getProject("SimpleProject"), "ViolationOnFile");
+  /**
+   * See <a href="http://jira.codehaus.org/browse/SONARIDE-52">SONARIDE-52</a>
+   */
+  @Test
+  public void testViolationOnFile() throws Exception {
+    List<Violation> violations = getViolations(getProject("SimpleProject"), "ViolationOnFile");
 
-        assertThat(violations.size(), is(0));
-    }
+    assertThat(violations.size(), is(0));
+  }
 
-    /**
-     * See <a href="http://jira.codehaus.org/browse/SONARIDE-13">SONARIDE-13</a>
-     */
-    @Test
-    public void testCodeChanged() throws Exception {
-        List<Violation> violations = getViolations(getProject("code-changed"), "CodeChanged");
+  /**
+   * See <a href="http://jira.codehaus.org/browse/SONARIDE-13">SONARIDE-13</a>
+   */
+  @Test
+  public void testCodeChanged() throws Exception {
+    List<Violation> violations = getViolations(getProject("code-changed"), "CodeChanged");
 
-        assertThat(violations.size(), is(1));
-        assertThat(violations.get(0).getLine(), is(4));
-    }
+    assertThat(violations.size(), is(1));
+    assertThat(violations.get(0).getLine(), is(4));
+  }
 
-    @Test
-    public void testLineForViolationDoesntExists() throws Exception {
-        List<Violation> violations = getViolations(getProject("code-changed"), "LineForViolationDoesntExists");
+  @Test
+  public void testLineForViolationDoesntExists() throws Exception {
+    List<Violation> violations = getViolations(getProject("code-changed"), "LineForViolationDoesntExists");
 
-        assertThat(violations.size(), is(1));
-        assertThat(violations.get(0).getLine(), is(2));
-    }
+    assertThat(violations.size(), is(1));
+    assertThat(violations.get(0).getLine(), is(2));
+  }
 
-    @Test
-    public void testMoreThanOneMatch() throws Exception {
-        List<Violation> violations = getViolations(getProject("code-changed"), "MoreThanOneMatch");
+  @Test
+  public void testMoreThanOneMatch() throws Exception {
+    List<Violation> violations = getViolations(getProject("code-changed"), "MoreThanOneMatch");
 
-        assertThat(violations.size(), is(2));
-        assertThat(violations.get(0).getLine(), is(4));
-        assertThat(violations.get(1).getLine(), is(4));
-    }
+    assertThat(violations.size(), is(2));
+    assertThat(violations.get(0).getLine(), is(4));
+    assertThat(violations.get(1).getLine(), is(4));
+  }
 }

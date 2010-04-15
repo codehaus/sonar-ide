@@ -9,11 +9,11 @@ import org.slf4j.LoggerFactory;
  * @author Evgeny Mandrikov
  */
 public final class Logs {
-    /**
-     * Hide utility-class constructor.
-     */
-    private Logs() {
-    }
+  /**
+   * Hide utility-class constructor.
+   */
+  private Logs() {
+  }
 
-    public static final Logger INFO = LoggerFactory.getLogger("org.sonar.INFO");
+  public static final Logger INFO = LoggerFactory.getLogger("org.sonar.INFO");
 }

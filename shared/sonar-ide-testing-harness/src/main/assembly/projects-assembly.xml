@@ -3,24 +3,24 @@
           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
           xsi:schemaLocation="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.1 http://maven.apache.org/xsd/assembly-1.1.1.xsd">
 
-    <includeBaseDirectory>false</includeBaseDirectory>
+  <includeBaseDirectory>false</includeBaseDirectory>
 
-    <id>projects</id>
+  <id>projects</id>
 
-    <formats>
-        <format>tar.gz</format>
-    </formats>
+  <formats>
+    <format>tar.gz</format>
+  </formats>
 
-    <fileSets>
-        <fileSet>
-            <directory>./projects</directory>
-            <outputDirectory>projects-source</outputDirectory>
-        </fileSet>
+  <fileSets>
+    <fileSet>
+      <directory>./projects</directory>
+      <outputDirectory>projects-source</outputDirectory>
+    </fileSet>
 
-        <fileSet>
-            <directory>./sonar-data</directory>
-            <outputDirectory>sonar-data</outputDirectory>
-        </fileSet>
-    </fileSets>
+    <fileSet>
+      <directory>./sonar-data</directory>
+      <outputDirectory>sonar-data</outputDirectory>
+    </fileSet>
+  </fileSets>
 
 </assembly>
