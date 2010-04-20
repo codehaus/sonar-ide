@@ -36,7 +36,7 @@ public class Violations extends AbstractSonarInspectionTool {
   @NotNull
   @Override
   public String getShortName() {
-    return "Sonar-Violations"; // TODO
+    return "Sonar.Violations"; // TODO
   }
 
   @Override

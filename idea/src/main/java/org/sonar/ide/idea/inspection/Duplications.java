@@ -93,7 +93,7 @@ public class Duplications extends AbstractSonarInspectionTool {
   @NotNull
   @Override
   public String getShortName() {
-    return "Sonar-Duplications"; // TODO
+    return "Sonar.Duplications"; // TODO
   }
 
   @Override

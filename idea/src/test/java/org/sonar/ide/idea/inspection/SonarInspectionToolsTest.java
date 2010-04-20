@@ -2,6 +2,7 @@ package org.sonar.ide.idea.inspection;
 
 import com.intellij.codeInspection.InspectionManager;
 import com.intellij.psi.PsiFile;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -9,6 +10,7 @@ import org.sonar.wsclient.Sonar;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.regex.Pattern;
 
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertThat;
@@ -39,6 +41,7 @@ public class SonarInspectionToolsTest {
     assertThat(inspectionTool.getGroupDisplayName(), is("Sonar"));
     assertThat(inspectionTool.getDisplayName(), notNullValue());
     assertThat(inspectionTool.getShortName(), notNullValue());
+    Assert.assertTrue(Pattern.matches("[a-zA-Z_0-9.]+", inspectionTool.getShortName())); // see SONARIDE-57
     assertThat(inspectionTool.getStaticDescription(), notNullValue());
   }
 

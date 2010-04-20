@@ -33,7 +33,7 @@ public class Dependencies extends AbstractSonarInspectionTool {
   @NotNull
   @Override
   public String getShortName() {
-    return "Sonar-Dependencies"; // TODO
+    return "Sonar.Dependencies"; // TODO
   }
 
   @Override
