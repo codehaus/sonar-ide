@@ -22,4 +22,8 @@
     <module>sonar-ide-testing-harness</module>
   </modules>
 
+  <properties>
+    <sonar.version>2.0.1</sonar.version>
+  </properties>
+
 </project>

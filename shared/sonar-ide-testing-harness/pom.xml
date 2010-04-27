@@ -17,10 +17,6 @@
     <!-- TODO -->
   </description>
 
-  <properties>
-    <sonar.version>2.0.1</sonar.version>
-  </properties>
-
   <dependencies>
     <dependency>
       <groupId>org.codehaus.sonar</groupId>
