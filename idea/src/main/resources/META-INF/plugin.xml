@@ -7,7 +7,11 @@
 
   <description><![CDATA[${project.description}]]></description>
 
-  <idea-version since-build="${idea.build}"/>
+  <!--
+  9.0.1 = build 93.94
+  9.0.2 = build 95.66
+  -->
+  <idea-version since-build="93.94"/>
 
   <vendor logo="/org/sonar/ide/images/sonarLogo.png" url="${plugin.vendor.url}" email="${plugin.vendor.email}">${plugin.vendor}</vendor>
 
