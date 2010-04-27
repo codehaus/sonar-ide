@@ -5,13 +5,12 @@
 
   <parent>
     <groupId>org.codehaus.sonar-ide</groupId>
-    <artifactId>sonar-ide-parent</artifactId>
-    <version>1</version>
-    <relativePath>../sonar-ide-parent/pom.xml</relativePath>
+    <artifactId>sonar-ide-shared-components</artifactId>
+    <version>0.1-SNAPSHOT</version>
+    <relativePath>../pom.xml</relativePath>
   </parent>
 
   <artifactId>sonar-ide-testing-harness</artifactId>
-  <version>0.1-SNAPSHOT</version>
 
   <name>Sonar IDEs :: Testing Harness</name>
   <description>
