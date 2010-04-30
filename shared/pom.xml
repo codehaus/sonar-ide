@@ -45,4 +45,16 @@
     <sonar.version>2.0.1</sonar.version>
   </properties>
 
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-release-plugin</artifactId>
+        <configuration>
+          <!-- Otherwise release will fail due to unresolved artifact -->
+          <preparationGoals>clean install</preparationGoals>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
 </project>
