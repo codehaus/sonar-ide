@@ -18,27 +18,18 @@
 
 package org.sonar.ide.shared;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.fail;
-
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.atomic.AtomicLong;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.sonar.ide.api.SonarIdeException;
 import org.sonar.ide.shared.DefaultServerManager.IServerSetListener;
 import org.sonar.wsclient.Host;
+
+import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicLong;
+
+import static org.junit.Assert.*;
 
 /**
  * @author Jérémie Lagarde
@@ -47,14 +38,19 @@ public class DefaultServerManagerTest {
 
   private static final String SERVER_CACHE_NAME = ".serverlist"; //$NON-NLS-1$
 
-  private String              path;
+  private String path;
 
   @Before
   public void init() throws Exception {
     path = System.getProperty("java.io.tmpdir");
+    /* FIXME Godin: Next line could break all tests.
+    Imagine that I'm using Hudson locally under another user.
+    Once created this file will be owned by another user, so it will be impossible to delete.
+    */
     File file = new File(path + File.separator + SERVER_CACHE_NAME);
-    if (file.exists())
+    if (file.exists()) {
       file.delete();
+    }
   }
 
   @Test
@@ -98,12 +94,14 @@ public class DefaultServerManagerTest {
   @Test
   public void testAddServerMulti() throws Exception {
     DefaultServerManager serverManager = new DefaultServerManager(path);
-    for (int i = 0; i < 5; i++)
+    for (int i = 0; i < 5; i++) {
       serverManager.addServer("http://localhost:900" + i, "jeremie", "test");
+    }
     List<String> result = read();
     assertEquals(5, result.size());
-    for (int i = 0; i < 5; i++)
+    for (int i = 0; i < 5; i++) {
       assertEquals("http://localhost:900" + i + "|jeremie|test", result.get(i));
+    }
   }
 
   @Test
@@ -121,8 +119,9 @@ public class DefaultServerManagerTest {
   @Test
   public void testFindServer() throws Exception {
     List<String> lines = new ArrayList<String>();
-    for (int i = 0; i < 5; i++)
+    for (int i = 0; i < 5; i++) {
       lines.add("http://localhost:900" + i + "|jeremie" + i + "|test" + i);
+    }
     write(lines);
     DefaultServerManager serverManager = new DefaultServerManager(path);
     Host host = serverManager.findServer("http://localhost:9002");
@@ -134,8 +133,9 @@ public class DefaultServerManagerTest {
   @Test
   public void testRemoveServer() {
     List<String> lines = new ArrayList<String>();
-    for (int i = 0; i < 5; i++)
+    for (int i = 0; i < 5; i++) {
       lines.add("http://localhost:900" + i + "|jeremie" + i + "|test" + i);
+    }
     write(lines);
     DefaultServerManager serverManager = new DefaultServerManager(path);
     Host host = serverManager.findServer("http://localhost:9002");
@@ -152,8 +152,9 @@ public class DefaultServerManagerTest {
     for (int i = 0; i < 3; i++) {
       serverManager.addServerSetListener(new IServerSetListener() {
         public void serverSetChanged(int type, List<Host> serverList) {
-          if (IServerSetListener.SERVER_ADDED == type)
+          if (IServerSetListener.SERVER_ADDED == type) {
             count.incrementAndGet();
+          }
         }
       });
     }
@@ -169,8 +170,9 @@ public class DefaultServerManagerTest {
     for (int i = 0; i < 3; i++) {
       serverManager.addServerSetListener(new IServerSetListener() {
         public void serverSetChanged(int type, List<Host> serverList) {
-          if (IServerSetListener.SERVER_REMOVED == type)
+          if (IServerSetListener.SERVER_REMOVED == type) {
             count.incrementAndGet();
+          }
         }
       });
     }
