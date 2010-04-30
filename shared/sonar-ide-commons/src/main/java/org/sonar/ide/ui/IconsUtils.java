@@ -83,6 +83,9 @@ public final class IconsUtils {
       case 1:
         sb.append("-green");
         break;
+      default:
+        // WTF?
+        break;
     }
     if (small) {
       sb.append("-small");

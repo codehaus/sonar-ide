@@ -32,15 +32,16 @@ public class ConsoleManager {
   }
 
   public static ISonarConsole getConsole() {
-    if (instance == null)
+    if (instance == null) {
       return SILENT_CONOLE;
-
+    }
     return instance.create();
   }
 
   protected ISonarConsole create() {
-    if (console == null)
+    if (console == null) {
       console = new DefaultConsole();
+    }
     return console;
   }
 

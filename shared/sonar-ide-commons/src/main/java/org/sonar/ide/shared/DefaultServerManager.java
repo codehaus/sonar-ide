@@ -18,16 +18,6 @@
 
 package org.sonar.ide.shared;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.commons.lang.StringUtils;
 import org.sonar.ide.api.Logs;
 import org.sonar.ide.api.SonarIdeException;
@@ -35,15 +25,19 @@ import org.sonar.ide.client.SonarClient;
 import org.sonar.wsclient.Host;
 import org.sonar.wsclient.Sonar;
 
+import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author Jérémie Lagarde
  */
 public class DefaultServerManager {
 
-  private static final String     SERVER_CACHE_NAME = ".serverlist";        //$NON-NLS-1$
+  private static final String SERVER_CACHE_NAME = ".serverlist";        //$NON-NLS-1$
 
-  protected final ArrayList<Host> serverList        = new ArrayList<Host>();
-  protected String                path;
+  protected final ArrayList<Host> serverList = new ArrayList<Host>();
+  protected String path;
 
   public DefaultServerManager() {
     this(null);
@@ -121,8 +115,9 @@ public class DefaultServerManager {
   }
 
   protected File getServerListFile() {
-    if (StringUtils.isBlank(path))
+    if (StringUtils.isBlank(path)) {
       path = System.getProperty("user.home");
+    }
     return new File(path + File.separator + SERVER_CACHE_NAME);
   }
 
@@ -165,15 +160,17 @@ public class DefaultServerManager {
     try {
       fis = new FileInputStream(serverListFile);
       reader = new BufferedReader(new InputStreamReader(fis));
-      String line = null;
+      String line;
       do {
         line = reader.readLine();
-        if (line != null && line.trim().length() > 0) {
+        if (StringUtils.isNotBlank(line)) {
           String[] infos = StringUtils.split(line, "|");
-          if (infos.length == 1)
+          if (infos.length == 1) {
             serverList.add(new Host(infos[0]));
-          if (infos.length == 3)
+          }
+          if (infos.length == 3) {
             serverList.add(new Host(infos[0], infos[1], infos[2]));
+          }
         }
       } while (line != null);
     } finally {
@@ -187,8 +184,8 @@ public class DefaultServerManager {
   }
 
   public interface IServerSetListener {
-    public static final int SERVER_ADDED   = 0;
-    public static final int SERVER_EDIT    = 1;
+    public static final int SERVER_ADDED = 0;
+    public static final int SERVER_EDIT = 1;
     public static final int SERVER_REMOVED = 2;
 
     public void serverSetChanged(int type, List<Host> serverList);
