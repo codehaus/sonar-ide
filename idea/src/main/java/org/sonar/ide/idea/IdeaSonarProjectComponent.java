@@ -80,7 +80,8 @@ public class IdeaSonarProjectComponent extends AbstractConfigurableComponent {
 
   private void initPlugin() {
     getLog().info("Init plugin");
-    PluginDownloader.checkUpdate();
+    // See SONARIDE-12
+//    PluginDownloader.checkUpdate();
     EditorFactory.getInstance().addEditorFactoryListener(new SonarEditorListener());
   }
 
