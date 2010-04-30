@@ -23,8 +23,12 @@
   <scm>
     <connection>scm:svn:http://svn.codehaus.org/sonar-ide/trunk/idea</connection>
     <developerConnection>scm:svn:https://svn.codehaus.org/sonar-ide/trunk/idea</developerConnection>
-    <url>http://svn.codehaus.org/sonar-ide</url>
+    <url>http://svn.codehaus.org/sonar-ide/trunk/idea</url>
   </scm>
+  <issueManagement>
+    <system>jira</system>
+    <url>http://jira.codehaus.org/browse/SONARIDE/component/14314</url>
+  </issueManagement>
 
   <properties>
     <!-- maven.build.timestamp since 2.1.0-M1 -->
