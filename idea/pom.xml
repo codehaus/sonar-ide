@@ -19,6 +19,14 @@
   <name>Sonar IDEs :: IntelliJ IDEA Plugin</name>
   <description>An IntelliJ IDEA Plugin for Sonar.</description>
   <url>http://sonar-ide.codehaus.org</url>
+  <!-- TODO Godin: should be in parent -->
+  <licenses>
+    <license>
+      <name>GNU Lesser General Public License (LGPL), v.3</name>
+      <url>http://www.gnu.org/licenses/lgpl.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
 
   <scm>
     <connection>scm:svn:http://svn.codehaus.org/sonar-ide/trunk/idea</connection>
