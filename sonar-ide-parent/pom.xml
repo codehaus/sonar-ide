@@ -97,7 +97,8 @@
       <id>sonar-ide</id>
       <name>Sonar IDEs snapshot repository</name>
       <uniqueVersion>false</uniqueVersion>
-      <url>dav:https://dav.codehaus.org/snapshots.repository/sonar-ide</url>
+      <url>${sonar-ide.snapshots}</url>
+      <!--url>dav:https://dav.codehaus.org/snapshots.repository/sonar-ide</url-->
     </snapshotRepository>
     <!-- Site omitted
     <site>
