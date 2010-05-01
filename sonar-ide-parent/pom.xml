@@ -14,7 +14,7 @@
   <url>http://sonar-ide.codehaus.org</url>
   <inceptionYear>2010</inceptionYear>
   <organization>
-    <name>Sonar IDE</name>
+    <name>Evgeny Mandrikov</name>
     <url>http://sonar-ide.codehaus.org</url>
   </organization>
   <licenses>
@@ -96,6 +96,11 @@
     <snapshotRepository>
       <id>sonar-ide</id>
       <name>Sonar IDEs snapshot repository</name>
+      <!--
+      Quote from https://cwiki.apache.org/MAVEN/maven-3x-compatibility-notes.html :
+      uniqueVersion for a distribution repository has no effect in Maven version 3.x,
+      snapshot artifacts will always be deployed using a timestamped version.
+      -->
       <uniqueVersion>false</uniqueVersion>
       <url>${sonar-ide.snapshots}</url>
       <!--url>dav:https://dav.codehaus.org/snapshots.repository/sonar-ide</url-->
@@ -181,8 +186,8 @@
       <extension>
         <!-- For Maven 3 -->
         <groupId>org.apache.maven.wagon</groupId>
-        <artifactId>wagon-webdav</artifactId>
-        <version>1.0-beta-2</version>
+        <artifactId>wagon-webdav-jackrabbit</artifactId>
+        <version>1.0-beta-6</version>
       </extension>
     </extensions>
 

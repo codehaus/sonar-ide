@@ -193,7 +193,7 @@
                   <serverId>sonar-ide</serverId>
                   <fromDir>${project.basedir}/target</fromDir>
                   <includes>${project.build.finalName}.zip</includes>
-                  <url>${sonar-ide.site}</url>
+                  <url>${sonar-ide.site}/idea</url>
                 </configuration>
               </execution>
             </executions>
