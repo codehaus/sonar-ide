@@ -20,6 +20,8 @@
 
   <properties>
     <netbeans.version>RELEASE68</netbeans.version>
+
+    <sonar-ide-commons.version>0.1</sonar-ide-commons.version>
   </properties>
 
   <build>
@@ -57,7 +59,7 @@
     <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>sonar-ide-commons</artifactId>
-      <version>${project.version}</version>
+      <version>${sonar-ide-commons.version}</version>
     </dependency>
 
     <dependency>
@@ -143,7 +145,7 @@
     <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>sonar-ide-commons</artifactId>
-      <version>${project.version}</version>
+      <version>${sonar-ide-commons.version}</version>
       <type>test-jar</type>
       <scope>test</scope>
     </dependency>
