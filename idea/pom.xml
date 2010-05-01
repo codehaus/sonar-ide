@@ -10,7 +10,7 @@
     <relativePath>../sonar-ide-parent/pom.xml</relativePath>
   </parent>
 
-  <!-- TODO Godin: groupId should be org.codehaus.sonar-ide.idea -->
+  <!-- TODO Godin: groupId should be org.codehaus.sonar-ide.idea ? -->
   <groupId>org.codehaus.sonar-ide</groupId>
   <artifactId>idea-sonar-plugin</artifactId>
   <version>0.1-SNAPSHOT</version>
@@ -49,13 +49,15 @@
     <plugin.vendor>${project.organization.name}</plugin.vendor>
     <plugin.vendor.url>${project.organization.url}</plugin.vendor.url>
     <plugin.vendor.email>user@sonar.codehaus.org</plugin.vendor.email>
+
+    <sonar-ide-commons.version>0.1</sonar-ide-commons.version>
   </properties>
 
   <dependencies>
     <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>sonar-ide-commons</artifactId>
-      <version>${project.version}</version>
+      <version>${sonar-ide-commons.version}</version>
     </dependency>
 
     <dependency>
@@ -105,7 +107,7 @@
     <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>sonar-ide-commons</artifactId>
-      <version>${project.version}</version>
+      <version>${sonar-ide-commons.version}</version>
       <type>test-jar</type>
       <scope>test</scope>
     </dependency>
@@ -148,6 +150,8 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-assembly-plugin</artifactId>
+        <!-- See http://jira.codehaus.org/browse/MASSEMBLY-449 -->
+        <version>2.2-beta-3</version>
         <executions>
           <execution>
             <id>distribution-package</id>

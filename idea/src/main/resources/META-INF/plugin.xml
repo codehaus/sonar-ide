@@ -3,7 +3,7 @@
   <name>Sonar</name>
 
   <id>org.sonar.ide.idea</id>
-  <version>${project.version}, ${plugin.timestamp}</version>
+  <version>${project.version}</version>
 
   <description><![CDATA[${project.description}]]></description>
 
