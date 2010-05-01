@@ -191,4 +191,39 @@
     </developer>
   </developers>
 
+  <profiles>
+    <profile>
+      <id>publish-site</id>
+      <activation>
+        <property>
+          <name>sonar-ide.site</name>
+        </property>
+      </activation>
+      <build>
+        <!-- TODO Godin: run nbm:autoupdate before -->
+        <plugins>
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>wagon-maven-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>publish-site</id>
+                <phase>deploy</phase>
+                <goals>
+                  <goal>upload</goal>
+                </goals>
+                <configuration>
+                  <serverId>sonar-ide</serverId>
+                  <fromDir>${project.basedir}/target/netbeans_site</fromDir>
+                  <includes>**</includes>
+                  <url>${sonar-ide.site}/netbeans</url>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
+
 </project>
