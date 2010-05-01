@@ -117,8 +117,6 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-dependency-plugin</artifactId>
-        <!-- TODO Godin: should be in parent -->
-        <version>2.1</version>
         <executions>
           <execution>
             <id>extract-projects</id>

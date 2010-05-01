@@ -75,7 +75,7 @@
             <configuration>
               <descriptors>
                 <descriptor>
-                  ${pom.basedir}/src/main/assembly/projects-assembly.xml
+                  ${project.basedir}/src/main/assembly/projects-assembly.xml
                 </descriptor>
               </descriptors>
             </configuration>
