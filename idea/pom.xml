@@ -12,7 +12,7 @@
   <!-- TODO Godin: groupId should be org.codehaus.sonar-ide.idea ? -->
   <groupId>org.codehaus.sonar-ide</groupId>
   <artifactId>idea-sonar-plugin</artifactId>
-  <version>0.1</version>
+  <version>0.2-SNAPSHOT</version>
   <packaging>jar</packaging>
 
   <name>Sonar IDEs :: IntelliJ IDEA Plugin</name>
@@ -28,9 +28,9 @@
   </licenses>
 
   <scm>
-    <connection>scm:svn:http://svn.codehaus.org/sonar-ide/tags/idea-sonar-plugin-0.1</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/sonar-ide/tags/idea-sonar-plugin-0.1</developerConnection>
-    <url>http://svn.codehaus.org/sonar-ide/tags/idea-sonar-plugin-0.1</url>
+    <connection>scm:svn:http://svn.codehaus.org/sonar-ide/trunk/idea</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/sonar-ide/trunk/idea</developerConnection>
+    <url>http://svn.codehaus.org/sonar-ide/trunk/idea</url>
   </scm>
   <issueManagement>
     <system>jira</system>
