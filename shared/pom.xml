@@ -19,6 +19,7 @@
   <modules>
     <module>sonar-ide-commons</module>
     <module>sonar-ide-testing-harness</module>
+    <module>sonar-ide-swing-ui</module>
   </modules>
 
   <scm>

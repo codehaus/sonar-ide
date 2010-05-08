@@ -82,8 +82,9 @@ public class DefaultServerManager {
   }
 
   public Host createServer(String url) {
-    if (StringUtils.isBlank(url))
+    if (StringUtils.isBlank(url)) {
       return null;
+    }
     Host host = findServer(url);
     if (host == null) {
       host = new Host(url);
