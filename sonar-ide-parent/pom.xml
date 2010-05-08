@@ -122,6 +122,10 @@
 
     <slf4j.version>1.5.11</slf4j.version>
     <logback.version>0.9.18</logback.version>
+
+    <!-- disable accidental deployment -->
+    <sonar-ide.site>dav:http://localhost</sonar-ide.site>
+    <sonar-ide.snapshots>http://localhost</sonar-ide.snapshots>
   </properties>
 
   <dependencyManagement>
