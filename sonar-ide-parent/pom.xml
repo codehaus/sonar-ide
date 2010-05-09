@@ -38,6 +38,17 @@
 
   <mailingLists>
     <mailingList>
+      <name>Sonar Announcements List</name>
+      <subscribe>http://xircles.codehaus.org/lists/announce@sonar.codehaus.org/subscribe</subscribe>
+      <unsubscribe>http://xircles.codehaus.org/lists/announce@sonar.codehaus.org/unsubscribe</unsubscribe>
+      <post>announce@sonar.codehaus.org</post>
+      <archive>http://archive.codehaus.org/lists/org.codehaus.sonar.announce</archive>
+      <otherArchives>
+        <otherArchive>http://markmail.org/list/org.codehaus.sonar.announce</otherArchive>
+        <otherArchive>http://sonar-announce.439433.n3.nabble.com/</otherArchive>
+      </otherArchives>
+    </mailingList>
+    <mailingList>
       <name>Sonar Users List</name>
       <subscribe>http://xircles.codehaus.org/lists/user@sonar.codehaus.org/subscribe</subscribe>
       <unsubscribe>http://xircles.codehaus.org/lists/user@sonar.codehaus.org/unsubscribe</unsubscribe>
@@ -56,7 +67,7 @@
       <archive>http://archive.codehaus.org/lists/org.codehaus.sonar.dev</archive>
       <otherArchives>
         <otherArchive>http://markmail.org/list/org.codehaus.sonar.dev</otherArchive>
-        <otherArchive>http://n2.nabble.com/Sonar-dev-f2602134.html</otherArchive>
+        <otherArchive>http://sonar-developers.2602151.n2.nabble.com/</otherArchive>
       </otherArchives>
     </mailingList>
     <mailingList>
@@ -69,10 +80,6 @@
       </otherArchives>
     </mailingList>
   </mailingLists>
-
-  <prerequisites>
-    <maven>${maven.min.version}</maven>
-  </prerequisites>
 
   <scm>
     <connection>scm:svn:http://svn.codehaus.org/sonar-ide/trunk/sonar-ide-parent</connection>
