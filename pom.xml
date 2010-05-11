@@ -115,4 +115,35 @@
       <url>file://${basedir}/target/repo/</url>
     </snapshotRepository>
   </distributionManagement>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>com.mycila.maven-license-plugin</groupId>
+        <artifactId>maven-license-plugin</artifactId>
+        <version>1.6.0</version>
+        <configuration>
+          <aggregate>true</aggregate>
+          <header>${project.basedir}/LICENSE.txt</header>
+          <includes>
+            <include>**/src/main/java/**</include>
+            <include>**/src/test/java/**</include>
+            <!-- TODO include Eclipse sources -->
+          </includes>
+          <excludes>
+            <!-- Exclude test projects -->
+            <exclude>**/projects/**</exclude>
+          </excludes>
+          <mapping>
+            <java>SLASHSTAR_STYLE</java>
+          </mapping>
+          <properties>
+            <year>${project.inceptionYear}</year>
+            <name>${project.organization.name}</name>
+          </properties>
+          <encoding>${project.build.sourceEncoding}</encoding>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
 </project>
