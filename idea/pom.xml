@@ -154,13 +154,13 @@
             <id>distribution-package</id>
             <phase>package</phase>
             <goals>
-              <goal>attached</goal>
+              <goal>assembly</goal>
             </goals>
             <configuration>
+              <!-- Should be uploaded only to dist -->
+              <attach>false</attach>
               <descriptors>
-                <descriptor>
-                  ${project.basedir}/src/main/assembly/idea-plugin-assembly.xml
-                </descriptor>
+                <descriptor>${project.basedir}/src/main/assembly/idea-plugin-assembly.xml</descriptor>
               </descriptors>
             </configuration>
           </execution>
