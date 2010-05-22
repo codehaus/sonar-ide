@@ -57,6 +57,23 @@ public abstract class AbstractResourceUtils<MODEL> {
   public static final String ROOT = "[root]";
 
   /**
+   * @param groupId groupId
+   * @param artifactId artifactId
+   * @param branch branch
+   * @return project key or null, if unable to determine
+   */
+  public final String getProjectKey(String groupId, String artifactId, String branch) {
+     if (StringUtils.isBlank(groupId) || StringUtils.isBlank(artifactId)) {
+      return null;
+    }
+    StringBuilder sb = new StringBuilder().append(groupId).append(DELIMITER).append(artifactId);
+    if (StringUtils.isNotBlank(branch)) {
+      sb.append(DELIMITER).append(branch);
+    }
+    return sb.toString();
+  }
+
+  /**
    * Returns project key for specified groupId and artifactId.
    *
    * @param groupId    groupId
@@ -64,10 +81,7 @@ public abstract class AbstractResourceUtils<MODEL> {
    * @return project key or null, if unable to determine
    */
   public final String getProjectKey(String groupId, String artifactId) {
-    if (StringUtils.isBlank(groupId) || StringUtils.isBlank(artifactId)) {
-      return null;
-    }
-    return groupId + DELIMITER + artifactId;
+    return getProjectKey(groupId, artifactId, null);
   }
 
   /**
