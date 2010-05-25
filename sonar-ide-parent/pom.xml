@@ -267,11 +267,6 @@
           <version>2.1</version>
         </plugin>
         <plugin>
-          <groupId>com.mycila.maven-license-plugin</groupId>
-          <artifactId>maven-license-plugin</artifactId>
-          <version>1.6.1</version>
-        </plugin>
-        <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-release-plugin</artifactId>
           <version>2.0</version>
@@ -401,8 +396,7 @@
           <linksource>true</linksource>
           <reportOutputDirectory>${project.reporting.outputDirectory}/${project.version}/apidocs</reportOutputDirectory>
           <!-- NOTE: The detection is based on the default Maven conventions, i.e.: ${project.url}/apidocs. -->
-          <!-- See http://jira.codehaus.org/browse/MJAVADOC-273 -->
-          <detectLinks>false</detectLinks>
+          <detectLinks>true</detectLinks>
         </configuration>
       </plugin>
       <plugin>
@@ -412,25 +406,6 @@
           <inputEncoding>${project.build.sourceEncoding}</inputEncoding>
           <linkJavadoc>true</linkJavadoc>
           <javadocDir>${project.reporting.outputDirectory}/${project.version}/apidocs</javadocDir>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>com.mycila.maven-license-plugin</groupId>
-        <artifactId>maven-license-plugin</artifactId>
-        <configuration>
-          <header>src/license-header.txt</header>
-          <includes>
-            <include>src/main/java/**</include>
-            <include>src/test/java/**</include>
-          </includes>
-          <mapping>
-            <java>SLASHSTAR_STYLE</java>
-          </mapping>
-          <properties>
-            <year>${project.inceptionYear}</year>
-            <name>${project.organization.name}</name>
-          </properties>
-          <encoding>${project.build.sourceEncoding}</encoding>
         </configuration>
       </plugin>
     </plugins>
