@@ -18,6 +18,7 @@
 
 package org.sonar.ide.shared;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.sonar.ide.api.SonarIdeException;
@@ -36,7 +37,7 @@ import static org.junit.Assert.*;
  */
 public class DefaultServerManagerTest {
 
-  private static final String SERVER_CACHE_NAME = ".serverlist"; //$NON-NLS-1$
+  private static final String SERVER_CACHE_NAME = ".serverlist2"; //$NON-NLS-1$
 
   private String path;
 
@@ -47,6 +48,14 @@ public class DefaultServerManagerTest {
     Imagine that I'm using Hudson locally under another user.
     Once created this file will be owned by another user, so it will be impossible to delete.
     */
+    File file = new File(path + File.separator + SERVER_CACHE_NAME);
+    if (file.exists()) {
+      file.delete();
+    }
+  }
+
+  @After
+  public void tearDown() {
     File file = new File(path + File.separator + SERVER_CACHE_NAME);
     if (file.exists()) {
       file.delete();
