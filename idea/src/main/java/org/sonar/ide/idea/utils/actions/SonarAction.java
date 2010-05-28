@@ -22,7 +22,6 @@ import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.Presentation;
 import com.intellij.openapi.project.DumbAware;
-import org.jetbrains.idea.maven.utils.actions.MavenActionUtil;
 
 /**
  * @author Evgeny Mandrikov
@@ -37,7 +36,7 @@ public abstract class SonarAction extends AnAction implements DumbAware {
   }
 
   protected boolean isAvailable(AnActionEvent event) {
-    return MavenActionUtil.getProject(event) != null;
+    return SonarActionUtils.getProject(event) != null;
   }
 
   protected boolean isVisible(AnActionEvent event) {

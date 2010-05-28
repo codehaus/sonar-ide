@@ -20,10 +20,7 @@ package org.sonar.ide.idea;
 
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.module.ModuleComponent;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.vfs.VirtualFile;
-import org.jetbrains.idea.maven.project.MavenProject;
-import org.jetbrains.idea.maven.project.MavenProjectsManager;
+import org.sonar.ide.idea.maven.SonarMavenUtils;
 import org.sonar.ide.ui.AbstractConfigPanel;
 
 import javax.swing.*;
@@ -44,18 +41,8 @@ public class IdeaSonarModuleComponent extends AbstractConfigurableComponent impl
 
   @Override
   protected AbstractConfigPanel initConfigPanel() {
-    Project project = module.getProject();
-    VirtualFile moduleFile = module.getModuleFile();
-    getLog().info("Project: " + project);
-    getLog().info("Module File: " + moduleFile);
-    boolean isMavenModule = false;
-    if (moduleFile != null) {
-      MavenProjectsManager mavenProjectsManager = MavenProjectsManager.getInstance(project);
-      MavenProject mavenProject = mavenProjectsManager.findContainingProject(moduleFile);
-      isMavenModule = mavenProject != null;
-    }
-    // TODO http://jira.codehaus.org/browse/SONARIDE-38
-    return new MyConfigPanel(isMavenModule ?
+    // TODO SONARIDE-38
+    return new MyConfigPanel(SonarMavenUtils.isMavenModule(module) ?
         "This is a Maven module, so Sonar will be enabled for this module." :
         "Currently non-Maven modules not supported, so Sonar will be disabled for this module."
     );

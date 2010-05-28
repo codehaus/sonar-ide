@@ -37,6 +37,7 @@ public class SonarActionGroup extends DefaultActionGroup {
   }
 
   protected boolean isAvailable(AnActionEvent event) {
-    return MavenActionUtil.getProject(event) != null && !MavenActionUtil.getMavenProjects(event).isEmpty();
+    // TODO SONARIDE-38
+    return SonarActionUtils.getProject(event) != null && !MavenActionUtil.getMavenProjects(event).isEmpty();
   }
 }

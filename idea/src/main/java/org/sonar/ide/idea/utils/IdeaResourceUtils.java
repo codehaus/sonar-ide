@@ -76,6 +76,7 @@ public class IdeaResourceUtils extends AbstractResourceUtils<PsiFile> {
   @Nullable
   @Override
   public String getProjectKey(PsiFile file) {
+    // TODO SONARIDE-38
     MavenProject mavenProject = getMavenProject(file);
     return getProjectKey(mavenProject);
   }

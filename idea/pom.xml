@@ -49,13 +49,19 @@
     <plugin.vendor.url>${project.organization.url}</plugin.vendor.url>
     <plugin.vendor.email>user@sonar.codehaus.org</plugin.vendor.email>
 
-    <sonar-ide-commons.version>0.1</sonar-ide-commons.version>
+    <sonar-ide-commons.version>0.2-SNAPSHOT</sonar-ide-commons.version>
   </properties>
 
   <dependencies>
     <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>sonar-ide-commons</artifactId>
+      <version>${sonar-ide-commons.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>sonar-ide-swing-ui</artifactId>
       <version>${sonar-ide-commons.version}</version>
     </dependency>
 
