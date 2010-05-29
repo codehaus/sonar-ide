@@ -21,8 +21,6 @@ package org.sonar.ide.shared;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.commons.lang.StringUtils;
-
 /**
  * @author Jérémie Lagarde
  */
@@ -31,6 +29,7 @@ public abstract class AbstractProjectProperties<MODEL> {
   private static final String                           P_SONAR_SERVER_URL   = "sonarServerUrl";
   private static final String                           P_PROJECT_GROUPID    = "projectGroupId";
   private static final String                           P_PROJECT_ARTIFACTID = "projectArtifactId";
+  private static final String                           P_PROJECT_BRANCH     = "projectBranch";
 
   private static Map<String, AbstractProjectProperties> projectPropertiesMap = new HashMap<String, AbstractProjectProperties>();
 
@@ -67,6 +66,14 @@ public abstract class AbstractProjectProperties<MODEL> {
 
   public void setArtifactId(String artifactId) {
     setProperty(P_PROJECT_ARTIFACTID, artifactId);
+  }
+
+  public String getBranch() {
+    return getProperty(P_PROJECT_BRANCH, "");
+  }
+
+  public void setBranch(String branch) {
+    setProperty(P_PROJECT_BRANCH, branch);
   }
 
   protected MODEL getProject() {
