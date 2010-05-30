@@ -10,6 +10,7 @@
 
   <artifactId>module_a</artifactId>
   <packaging>pom</packaging>
+
   <name>Module A</name>
 
   <modules>

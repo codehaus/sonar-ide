@@ -4,7 +4,8 @@
 
   <groupId>org.sonar-ide.tests.hello-world</groupId>
   <artifactId>hello-world</artifactId>
-  <packaging>jar</packaging>
+  <version>0.1-SNAPSHOT</version>
+
   <name>Hello world</name>
 
 </project>

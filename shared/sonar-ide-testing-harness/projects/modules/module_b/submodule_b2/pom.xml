@@ -9,8 +9,7 @@
   </parent>
 
   <artifactId>submodule_b2</artifactId>
-  <packaging>jar</packaging>
+
   <name>Sub-module B2</name>
 
 </project>
-    
