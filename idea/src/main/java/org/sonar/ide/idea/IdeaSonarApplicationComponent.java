@@ -19,35 +19,37 @@
 package org.sonar.ide.idea;
 
 import com.intellij.codeInspection.InspectionToolProvider;
+import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.components.ApplicationComponent;
-import org.jetbrains.annotations.NotNull;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.sonar.ide.idea.inspection.Duplications;
 import org.sonar.ide.idea.inspection.Violations;
+import org.sonar.ide.ui.AbstractConfigPanel;
+
+import java.util.Properties;
 
 /**
  * Per-application plugin component.
  *
  * @author Evgeny Mandrikov
  */
-public class IdeaSonarApplicationComponent implements ApplicationComponent, InspectionToolProvider {
-  private static final Logger LOG = LoggerFactory.getLogger(IdeaSonarApplicationComponent.class);
+public class IdeaSonarApplicationComponent extends AbstractConfigurableComponent implements ApplicationComponent, InspectionToolProvider {
 
-  @NotNull
-  @Override
-  public String getComponentName() {
-    return getClass().getSimpleName();
+  /**
+   * @return application component
+   */
+  public static IdeaSonarApplicationComponent getInstance() {
+    return ApplicationManager.getApplication().getComponent(IdeaSonarApplicationComponent.class);
   }
 
   @Override
-  public void initComponent() {
-    LOG.info("Init component");
+  protected AbstractConfigPanel initConfigPanel() {
+    // TODO
+    return new MyConfigPanel();
   }
 
   @Override
-  public void disposeComponent() {
-    LOG.info("Dispose component");
+  protected void saveConfig(AbstractConfigPanel configPanel) {
+    // TODO
   }
 
   @Override
@@ -57,5 +59,19 @@ public class IdeaSonarApplicationComponent implements ApplicationComponent, Insp
         Duplications.class,
 //        Dependencies.class
     };
+  }
+
+  class MyConfigPanel extends AbstractConfigPanel {
+    @Override
+    public boolean isModified() {
+      // TODO
+      return false;
+    }
+
+    @Override
+    public Properties getProperties() {
+      // TODO
+      return null;
+    }
   }
 }

@@ -18,6 +18,7 @@
 
 package org.sonar.ide.idea;
 
+import com.intellij.openapi.components.BaseComponent;
 import com.intellij.openapi.components.ProjectComponent;
 import com.intellij.openapi.module.ModuleComponent;
 import com.intellij.openapi.options.Configurable;
@@ -34,26 +35,11 @@ import javax.swing.*;
 /**
  * @author Evgeny Mandrikov
  */
-public abstract class AbstractConfigurableComponent implements Configurable, ProjectComponent, ModuleComponent {
+public abstract class AbstractConfigurableComponent implements Configurable, BaseComponent {
   private AbstractConfigPanel configPanel;
 
   protected Logger getLog() {
     return LoggerFactory.getLogger(getClass());
-  }
-
-  @Override
-  public void projectOpened() {
-    getLog().debug("Project opened");
-  }
-
-  @Override
-  public void projectClosed() {
-    getLog().debug("Project closed");
-  }
-
-  @Override
-  public void moduleAdded() {
-    getLog().debug("Module added");
   }
 
   @Override
@@ -90,7 +76,7 @@ public abstract class AbstractConfigurableComponent implements Configurable, Pro
 
   @Override
   public JComponent createComponent() {
-    getLog().debug("Create component");
+    getLog().debug("Create UI component");
     if (configPanel == null) {
       configPanel = initConfigPanel();
     }
@@ -100,13 +86,13 @@ public abstract class AbstractConfigurableComponent implements Configurable, Pro
 
   @Override
   public boolean isModified() {
-    getLog().info("Is modified");
+//    getLog().info("Is modified");
     return configPanel != null && configPanel.isModified();
   }
 
   @Override
   public void apply() throws ConfigurationException {
-    getLog().info("Apply");
+    getLog().info("Apply configuration");
     if (configPanel == null) {
       return;
     }
@@ -115,7 +101,7 @@ public abstract class AbstractConfigurableComponent implements Configurable, Pro
 
   @Override
   public void reset() {
-    getLog().info("Reset");
+    getLog().info("Reset configuration panel");
     if (configPanel == null) {
       return;
     }

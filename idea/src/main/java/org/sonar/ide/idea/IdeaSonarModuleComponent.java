@@ -41,17 +41,40 @@ public class IdeaSonarModuleComponent extends AbstractConfigurableComponent impl
   private String artifactId;
   private String branch;
 
+  /**
+   * @param module module
+   * @return module component for specified module
+   */
+  public static IdeaSonarModuleComponent getInstance(Module module) {
+    return module.getComponent(IdeaSonarModuleComponent.class);
+  }
+
   @Nullable
   public static IdeaSonarModuleComponent getInstance(PsiFile file) {
     Module module = ModuleUtil.findModuleForPsiElement(file);
     if (module == null) {
       return null;
     }
-    return module.getComponent(IdeaSonarModuleComponent.class);
+    return getInstance(module);
   }
 
   public IdeaSonarModuleComponent(final Module module) {
     getLog().info("Loaded component for {}", module);
+  }
+
+  @Override
+  public void moduleAdded() {
+    getLog().debug("Module added");
+  }
+
+  @Override
+  public void projectOpened() {
+    getLog().debug("Project opened");
+  }
+
+  @Override
+  public void projectClosed() {
+    getLog().debug("Project closed");
   }
 
   public String getGroupId() {

@@ -18,11 +18,11 @@
 
 package org.sonar.ide.idea;
 
+import com.intellij.openapi.components.ProjectComponent;
 import com.intellij.openapi.editor.EditorFactory;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.startup.StartupManager;
 import com.intellij.openapi.vfs.VirtualFile;
-import org.sonar.ide.idea.autoupdate.PluginDownloader;
 import org.sonar.ide.idea.editor.SonarEditorListener;
 import org.sonar.ide.shared.SonarProperties;
 import org.sonar.ide.ui.AbstractConfigPanel;
@@ -35,9 +35,14 @@ import java.io.File;
  *
  * @author Evgeny Mandrikov
  */
-public class IdeaSonarProjectComponent extends AbstractConfigurableComponent {
+public class IdeaSonarProjectComponent extends AbstractConfigurableComponent implements ProjectComponent {
+
   private Project project;
 
+  /**
+   * @param project project
+   * @return project component for specified project
+   */
   public static IdeaSonarProjectComponent getInstance(Project project) {
     return project.getComponent(IdeaSonarProjectComponent.class);
   }
@@ -52,6 +57,16 @@ public class IdeaSonarProjectComponent extends AbstractConfigurableComponent {
         getLog().info("End: project initialized");
       }
     });
+  }
+
+  @Override
+  public void projectOpened() {
+    getLog().debug("Project opened");
+  }
+
+  @Override
+  public void projectClosed() {
+    getLog().debug("Project closed");
   }
 
   @Override
