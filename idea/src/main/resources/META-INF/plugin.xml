@@ -30,11 +30,6 @@
     <component>
       <implementation-class>org.sonar.ide.idea.IdeaSonarApplicationComponent</implementation-class>
     </component>
-
-    <!-- TODO For experimental SONARIDE-97 -->
-    <component>
-      <implementation-class>org.sonar.ide.idea.vfs.SonarVirtualFileSystem</implementation-class>
-    </component>
   </application-components>
 
   <project-components>

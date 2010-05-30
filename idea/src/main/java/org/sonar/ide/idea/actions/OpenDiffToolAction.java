@@ -37,7 +37,7 @@ public class OpenDiffToolAction extends SonarAction {
     Source source = sonar.find(sourceQuery);
     String content = StringUtils.join(source.getLines().toArray(), "\n");
     // Prepare content for diff
-    SonarVirtualFile sonarVirtualFile = new SonarVirtualFile("Test.java", content.getBytes());
+    SonarVirtualFile sonarVirtualFile = new SonarVirtualFile("Test.java", content.getBytes(), resourceKey);
     DiffContent sonarDiffContent = createDiffContent(project, sonarVirtualFile);
     Document doc2 = sonarDiffContent.getDocument();
     doc2.setReadOnly(true);
@@ -47,7 +47,7 @@ public class OpenDiffToolAction extends SonarAction {
   }
 
   private DiffRequest getDiffRequest(final Project project, Document doc1, Document doc2) {
-    return getDiffRequest(project, new DocumentContent(doc1), new DocumentContent(doc2));
+    return getDiffRequest(project, new DocumentContent(doc2), new DocumentContent(doc1));
   }
 
   private DiffRequest getDiffRequest(final Project project, final DocumentContent doc1, final DocumentContent doc2) {
@@ -59,7 +59,7 @@ public class OpenDiffToolAction extends SonarAction {
 
       @Override
       public String[] getContentTitles() {
-        return new String[]{"Local copy", "Sonar server"};
+        return new String[]{"Sonar server", "Local copy"};
       }
 
       @Override

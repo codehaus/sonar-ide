@@ -10,13 +10,16 @@ import java.io.*;
  * @author Evgeny Mandrikov
  */
 public class SonarVirtualFile extends VirtualFile {
+  private final String resourceKey;
+
   private final String name;
 
   private final byte[] content;
 
-  public SonarVirtualFile(String name, byte[] content) {
+  public SonarVirtualFile(String name, byte[] content, String resourceKey) {
     this.name = name;
     this.content = content;
+    this.resourceKey = resourceKey;
   }
 
   @NotNull
@@ -102,5 +105,9 @@ public class SonarVirtualFile extends VirtualFile {
   @Override
   public long getModificationStamp() {
     return 0L;
+  }
+
+  public String getResourceKey() {
+    return resourceKey;
   }
 }

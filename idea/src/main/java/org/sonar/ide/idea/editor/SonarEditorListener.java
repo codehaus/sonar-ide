@@ -30,7 +30,9 @@ import com.intellij.psi.PsiJavaFile;
 import com.intellij.psi.PsiManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.sonar.ide.api.Logs;
 import org.sonar.ide.idea.utils.IdeaResourceUtils;
+import org.sonar.ide.idea.vfs.SonarVirtualFile;
 
 /**
  * @author Evgeny Mandrikov
@@ -67,6 +69,13 @@ public class SonarEditorListener implements EditorFactoryListener {
 
   protected void processFile(Project project, Document document) {
     VirtualFile file = FileDocumentManager.getInstance().getFile(document);
+
+    if (file instanceof SonarVirtualFile) {
+      SonarVirtualFile sonarVirtualFile = (SonarVirtualFile) file;
+      new ShowViolationsTask(project, document, sonarVirtualFile.getResourceKey()).queue();
+      return;
+    }
+
     PsiFile psiFile = PsiManager.getInstance(project).findFile(file);
     if (psiFile instanceof PsiJavaFile) {
       PsiJavaFile psiJavaFile = (PsiJavaFile) psiFile;
