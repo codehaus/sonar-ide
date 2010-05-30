@@ -92,6 +92,15 @@ public final class DuplicationsLoader {
     return result;
   }
 
+  public static String getDescription(Duplication duplication) {
+    return String.format(
+        "Duplicates %s lines from %s starting from %s",
+        duplication.getLines(),
+        duplication.getTargetResource(),
+        duplication.getTargetStart()
+    );
+  }
+
   /**
    * Hide utility-class constructor.
    */

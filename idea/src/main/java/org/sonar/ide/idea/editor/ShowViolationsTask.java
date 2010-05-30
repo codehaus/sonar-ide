@@ -32,12 +32,12 @@ import org.jetbrains.annotations.Nullable;
 import org.sonar.ide.idea.utils.SonarUtils;
 import org.sonar.ide.shared.ViolationUtils;
 import org.sonar.ide.shared.ViolationsLoader;
+import org.sonar.ide.shared.duplications.Duplication;
+import org.sonar.ide.shared.duplications.DuplicationsLoader;
 import org.sonar.wsclient.Sonar;
 import org.sonar.wsclient.services.Violation;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Task for loading violations.
@@ -61,19 +61,23 @@ public class ShowViolationsTask extends Task.Backgroundable {
     try {
       Project project = getProject();
       final Sonar sonar = SonarUtils.getSonar(project);
-
-      // Violations
       String text = document.getText();
+      // Load violations
       final Collection<Violation> violations = ViolationsLoader.getViolations(sonar, resourceKey, text);
       final Map<Integer, List<Violation>> violationsByLine = ViolationUtils.splitByLines(violations);
       final MarkupModel markupModel = document.getMarkupModel(project);
-
+      // Load duplications
+      final Collection<Duplication> duplications = DuplicationsLoader.getDuplications(sonar, resourceKey, text);
+      // Add to UI
       UIUtil.invokeLaterIfNeeded(new Runnable() {
         @Override
         public void run() {
           removeSonarHighlighters(document.getMarkupModel(getProject()));
           for (Map.Entry<Integer, List<Violation>> entry : violationsByLine.entrySet()) {
-            addHighlighter(markupModel, entry.getKey() - 1, entry.getValue());
+            addViolationsHighlighter(markupModel, entry.getKey() - 1, entry.getValue());
+          }
+          for (Duplication duplication : duplications) {
+            addDuplicationsHighlighter(markupModel, duplication.getStart(), Arrays.asList(duplication));
           }
         }
       });
@@ -106,6 +110,24 @@ public class ShowViolationsTask extends Task.Backgroundable {
     return highlighter;
   }
 
+  protected static void addHighlighter(MarkupModel markupModel, int line, ViolationGutterIconRenderer renderer) {
+    RangeHighlighter highlighter = addSonarHighlighter(markupModel, line, HighlighterLayer.ERROR + 1);
+    highlighter.setGutterIconRenderer(renderer);
+    highlighter.setErrorStripeMarkColor(renderer.getErrorStripeMarkColor());
+    highlighter.setErrorStripeTooltip(renderer.getTooltipText());
+  }
+
+  /**
+   * Adds highlighter for specified duplications.
+   *
+   * @param markupModel  markup model
+   * @param line         numer of line
+   * @param duplications duplications
+   */
+  protected static void addDuplicationsHighlighter(MarkupModel markupModel, int line, List<Duplication> duplications) {
+    addHighlighter(markupModel, line, new ViolationGutterIconRenderer(Collections.<Violation>emptyList(), duplications));
+  }
+
   /**
    * Adds highlighter for specified violations.
    *
@@ -113,12 +135,8 @@ public class ShowViolationsTask extends Task.Backgroundable {
    * @param line        number of line
    * @param violations  violations
    */
-  protected static void addHighlighter(MarkupModel markupModel, int line, List<Violation> violations) {
-    RangeHighlighter highlighter = addSonarHighlighter(markupModel, line, HighlighterLayer.ERROR + 1);
-    ViolationGutterIconRenderer renderer = new ViolationGutterIconRenderer(violations);
-    highlighter.setGutterIconRenderer(renderer);
-    highlighter.setErrorStripeMarkColor(renderer.getErrorStripeMarkColor());
-    highlighter.setErrorStripeTooltip(renderer.getTooltipText());
+  protected static void addViolationsHighlighter(MarkupModel markupModel, int line, List<Violation> violations) {
+    addHighlighter(markupModel, line, new ViolationGutterIconRenderer(violations));
   }
 
   /**

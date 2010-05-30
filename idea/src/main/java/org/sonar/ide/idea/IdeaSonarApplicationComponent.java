@@ -23,6 +23,7 @@ import com.intellij.openapi.components.ApplicationComponent;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.sonar.ide.idea.inspection.Duplications;
 import org.sonar.ide.idea.inspection.Violations;
 
 /**
@@ -53,7 +54,7 @@ public class IdeaSonarApplicationComponent implements ApplicationComponent, Insp
   public Class[] getInspectionClasses() {
     return new Class[]{
         Violations.class,
-//        Duplications.class,
+        Duplications.class,
 //        Dependencies.class
     };
   }

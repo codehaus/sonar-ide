@@ -44,6 +44,6 @@ public class IdeaSonarApplicationComponentTest {
   @Test
   public void testGetInspectionClasses() throws Exception {
     assertThat(component.getInspectionClasses(), notNullValue());
-    assertThat(component.getInspectionClasses().length, is(1));
+    assertThat(component.getInspectionClasses().length, is(2));
   }
 }

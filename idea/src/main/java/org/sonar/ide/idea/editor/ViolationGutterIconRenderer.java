@@ -27,12 +27,15 @@ import com.intellij.openapi.ui.popup.util.BaseListPopupStep;
 import com.intellij.openapi.util.IconLoader;
 import org.jetbrains.annotations.NotNull;
 import org.sonar.ide.shared.ViolationUtils;
+import org.sonar.ide.shared.duplications.Duplication;
+import org.sonar.ide.shared.duplications.DuplicationsLoader;
 import org.sonar.ide.ui.IconsUtils;
 import org.sonar.wsclient.services.Violation;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -44,16 +47,26 @@ public class ViolationGutterIconRenderer extends GutterIconRenderer {
    */
   private final List<Violation> violations;
 
+  private final List<Duplication> duplications;
+
   private final String description;
 
   public ViolationGutterIconRenderer(List<Violation> violations) {
+    this(violations, Collections.<Duplication>emptyList());
+  }
+
+  public ViolationGutterIconRenderer(List<Violation> violations, List<Duplication> duplications) {
     this.violations = ViolationUtils.sortByPriority(violations);
-    this.description = getDescription(this.violations);
+    this.duplications = duplications;
+    this.description = getDescription(this.violations, this.duplications);
   }
 
   @NotNull
   @Override
   public Icon getIcon() {
+    if (violations.isEmpty()) { // for duplications
+      return IconLoader.getIcon(IconsUtils.getIconPath(null));
+    }
     return IconLoader.getIcon(IconsUtils.getIconPath(violations.get(0)));
   }
 
@@ -69,9 +82,14 @@ public class ViolationGutterIconRenderer extends GutterIconRenderer {
       public void actionPerformed(AnActionEvent event) {
         List<String> text = new ArrayList<String>();
         List<Icon> icons = new ArrayList<Icon>();
+        // Violations
         for (Violation violation : violations) {
           text.add(violation.getRuleName() + " : " + violation.getMessage());
           icons.add(IconLoader.getIcon(IconsUtils.getPriorityIconPath(violation)));
+        }
+        // Duplications
+        for (Duplication duplication : duplications) {
+          text.add(duplication.toString());
         }
 
         JBPopupFactory.getInstance().createListPopup(new BaseListPopupStep<String>("Violations", text, icons) {
@@ -85,20 +103,23 @@ public class ViolationGutterIconRenderer extends GutterIconRenderer {
     };
   }
 
-  protected static String getDescription(List<Violation> violations) {
+  protected static String getDescription(List<Violation> violations, List<Duplication> duplications) {
     StringBuilder sb = new StringBuilder();
-    for (int i = 0; i < violations.size(); i++) {
-      Violation violation = violations.get(i);
-      if (i != 0) {
-        sb.append("<hr/>");
-      }
-      sb.append("<b>").append(violation.getRuleName()).append("</b>");
-      sb.append("<br/>").append(violation.getMessage());
+    for (Violation violation : violations) {
+      sb.append("<b>").append(violation.getRuleName()).append("</b>")
+          .append("<br/>").append(violation.getMessage())
+          .append("<hr/>");
+    }
+    for (Duplication duplication : duplications) {
+      sb.append(DuplicationsLoader.getDescription(duplication)).append("<hr/>");
     }
     return sb.toString();
   }
 
   public Color getErrorStripeMarkColor() {
+    if (violations.isEmpty()) { // for duplications
+      return Color.RED;
+    }
     return IconsUtils.getColor(violations.get(0));
   }
 }
