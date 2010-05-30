@@ -13,6 +13,7 @@ import java.util.Map;
  * Actually this is an implementation of heuristic algorithm - magic happens here.
  *
  * @author Evgeny Mandrikov
+ * @since 0.2
  */
 public final class SourceCodeMatcher {
   private static final Logger LOG = LoggerFactory.getLogger(SourceCodeMatcher.class);
