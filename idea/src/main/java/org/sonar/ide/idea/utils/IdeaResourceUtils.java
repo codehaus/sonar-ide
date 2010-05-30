@@ -78,6 +78,6 @@ public class IdeaResourceUtils extends AbstractResourceUtils<PsiFile> {
     if (sonarModule == null) {
       return null;
     }
-    return getProjectKey(sonarModule.getGroupId(), sonarModule.getArtifactId());
+    return getProjectKey(sonarModule.getGroupId(), sonarModule.getArtifactId(), sonarModule.getBranch());
   }
 }

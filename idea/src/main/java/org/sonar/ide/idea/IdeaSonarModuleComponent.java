@@ -22,6 +22,8 @@ import com.intellij.openapi.module.Module;
 import com.intellij.openapi.module.ModuleComponent;
 import com.intellij.openapi.module.ModuleUtil;
 import com.intellij.psi.PsiFile;
+import com.jgoodies.forms.builder.DefaultFormBuilder;
+import com.jgoodies.forms.layout.FormLayout;
 import org.jetbrains.annotations.Nullable;
 import org.sonar.ide.ui.AbstractConfigPanel;
 
@@ -37,6 +39,7 @@ public class IdeaSonarModuleComponent extends AbstractConfigurableComponent impl
 
   private String groupId;
   private String artifactId;
+  private String branch;
 
   @Nullable
   public static IdeaSonarModuleComponent getInstance(PsiFile file) {
@@ -67,29 +70,70 @@ public class IdeaSonarModuleComponent extends AbstractConfigurableComponent impl
     this.artifactId = artifactId;
   }
 
+  public String getBranch() {
+    return branch;
+  }
+
+  public void setBranch(String branch) {
+    this.branch = branch;
+  }
+
   @Override
   protected AbstractConfigPanel initConfigPanel() {
-    // TODO SONARIDE-38
-    return new MyConfigPanel("GroupId: " + groupId + " ArtifactId: " + artifactId);
+    return new MyConfigPanel(this);
   }
 
   @Override
   protected void saveConfig(AbstractConfigPanel configPanel) {
+    MyConfigPanel myConfigPanel = (MyConfigPanel) configPanel;
+    setArtifactId(myConfigPanel.getArtifactId());
+    setGroupId(myConfigPanel.getGroupId());
+    setBranch(myConfigPanel.getBranch());
   }
 
   class MyConfigPanel extends AbstractConfigPanel {
-    MyConfigPanel(String text) {
-      add(new JLabel(text));
+    private final JTextField artifactId;
+    private final JTextField groupId;
+    private final JTextField branch;
+
+    MyConfigPanel(IdeaSonarModuleComponent sonarModule) {
+      artifactId = new JTextField(sonarModule.getArtifactId());
+      groupId = new JTextField(sonarModule.getGroupId());
+      branch = new JTextField(sonarModule.getBranch());
+
+      DefaultFormBuilder formBuilder = new DefaultFormBuilder(new FormLayout(""));
+      formBuilder.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+      formBuilder.appendColumn("right:pref");
+      formBuilder.appendColumn("3dlu");
+      formBuilder.appendColumn("fill:p:g");
+      formBuilder.append("GroupId:", groupId);
+      formBuilder.append("ArtifactId:", artifactId);
+      formBuilder.append("Branch:", branch);
+
+      add(formBuilder.getPanel());
     }
 
     @Override
     public boolean isModified() {
-      return false;
+      // TODO
+      return true;
     }
 
     @Override
     public Properties getProperties() {
       return null;
+    }
+
+    public String getArtifactId() {
+      return artifactId.getText();
+    }
+
+    public String getGroupId() {
+      return groupId.getText();
+    }
+
+    public String getBranch() {
+      return branch.getText();
     }
   }
 }

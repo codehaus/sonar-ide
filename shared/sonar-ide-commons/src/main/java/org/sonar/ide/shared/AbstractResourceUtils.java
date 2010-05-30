@@ -57,13 +57,13 @@ public abstract class AbstractResourceUtils<MODEL> {
   public static final String ROOT = "[root]";
 
   /**
-   * @param groupId groupId
+   * @param groupId    groupId
    * @param artifactId artifactId
-   * @param branch branch
+   * @param branch     branch
    * @return project key or null, if unable to determine
    */
   public final String getProjectKey(String groupId, String artifactId, String branch) {
-     if (StringUtils.isBlank(groupId) || StringUtils.isBlank(artifactId)) {
+    if (StringUtils.isBlank(groupId) || StringUtils.isBlank(artifactId)) {
       return null;
     }
     StringBuilder sb = new StringBuilder().append(groupId).append(DELIMITER).append(artifactId);
@@ -79,7 +79,9 @@ public abstract class AbstractResourceUtils<MODEL> {
    * @param groupId    groupId
    * @param artifactId artifactId
    * @return project key or null, if unable to determine
+   * @deprecated since 0.2, use {@link #getProjectKey(String, String, String)} instead of it
    */
+  @Deprecated
   public final String getProjectKey(String groupId, String artifactId) {
     return getProjectKey(groupId, artifactId, null);
   }
