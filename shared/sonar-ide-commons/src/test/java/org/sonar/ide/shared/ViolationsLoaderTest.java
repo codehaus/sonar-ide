@@ -48,20 +48,6 @@ public class ViolationsLoaderTest extends AbstractSonarIdeTest {
     AbstractSonarIdeTest.cleanup();
   }
 
-  @Test
-  public void testGetHashCode() {
-    int hash1 = ViolationsLoader.getHashCode("int i;");
-    int hash2 = ViolationsLoader.getHashCode("int\ti;");
-    int hash3 = ViolationsLoader.getHashCode("int i;\n");
-    int hash4 = ViolationsLoader.getHashCode("int i;\r\n");
-    int hash5 = ViolationsLoader.getHashCode("int i;\r");
-
-    assertThat(hash2, equalTo(hash1));
-    assertThat(hash3, equalTo(hash1));
-    assertThat(hash4, equalTo(hash1));
-    assertThat(hash5, equalTo(hash1));
-  }
-
   @Test(expected = ConnectionException.class)
   public void testServerUnavailable() throws Exception {
     ViolationsLoader.getViolations(Sonar.create("http://localhost:9999"), "test:test:[default].ClassOnDefaultPackage", "");
