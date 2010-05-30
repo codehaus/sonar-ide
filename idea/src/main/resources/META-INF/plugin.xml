@@ -30,6 +30,11 @@
     <component>
       <implementation-class>org.sonar.ide.idea.IdeaSonarApplicationComponent</implementation-class>
     </component>
+
+    <!-- TODO For experimental SONARIDE-97 -->
+    <component>
+      <implementation-class>org.sonar.ide.idea.vfs.SonarVirtualFileSystem</implementation-class>
+    </component>
   </application-components>
 
   <project-components>
@@ -53,9 +58,14 @@
             class="org.sonar.ide.idea.actions.GoToDashboardAction"
             text="Go to dashboard"/>
 
+    <action id="Sonar.OpenDiffTool"
+            class="org.sonar.ide.idea.actions.OpenDiffToolAction"
+            text="Open Diff"/>
+
     <group id="Sonar.BaseProjectMenu">
       <reference ref="Sonar.GoToDashboard"/>
       <reference ref="Sonar.ShowMeasures"/>
+      <reference ref="Sonar.OpenDiffTool"/>
     </group>
 
     <group id="Sonar.GlobalProjectMenu"
