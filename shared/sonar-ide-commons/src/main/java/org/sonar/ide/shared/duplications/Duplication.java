@@ -1,6 +1,7 @@
 package org.sonar.ide.shared.duplications;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
+import org.sonar.wsclient.services.Model;
 
 /**
  * @author Evgeny Mandrikov

@@ -45,6 +45,11 @@ public final class DuplicationsLoader {
     return convertLines(duplications, source, lines);
   }
 
+  public static List<Duplication> getDuplications(Sonar sonar, String resourceKey, String text) {
+    String[] lines = text.split("\n");
+    return getDuplications(sonar, resourceKey, lines);
+  }
+
   public static List<Duplication> convertLines(Collection<Duplication> duplications, Source source, String[] lines) {
     List<Duplication> result = new ArrayList<Duplication>();
     SourceCodeMatcher codeMatcher = new SourceCodeMatcher(source, lines);
