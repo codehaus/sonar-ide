@@ -20,7 +20,9 @@ package org.sonar.ide.idea;
 
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.module.ModuleComponent;
-import org.sonar.ide.idea.maven.SonarMavenUtils;
+import com.intellij.openapi.module.ModuleUtil;
+import com.intellij.psi.PsiFile;
+import org.jetbrains.annotations.Nullable;
 import org.sonar.ide.ui.AbstractConfigPanel;
 
 import javax.swing.*;
@@ -32,20 +34,43 @@ import java.util.Properties;
  * @author Evgeny Mandrikov
  */
 public class IdeaSonarModuleComponent extends AbstractConfigurableComponent implements ModuleComponent {
-  private Module module;
+
+  private String groupId;
+  private String artifactId;
+
+  @Nullable
+  public static IdeaSonarModuleComponent getInstance(PsiFile file) {
+    Module module = ModuleUtil.findModuleForPsiElement(file);
+    if (module == null) {
+      return null;
+    }
+    return module.getComponent(IdeaSonarModuleComponent.class);
+  }
 
   public IdeaSonarModuleComponent(final Module module) {
     getLog().info("Loaded component for {}", module);
-    this.module = module;
+  }
+
+  public String getGroupId() {
+    return groupId;
+  }
+
+  public void setGroupId(String groupId) {
+    this.groupId = groupId;
+  }
+
+  public String getArtifactId() {
+    return artifactId;
+  }
+
+  public void setArtifactId(String artifactId) {
+    this.artifactId = artifactId;
   }
 
   @Override
   protected AbstractConfigPanel initConfigPanel() {
     // TODO SONARIDE-38
-    return new MyConfigPanel(SonarMavenUtils.isMavenModule(module) ?
-        "This is a Maven module, so Sonar will be enabled for this module." :
-        "Currently non-Maven modules not supported, so Sonar will be disabled for this module."
-    );
+    return new MyConfigPanel("GroupId: " + groupId + " ArtifactId: " + artifactId);
   }
 
   @Override

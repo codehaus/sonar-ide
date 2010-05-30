@@ -22,9 +22,7 @@ import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiJavaFile;
 import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.Nullable;
-import org.jetbrains.idea.maven.project.MavenId;
-import org.jetbrains.idea.maven.project.MavenProject;
-import org.jetbrains.idea.maven.project.MavenProjectsManager;
+import org.sonar.ide.idea.IdeaSonarModuleComponent;
 import org.sonar.ide.shared.AbstractResourceUtils;
 
 /**
@@ -76,23 +74,10 @@ public class IdeaResourceUtils extends AbstractResourceUtils<PsiFile> {
   @Nullable
   @Override
   public String getProjectKey(PsiFile file) {
-    // TODO SONARIDE-38
-    MavenProject mavenProject = getMavenProject(file);
-    return getProjectKey(mavenProject);
-  }
-
-  @Nullable
-  public String getProjectKey(MavenProject mavenProject) {
-    if (mavenProject == null) {
+    IdeaSonarModuleComponent sonarModule = IdeaSonarModuleComponent.getInstance(file);
+    if (sonarModule == null) {
       return null;
     }
-    MavenId mavenId = mavenProject.getMavenId();
-    return getProjectKey(mavenId.getGroupId(), mavenId.getArtifactId());
-  }
-
-  @Nullable
-  protected MavenProject getMavenProject(PsiFile file) {
-    MavenProjectsManager mavenProjectsManager = MavenProjectsManager.getInstance(file.getProject());
-    return mavenProjectsManager.findContainingProject(file.getVirtualFile());
+    return getProjectKey(sonarModule.getGroupId(), sonarModule.getArtifactId());
   }
 }

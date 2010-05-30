@@ -21,7 +21,6 @@ package org.sonar.ide.idea.utils.actions;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.DefaultActionGroup;
 import com.intellij.openapi.actionSystem.Presentation;
-import org.jetbrains.idea.maven.utils.actions.MavenActionUtil;
 
 /**
  * @author Evgeny Mandrikov
@@ -37,7 +36,6 @@ public class SonarActionGroup extends DefaultActionGroup {
   }
 
   protected boolean isAvailable(AnActionEvent event) {
-    // TODO SONARIDE-38
-    return SonarActionUtils.getProject(event) != null && !MavenActionUtil.getMavenProjects(event).isEmpty();
+    return SonarActionUtils.getProject(event) != null;
   }
 }

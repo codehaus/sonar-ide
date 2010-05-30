@@ -10,12 +10,20 @@
   <!--
   9.0.1 = build 93.94
   9.0.2 = build 95.66
+  See http://confluence.jetbrains.net/display/IDEADEV/Build+Number+Ranges
   -->
   <idea-version since-build="93.94"/>
 
   <vendor logo="/org/sonar/ide/images/sonarLogo.png" url="${plugin.vendor.url}" email="${plugin.vendor.email}">${plugin.vendor}</vendor>
 
-  <depends>org.jetbrains.idea.maven</depends>
+  <depends optional="true" config-file="maven-support.xml">org.jetbrains.idea.maven</depends>
+
+  <!-- TODO
+  Allows a plugin to integrate its help system (in JavaHelp format) with the IDEA help system.
+  The "file" attribute specifies the name of the JAR file in the "help" subdirectory of the plugin directory.
+  The "path" attribute specifies the name of the helpset file within the JAR file.
+  -->
+  <!--<helpset file="myhelp.jar" path="/Help.hs"/>-->
 
   <application-components>
     <component>
