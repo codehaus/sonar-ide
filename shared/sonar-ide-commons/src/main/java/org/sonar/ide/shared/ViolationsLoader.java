@@ -40,25 +40,6 @@ public final class ViolationsLoader {
   private static final Logger LOG = LoggerFactory.getLogger(ViolationsLoader.class);
 
   /**
-   * Returns violations from specified sonar for specified resource.
-   *
-   * @param sonar       sonar
-   * @param resourceKey resource key
-   * @return violations
-   * @deprecated returns incorrect line numbers, use more accurate
-   *             {@link #getViolations(org.sonar.wsclient.Sonar, String, String[])}
-   *             or {@link #getViolations(org.sonar.wsclient.Sonar, String, String)} instead
-   */
-  @Deprecated
-  public static Collection<Violation> getViolations(Sonar sonar, String resourceKey) {
-    LOG.info("Loading violations for {}", resourceKey);
-    ViolationQuery query = ViolationQuery.createForResource(resourceKey);
-    Collection<Violation> violations = sonar.findAll(query);
-    LOG.info("Loaded {} violations: {}", violations.size(), ViolationUtils.toString(violations));
-    return violations;
-  }
-
-  /**
    * Sets proper line numbers for violations by matching modified source code with code from server.
    *
    * @param violations violations

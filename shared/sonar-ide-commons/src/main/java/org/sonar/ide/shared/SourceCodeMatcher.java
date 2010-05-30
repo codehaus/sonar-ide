@@ -27,7 +27,9 @@ public final class SourceCodeMatcher {
     // Works for O(S*L) time, where S - number of lines on server and L - number of lines in working copy.
     for (int originalLine = 1; originalLine <= source.getLines().size(); originalLine++) {
       int newLine = internalMatch(source, hashCodes, originalLine);
-      map.put(originalLine, newLine);
+      if (newLine != -1) {
+        map.put(originalLine, newLine);
+      }
     }
   }
 
@@ -35,11 +37,16 @@ public final class SourceCodeMatcher {
    * @return -1 if not found
    */
   public int match(int originalLine) {
-    return map.get(originalLine);
+    if (map.containsKey(originalLine)) {
+      return map.get(originalLine);
+    }
+    return -1;
   }
 
   /**
    * Currently this method just compares hash codes (see {@link #getHashCode(String)}).
+   *
+   * @return -1 if not found
    */
   private int internalMatch(Source source, int[] hashCodes, int originalLine) {
     int newLine = -1;
@@ -72,7 +79,7 @@ public final class SourceCodeMatcher {
    */
   public static int getHashCode(String str) {
     if (str == null) {
-      str = "";
+      return 0;
     }
     return StringUtils.deleteWhitespace(str).hashCode();
   }
