@@ -32,7 +32,6 @@ public class SonarPropertiesTest {
   @Test
   public void testStaticMethods() {
     assertNotNull(SonarProperties.getDefaultPath());
-    assertNotNull(SonarProperties.getInstance());
   }
 
   @Test
