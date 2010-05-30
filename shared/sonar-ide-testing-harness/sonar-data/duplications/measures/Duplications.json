@@ -1,0 +1,18 @@
+[
+  {
+    "id": 172317,
+    "key": "org.codehaus.sonar-ide.test-project:module1:[default].Duplications",
+    "name": "Duplications",
+    "scope": "FIL",
+    "qualifier": "CLA",
+    "date": "2010-05-29T23:01:47+0000",
+    "lname": "Duplications",
+    "lang": "java",
+    "msr": [
+      {
+        "key": "duplications_data",
+        "data":  "<duplications><duplication lines=\"11\" start=\"4\" target-start=\"17\" target-resource=\"org.codehaus.sonar-ide.test-project:module1:[default].Duplications\"/><duplication lines=\"11\" start=\"17\" target-start=\"4\" target-resource=\"org.codehaus.sonar-ide.test-project:module1:[default].Duplications\"/></duplications>"
+      }
+    ]
+  }
+]
