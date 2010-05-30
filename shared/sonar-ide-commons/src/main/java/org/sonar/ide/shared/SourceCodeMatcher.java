@@ -24,6 +24,7 @@ public final class SourceCodeMatcher {
 
   public SourceCodeMatcher(Source source, String[] lines) {
     int[] hashCodes = getHashCodes(lines);
+    // Works for O(S*L) time, where S - number of lines on server and L - number of lines in working copy.
     for (int originalLine = 1; originalLine <= source.getLines().size(); originalLine++) {
       int newLine = internalMatch(source, hashCodes, originalLine);
       map.put(originalLine, newLine);
@@ -39,7 +40,6 @@ public final class SourceCodeMatcher {
 
   /**
    * Currently this method just compares hash codes (see {@link #getHashCode(String)}).
-   * Works for O(V*L) time, where V - number of violations and L - number of lines in modified source code.
    */
   private int internalMatch(Source source, int[] hashCodes, int originalLine) {
     int newLine = -1;
