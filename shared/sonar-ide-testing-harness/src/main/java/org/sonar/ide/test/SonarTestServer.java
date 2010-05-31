@@ -41,31 +41,49 @@ import org.sonar.wsclient.services.ViolationQuery;
 public class SonarTestServer {
   protected static final Logger LOG = LoggerFactory.getLogger(SonarTestServer.class);
 
-  Server _server = new Server();
-  LocalConnector _connector = new LocalConnector();
-  Context _context = new Context(Context.SESSIONS | Context.SECURITY);
+  private Server server = new Server();
+  private Context context = new Context(Context.SESSIONS | Context.SECURITY);
 
-  private int port = -1;
   private String baseUrl;
 
-  public SonarTestServer() {
-    _server.setSendServerVersion(false);
-    _server.addConnector(_connector);
-    _server.addHandler(_context);
+  /**
+   * @throws Exception if something wrong
+   */
+  public SonarTestServer() throws Exception {
+    this(-1);
   }
 
-  public void setPort(int port) {
-    this.port = port;
+  /**
+   * @param port port
+   * @throws Exception if something wrong
+   */
+  public SonarTestServer(int port) throws Exception {
+    server.setSendServerVersion(false);
+    server.addConnector(new LocalConnector());
+    server.addHandler(context);
+
+    setContextPath("/");
+    addServlet(VersionServlet.class, ServerQuery.BASE_URL);
+    addServlet(ViolationServlet.class, ViolationQuery.BASE_URL);
+    addServlet(SourceServlet.class, SourceQuery.BASE_URL);
+    addServlet(MeasureServlet.class, ResourceQuery.BASE_URL);
+    baseUrl = createSocketConnector(port);
   }
 
-  public String createSocketConnector() throws Exception {
+  /**
+   * @param port port
+   * @return a URL to access the server via the socket connector
+   * @throws Exception if something wrong
+   * @see org.mortbay.jetty.testing.ServletTester#createSocketConnector(boolean)
+   */
+  public String createSocketConnector(int port) throws Exception {
     SocketConnector connector = new SocketConnector();
     connector.setHost("127.0.0.1");
     if (port != -1) {
       connector.setPort(port);
     }
-    _server.addConnector(connector);
-    if (_server.isStarted()) {
+    server.addConnector(connector);
+    if (server.isStarted()) {
       connector.start();
     } else {
       connector.open();
@@ -73,28 +91,39 @@ public class SonarTestServer {
     return "http://" + connector.getHost() + ":" + connector.getLocalPort();
   }
 
+  /**
+   * @param servlet  servlet
+   * @param pathSpec path
+   * @return servlet holder
+   * @see org.mortbay.jetty.servlet.Context#addServlet(java.lang.Class, java.lang.String)
+   */
   public ServletHolder addServlet(Class servlet, String pathSpec) {
-    return _context.addServlet(servlet, pathSpec);
+    return context.addServlet(servlet, pathSpec);
   }
 
+  /**
+   * @param contextPath context path
+   * @see org.mortbay.jetty.handler.ContextHandler#setContextPath(java.lang.String)
+   */
   public void setContextPath(String contextPath) {
-    _context.setContextPath(contextPath);
+    context.setContextPath(contextPath);
   }
 
+  /**
+   * @throws Exception if something wrong
+   * @see org.mortbay.jetty.testing.ServletTester#start()
+   */
   public void start() throws Exception {
-    setContextPath("/");
-    addServlet(VersionServlet.class, ServerQuery.BASE_URL);
-    addServlet(ViolationServlet.class, ViolationQuery.BASE_URL);
-    addServlet(SourceServlet.class, SourceQuery.BASE_URL);
-    addServlet(MeasureServlet.class, ResourceQuery.BASE_URL);
-
-    baseUrl = createSocketConnector();
-    _server.start();
+    server.start();
     LOG.info("Sonar test server started: {}", getBaseUrl());
   }
 
+  /**
+   * @throws Exception if something wrong
+   * @see org.mortbay.jetty.testing.ServletTester#stop()
+   */
   public void stop() throws Exception {
-    _server.stop();
+    server.stop();
     LOG.info("Sonar test server stopped: {}", getBaseUrl());
   }
 
@@ -107,9 +136,13 @@ public class SonarTestServer {
     return new Sonar(connector);
   }
 
+  /**
+   * Entry point.
+   *
+   * @param args command-line arguments
+   * @throws Exception if something wrong
+   */
   public static void main(String[] args) throws Exception {
-    SonarTestServer server = new SonarTestServer();
-    server.setPort(9000);
-    server.start();
+    new SonarTestServer(9000).start();
   }
 }
