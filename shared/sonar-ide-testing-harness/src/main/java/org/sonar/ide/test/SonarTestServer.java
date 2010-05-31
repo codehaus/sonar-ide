@@ -45,19 +45,23 @@ public class SonarTestServer {
   private Context context = new Context(Context.SESSIONS | Context.SECURITY);
 
   private String baseUrl;
+  private String baseDir;
 
   /**
    * @throws Exception if something wrong
    */
   public SonarTestServer() throws Exception {
-    this(-1);
+    this(-1, "");
   }
 
   /**
-   * @param port port
+   * @param port    port
+   * @param baseDir location of sonar-data directory
    * @throws Exception if something wrong
    */
-  public SonarTestServer(int port) throws Exception {
+  public SonarTestServer(int port, String baseDir) throws Exception {
+    this.baseDir = baseDir;
+
     server.setSendServerVersion(false);
     server.addConnector(new LocalConnector());
     server.addHandler(context);
@@ -98,7 +102,9 @@ public class SonarTestServer {
    * @see org.mortbay.jetty.servlet.Context#addServlet(java.lang.Class, java.lang.String)
    */
   public ServletHolder addServlet(Class servlet, String pathSpec) {
-    return context.addServlet(servlet, pathSpec);
+    ServletHolder servletHolder = context.addServlet(servlet, pathSpec);
+    servletHolder.setInitParameter("baseDir", baseDir);
+    return servletHolder;
   }
 
   /**
@@ -143,6 +149,6 @@ public class SonarTestServer {
    * @throws Exception if something wrong
    */
   public static void main(String[] args) throws Exception {
-    new SonarTestServer(9000).start();
+    new SonarTestServer(9000, "sonar-data").start();
   }
 }

@@ -38,7 +38,8 @@ public abstract class TestServlet extends GenericServlet {
   protected abstract String getResource(String classKey);
 
   protected File getResourceAsFile(String testName, String classKey) {
-    return new File("target/sonar-data/" + testName + "/" + getResource(classKey));
+    String baseDir = StringUtils.defaultString(getServletConfig().getInitParameter("baseDir"), "target/sonar-data");
+    return new File(baseDir + "/" + testName + "/" + getResource(classKey));
   }
 
   @Override
@@ -55,10 +56,17 @@ public abstract class TestServlet extends GenericServlet {
       if (classKey.startsWith(DEFAULT_PACKAGE_NAME)) {
         classKey = StringUtils.substringAfter(classKey, ".");
       }
-      String testName = StringUtils.substringAfterLast(groupId, ".");
-
-      json = FileUtils.readFileToString(getResourceAsFile(testName, classKey));
+      String testName;
+      if (StringUtils.contains(groupId, ".")) {
+        testName = StringUtils.substringAfterLast(groupId, ".");
+      } else {
+        testName = groupId;
+      }
+      File resourceFile = getResourceAsFile(testName, classKey);
+      SonarTestServer.LOG.info("Resource file: {}", resourceFile);
+      json = FileUtils.readFileToString(resourceFile);
     } catch (Exception e) {
+      SonarTestServer.LOG.error(e.getMessage(), e);
       json = "[]";
     }
     out.println(json);
