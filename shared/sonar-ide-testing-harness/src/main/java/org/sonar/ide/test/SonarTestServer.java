@@ -18,7 +18,11 @@
 
 package org.sonar.ide.test;
 
-import org.mortbay.jetty.testing.ServletTester;
+import org.mortbay.jetty.LocalConnector;
+import org.mortbay.jetty.Server;
+import org.mortbay.jetty.bio.SocketConnector;
+import org.mortbay.jetty.servlet.Context;
+import org.mortbay.jetty.servlet.ServletHolder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.sonar.wsclient.Host;
@@ -30,29 +34,67 @@ import org.sonar.wsclient.services.SourceQuery;
 import org.sonar.wsclient.services.ViolationQuery;
 
 /**
+ * See {@link org.mortbay.jetty.testing.ServletTester}
+ *
  * @author Evgeny Mandrikov
  */
 public class SonarTestServer {
   protected static final Logger LOG = LoggerFactory.getLogger(SonarTestServer.class);
 
-  private ServletTester tester;
+  Server _server = new Server();
+  LocalConnector _connector = new LocalConnector();
+  Context _context = new Context(Context.SESSIONS | Context.SECURITY);
+
+  private int port = -1;
   private String baseUrl;
 
-  public void start() throws Exception {
-    tester = new ServletTester();
-    tester.setContextPath("/");
-    tester.addServlet(VersionServlet.class, ServerQuery.BASE_URL);
-    tester.addServlet(ViolationServlet.class, ViolationQuery.BASE_URL);
-    tester.addServlet(SourceServlet.class, SourceQuery.BASE_URL);
-    tester.addServlet(MeasureServlet.class, ResourceQuery.BASE_URL);
+  public SonarTestServer() {
+    _server.setSendServerVersion(false);
+    _server.addConnector(_connector);
+    _server.addHandler(_context);
+  }
 
-    baseUrl = tester.createSocketConnector(true);
-    tester.start();
+  public void setPort(int port) {
+    this.port = port;
+  }
+
+  public String createSocketConnector() throws Exception {
+    SocketConnector connector = new SocketConnector();
+    connector.setHost("127.0.0.1");
+    if (port != -1) {
+      connector.setPort(port);
+    }
+    _server.addConnector(connector);
+    if (_server.isStarted()) {
+      connector.start();
+    } else {
+      connector.open();
+    }
+    return "http://" + connector.getHost() + ":" + connector.getLocalPort();
+  }
+
+  public ServletHolder addServlet(Class servlet, String pathSpec) {
+    return _context.addServlet(servlet, pathSpec);
+  }
+
+  public void setContextPath(String contextPath) {
+    _context.setContextPath(contextPath);
+  }
+
+  public void start() throws Exception {
+    setContextPath("/");
+    addServlet(VersionServlet.class, ServerQuery.BASE_URL);
+    addServlet(ViolationServlet.class, ViolationQuery.BASE_URL);
+    addServlet(SourceServlet.class, SourceQuery.BASE_URL);
+    addServlet(MeasureServlet.class, ResourceQuery.BASE_URL);
+
+    baseUrl = createSocketConnector();
+    _server.start();
     LOG.info("Sonar test server started: {}", getBaseUrl());
   }
 
   public void stop() throws Exception {
-    tester.stop();
+    _server.stop();
     LOG.info("Sonar test server stopped: {}", getBaseUrl());
   }
 
@@ -67,6 +109,7 @@ public class SonarTestServer {
 
   public static void main(String[] args) throws Exception {
     SonarTestServer server = new SonarTestServer();
+    server.setPort(9000);
     server.start();
   }
 }
