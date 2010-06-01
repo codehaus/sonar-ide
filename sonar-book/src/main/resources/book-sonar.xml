@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+"http://www.sonatype.com/tmp/docbook/xml/4.5/docbookx.dtd">
+<book id="book-sonar">
+  <?dbhtml filename="index.html"?>
+
+  <title>Sonar</title>
+
+  <bookinfo>
+    <edition>${project.version}</edition>
+
+    <author>
+      <surname>Mandrikov</surname>
+
+      <firstname>Evgeny</firstname>
+    </author>
+
+    <!--copyright>
+      <year>2010</year>
+
+      <holder>SonarSource</holder>
+    </copyright-->
+
+    <date>2010-06-01</date>
+
+    <abstract role="description-short">
+      <para>
+      </para>
+    </abstract>
+
+    <abstract>
+      <para>
+      </para>
+    </abstract>
+  </bookinfo>
+
+  <index></index>
+</book>

@@ -1,0 +1,123 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>org.codehaus.sonar-ide</groupId>
+  <artifactId>sonar-book</artifactId>
+  <version>0.1-SNAPSHOT</version>
+  <packaging>jar</packaging>
+
+  <name>Sonar IDEs :: Sonar Book</name>
+
+  <build>
+    <resources>
+      <resource>
+        <directory>src/main/resources</directory>
+        <filtering>true</filtering>
+        <includes>
+          <include>*.xml</include>
+        </includes>
+      </resource>
+      <resource>
+        <directory>src/main/resources</directory>
+        <filtering>false</filtering>
+        <excludes>
+          <exclude>*.xml</exclude>
+        </excludes>
+      </resource>
+    </resources>
+
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-resources-plugin</artifactId>
+        <version>2.3</version>
+        <configuration>
+          <escapeString>\</escapeString>
+          <encoding>UTF-8</encoding>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>com.agilejava.docbkx</groupId>
+        <artifactId>docbkx-maven-plugin</artifactId>
+        <version>2.0.10</version>
+        <dependencies>
+          <dependency>
+            <groupId>docbook</groupId>
+            <artifactId>docbook-xml</artifactId>
+            <version>4.5</version>
+          </dependency>
+        </dependencies>
+        <configuration>
+          <sourceDirectory>${basedir}/src/main/resources</sourceDirectory>
+          <includes>book-sonar.xml</includes>
+          <xincludeSupported>true</xincludeSupported>
+          <chunkedOutput>true</chunkedOutput>
+          <chunkSectionDepth>1</chunkSectionDepth>
+        </configuration>
+        <executions>
+          <execution>
+            <id>generate-javahelp</id>
+            <phase>compile</phase>
+            <goals>
+              <goal>generate-javahelp</goal>
+            </goals>
+            <configuration>
+              <targetDirectory>${basedir}/target/javahelp</targetDirectory>
+            </configuration>
+          </execution>
+          <execution>
+            <id>generate-eclipse</id>
+            <phase>compile</phase>
+            <goals>
+              <goal>generate-eclipse</goal>
+            </goals>
+            <configuration>
+              <targetDirectory>${basedir}/target/eclipse</targetDirectory>
+            </configuration>
+          </execution>
+          <!--
+          <execution>
+            <id>generate-html</id>
+            <phase>compile</phase>
+            <goals>
+              <goal>generate-html</goal>
+            </goals>
+            <configuration>
+              <htmlCustomization>${basedir}/target/classes/html_chunk.xsl</htmlCustomization>
+              <targetDirectory>${basedir}/target/html</targetDirectory>
+              <postProcess>
+                <copy todir="${project.build.directory}/html/images">
+                  <fileset dir="${basedir}/src/main/resources/images"/>
+                </copy>
+                <copy todir="${project.build.directory}/html/figs/web">
+                  <fileset dir="target/docbook/figs/web"/>
+                </copy>
+              </postProcess>
+            </configuration>
+          </execution>
+          -->
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>single</goal>
+            </goals>
+            <configuration>
+              <attach>true</attach>
+              <descriptors>
+                <descriptor>${basedir}/src/main/assembly/eclipse.xml</descriptor>
+                <descriptor>${basedir}/src/main/assembly/javahelp.xml</descriptor>
+              </descriptors>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+</project>
