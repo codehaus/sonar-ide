@@ -31,10 +31,20 @@
   </files>
 
   <dependencySets>
+    <!-- Libraries -->
     <dependencySet>
       <outputDirectory>${project.artifactId}/lib</outputDirectory>
       <scope>runtime</scope>
       <useProjectArtifact>false</useProjectArtifact>
+    </dependencySet>
+    <!-- Help -->
+    <dependencySet>
+      <outputDirectory>${project.artifactId}/help</outputDirectory>
+      <scope>provided</scope>
+      <includes>
+        <include>org.codehaus.sonar-ide:sonar-book</include>
+      </includes>
+      <outputFileNameMapping>${artifact.artifactId}${dashClassifier?}.${artifact.extension}</outputFileNameMapping>
     </dependencySet>
   </dependencySets>
 

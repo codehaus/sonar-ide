@@ -66,6 +66,14 @@
     </dependency>
 
     <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>sonar-book</artifactId>
+      <classifier>javahelp</classifier>
+      <version>0.1-SNAPSHOT</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
       <groupId>ch.qos.logback</groupId>
       <artifactId>logback-classic</artifactId>
     </dependency>
@@ -160,7 +168,7 @@
             <id>distribution-package</id>
             <phase>package</phase>
             <goals>
-              <goal>assembly</goal>
+              <goal>single</goal>
             </goals>
             <configuration>
               <!-- Should be uploaded only to dist -->

@@ -20,12 +20,12 @@
   <depends>com.intellij.modules.lang</depends>
   <depends optional="true" config-file="maven-support.xml">org.jetbrains.idea.maven</depends>
 
-  <!-- TODO
+  <!--
   Allows a plugin to integrate its help system (in JavaHelp format) with the IDEA help system.
   The "file" attribute specifies the name of the JAR file in the "help" subdirectory of the plugin directory.
   The "path" attribute specifies the name of the helpset file within the JAR file.
   -->
-  <!--<helpset file="myhelp.jar" path="/Help.hs"/>-->
+  <helpset file="sonar-book-javahelp.jar" path="/idea-helpset.hs"/>
 
   <application-components>
     <component>
