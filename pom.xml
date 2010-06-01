@@ -21,6 +21,7 @@
       <modules>
         <module>sonar-ide-parent</module>
         <module>shared</module>
+        <module>sonar-book</module>
         <module>idea</module>
         <module>netbeans</module>
       </modules>
@@ -32,6 +33,7 @@
       <modules>
         <module>sonar-ide-parent</module>
         <module>shared</module>
+        <module>sonar-book</module>
         <module>idea</module>
       </modules>
     </profile>
@@ -42,6 +44,7 @@
       <modules>
         <module>sonar-ide-parent</module>
         <module>shared</module>
+        <module>sonar-book</module>
         <module>eclipse/org.sonar.ide.eclipse.parent</module>
       </modules>
     </profile>

@@ -15,6 +15,9 @@
     <fileSet>
       <directory>./target/eclipse</directory>
       <outputDirectory>/</outputDirectory>
+      <excludes>
+        <exclude>plugin.xml</exclude>
+      </excludes>
     </fileSet>
   </fileSets>
 
