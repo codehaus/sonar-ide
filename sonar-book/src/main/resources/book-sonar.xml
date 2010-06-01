@@ -35,4 +35,10 @@
   </bookinfo>
 
   <index></index>
+
+  <xi:include href="chapter-main.xml"
+              xmlns:xi="http://www.w3.org/2001/XInclude" />
+
+  <xi:include href="chapter-support.xml"
+              xmlns:xi="http://www.w3.org/2001/XInclude" />
 </book>

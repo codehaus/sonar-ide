@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+"http://www.sonatype.com/tmp/docbook/xml/4.5/docbookx.dtd">
+<chapter id="support">
+    <title>Support</title>
+
+    <para>Use the following channels to find help and support:</para>
+
+    <itemizedlist>
+        <listitem>
+            <para><ulink url="http://sonar-ide.codehaus.org">On-line
+            help</ulink></para>
+        </listitem>
+
+        <listitem>
+            <para><ulink url="http://jira.codehaus.org/browse/SONARIDE">Raise
+            Issue</ulink></para>
+        </listitem>
+    </itemizedlist>
+</chapter>
