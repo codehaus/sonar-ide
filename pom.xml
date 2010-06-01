@@ -80,6 +80,7 @@
       <modules>
         <module>sonar-ide-parent</module>
         <module>shared</module>
+        <module>sonar-book</module>
         <module>idea</module>
         <module>netbeans</module>
         <!-- We can't include eclipse plugin to stable profile due to SONAR-1265
