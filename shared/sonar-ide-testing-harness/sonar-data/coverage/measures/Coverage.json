@@ -11,7 +11,7 @@
     "msr": [
       {
         "key": "branch_coverage_hits_data",
-        "data": "5=50%"
+        "data": "3=50%"
       },
       {
         "key": "coverage_line_hits_data",

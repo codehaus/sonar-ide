@@ -11,6 +11,7 @@ import com.intellij.openapi.util.Key;
 import com.intellij.util.ui.UIUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.sonar.ide.api.Logs;
 import org.sonar.ide.shared.coverage.CoverageData;
 import org.sonar.ide.shared.coverage.CoverageLoader;
 
@@ -23,7 +24,8 @@ public class ShowCoverageTask extends AbstractSonarTask {
   private static final Key<Boolean> SONAR_COVERAGE_DATA_KEY = Key.create("SONAR_COVERAGE_DATA_KEY");
 
   private static final Color UNCOVERED = new Color(250, 200, 200);
-  private static final Color COVERED = Color.GREEN;
+  private static final Color PARTIALLY_COVERED = Color.YELLOW;
+  private static final Color FULLY_COVERED = Color.GREEN;
 
   public ShowCoverageTask(@Nullable Project project, Document document, String resourceKey) {
     super(project, "Loading violations from Sonar for " + resourceKey, document, resourceKey);
@@ -39,9 +41,22 @@ public class ShowCoverageTask extends AbstractSonarTask {
       public void run() {
         removeSonarHighlighters(getMarkupModel());
         for (int line = 0; line < getDocument().getLineCount(); line++) {
-          int lineHits = coverageData.getLineHits(line + 1);
-          if (lineHits != -1) {
-            addCoverageHighlighter(line, lineHits == 0 ? UNCOVERED : COVERED);
+          CoverageData.CoverageStatus status = coverageData.getCoverageStatus(line + 1);
+          switch (status) {
+            case FULLY_COVERED:
+              addCoverageHighlighter(line, FULLY_COVERED);
+              break;
+            case PARTIALLY_COVERED:
+              addCoverageHighlighter(line, PARTIALLY_COVERED);
+              break;
+            case UNCOVERED:
+              addCoverageHighlighter(line, UNCOVERED);
+              break;
+            case NO_DATA:
+              break;
+            default:
+              Logs.INFO.error("Unknown coverage status for line {} in {}", line, getResourceKey());
+              break;
           }
         }
       }

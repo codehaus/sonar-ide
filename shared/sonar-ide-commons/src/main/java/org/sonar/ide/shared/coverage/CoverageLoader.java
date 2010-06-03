@@ -34,7 +34,7 @@ public final class CoverageLoader {
   public static final String BRANCH_COVERAGE_HITS_DATA_KEY = "branch_coverage_hits_data";
 
   public static CoverageData getCoverage(Sonar sonar, String resourceKey) {
-    return new CoverageData(getCoverageLineHits(sonar, resourceKey));
+    return new CoverageData(getCoverageLineHits(sonar, resourceKey), getBranchCoverageHits(sonar, resourceKey));
   }
 
   public static Map<Integer, String> getCoverageLineHits(Sonar sonar, String resourceKey) {

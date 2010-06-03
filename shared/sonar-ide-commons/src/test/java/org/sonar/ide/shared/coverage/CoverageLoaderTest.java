@@ -7,7 +7,8 @@ import org.sonar.ide.test.AbstractSonarIdeTest;
 
 import java.io.File;
 
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.Assert.assertThat;
 
 /**
@@ -28,11 +29,11 @@ public class CoverageLoaderTest extends AbstractSonarIdeTest {
   public void testGetCoverage() throws Exception {
     CoverageData coverage = getCoverage(getProject("coverage"), "Coverage");
     assertThat(coverage, notNullValue());
-    assertThat(coverage.getLineHits(1), equalTo(-1));             // class
-    assertThat(coverage.getLineHits(2), greaterThanOrEqualTo(1)); // method
-    assertThat(coverage.getLineHits(3), greaterThanOrEqualTo(1)); // if (false) {
-    assertThat(coverage.getLineHits(4), equalTo(0));              //   System.out.println("Never");
-    assertThat(coverage.getLineHits(5), equalTo(-1));             // }
+    assertThat(coverage.getCoverageStatus(1), is(CoverageData.CoverageStatus.NO_DATA));           // class
+    assertThat(coverage.getCoverageStatus(2), is(CoverageData.CoverageStatus.FULLY_COVERED));     // method
+    assertThat(coverage.getCoverageStatus(3), is(CoverageData.CoverageStatus.PARTIALLY_COVERED)); // if (false) {
+    assertThat(coverage.getCoverageStatus(4), is(CoverageData.CoverageStatus.UNCOVERED));         //   System.out.println("Never");
+    assertThat(coverage.getCoverageStatus(5), is(CoverageData.CoverageStatus.NO_DATA));           // }
   }
 
   private CoverageData getCoverage(File project, String className) throws Exception {
