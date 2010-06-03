@@ -22,6 +22,7 @@ import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.editor.event.EditorFactoryEvent;
 import com.intellij.openapi.editor.event.EditorFactoryListener;
+import com.intellij.openapi.editor.markup.MarkupModel;
 import com.intellij.openapi.fileEditor.FileDocumentManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
@@ -30,7 +31,6 @@ import com.intellij.psi.PsiJavaFile;
 import com.intellij.psi.PsiManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.sonar.ide.api.Logs;
 import org.sonar.ide.idea.utils.IdeaResourceUtils;
 import org.sonar.ide.idea.vfs.SonarVirtualFile;
 
@@ -47,6 +47,47 @@ public class SonarEditorListener implements EditorFactoryListener {
       Document document = editor.getDocument();
       Project project = editor.getProject();
 
+      /*
+      editor.getGutter().registerTextAnnotation(new TextAnnotationGutterProvider() {
+
+        @Override
+        public String getLineText(int i, Editor editor) {
+          // TODO
+          return null;
+        }
+
+        @Override
+        public String getToolTip(int i, Editor editor) {
+          // TODO
+          return null;
+        }
+
+        @Override
+        public EditorFontType getStyle(int i, Editor editor) {
+          // TODO
+          return null;
+        }
+
+        @Override
+        public ColorKey getColor(int i, Editor editor) {
+          // TODO
+          return null;
+        }
+
+        @Override
+        public List<AnAction> getPopupActions(Editor editor) {
+          // TODO
+          return null;
+        }
+
+        @Override
+        public void gutterClosed() {
+          // TODO
+
+        }
+      });
+      */
+
       processFile(project, document);
     } catch (Throwable e) { // NOSONAR
       // This is a critical part in file opening procedure in IDEA.
@@ -60,7 +101,9 @@ public class SonarEditorListener implements EditorFactoryListener {
     try {
       Editor editor = editorFactoryEvent.getEditor();
       Project project = editor.getProject();
-      ShowViolationsTask.removeSonarHighlighters(editor.getDocument().getMarkupModel(project));
+      MarkupModel markupModel = editor.getDocument().getMarkupModel(project);
+      ShowViolationsTask.removeSonarHighlighters(markupModel);
+      ShowCoverageTask.removeSonarHighlighters(markupModel);
     } catch (Throwable e) { // NOSONAR
       // Even if we can't do something editor should be released.
       LOG.error(e.getMessage(), e);
@@ -73,6 +116,7 @@ public class SonarEditorListener implements EditorFactoryListener {
     if (file instanceof SonarVirtualFile) {
       SonarVirtualFile sonarVirtualFile = (SonarVirtualFile) file;
       new ShowViolationsTask(project, document, sonarVirtualFile.getResourceKey()).queue();
+      new ShowCoverageTask(project, document, sonarVirtualFile.getResourceKey()).queue();
       return;
     }
 

@@ -23,18 +23,15 @@ import com.intellij.openapi.editor.markup.HighlighterLayer;
 import com.intellij.openapi.editor.markup.MarkupModel;
 import com.intellij.openapi.editor.markup.RangeHighlighter;
 import com.intellij.openapi.progress.ProgressIndicator;
-import com.intellij.openapi.progress.Task;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Key;
 import com.intellij.util.ui.UIUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.sonar.ide.idea.utils.SonarUtils;
 import org.sonar.ide.shared.ViolationUtils;
 import org.sonar.ide.shared.ViolationsLoader;
 import org.sonar.ide.shared.duplications.Duplication;
 import org.sonar.ide.shared.duplications.DuplicationsLoader;
-import org.sonar.wsclient.Sonar;
 import org.sonar.wsclient.services.Violation;
 
 import java.util.*;
@@ -44,40 +41,32 @@ import java.util.*;
  *
  * @author Evgeny Mandrikov
  */
-public class ShowViolationsTask extends Task.Backgroundable {
+public class ShowViolationsTask extends AbstractSonarTask {
   private static final Key<Boolean> SONAR_DATA_KEY = Key.create("SONAR_DATA_KEY");
 
-  private Document document;
-  private String resourceKey;
-
   public ShowViolationsTask(@Nullable Project project, Document document, String resourceKey) {
-    super(project, "Loading violations from Sonar for " + resourceKey);
-    this.document = document;
-    this.resourceKey = resourceKey;
+    super(project, "Loading violations from Sonar for " + resourceKey, document, resourceKey);
   }
 
   @Override
   public void run(@NotNull ProgressIndicator progressIndicator) {
     try {
-      Project project = getProject();
-      final Sonar sonar = SonarUtils.getSonar(project);
-      String text = document.getText();
+      String text = getDocument().getText();
       // Load violations
-      final Collection<Violation> violations = ViolationsLoader.getViolations(sonar, resourceKey, text);
+      final Collection<Violation> violations = ViolationsLoader.getViolations(getSonar(), getResourceKey(), text);
       final Map<Integer, List<Violation>> violationsByLine = ViolationUtils.splitByLines(violations);
-      final MarkupModel markupModel = document.getMarkupModel(project);
       // Load duplications
-      final Collection<Duplication> duplications = DuplicationsLoader.getDuplications(sonar, resourceKey, text);
+      final Collection<Duplication> duplications = DuplicationsLoader.getDuplications(getSonar(), getResourceKey(), text);
       // Add to UI
       UIUtil.invokeLaterIfNeeded(new Runnable() {
         @Override
         public void run() {
-          removeSonarHighlighters(document.getMarkupModel(getProject()));
+          removeSonarHighlighters(getMarkupModel());
           for (Map.Entry<Integer, List<Violation>> entry : violationsByLine.entrySet()) {
-            addViolationsHighlighter(markupModel, entry.getKey() - 1, entry.getValue());
+            addViolationsHighlighter(entry.getKey() - 1, entry.getValue());
           }
           for (Duplication duplication : duplications) {
-            addDuplicationsHighlighter(markupModel, duplication.getStart(), Arrays.asList(duplication));
+            addDuplicationsHighlighter(duplication.getStart(), Arrays.asList(duplication));
           }
         }
       });
@@ -101,8 +90,8 @@ public class ShowViolationsTask extends Task.Backgroundable {
   }
   */
 
-  protected static RangeHighlighter addSonarHighlighter(MarkupModel markupModel, int line, int layer) {
-    RangeHighlighter highlighter = markupModel.addLineHighlighter(line, layer, null);
+  protected RangeHighlighter addSonarHighlighter(int line, int layer) {
+    RangeHighlighter highlighter = getMarkupModel().addLineHighlighter(line, layer, null);
 //    RangeHighlighter highlighter = markupModel.addRangeHighlighter(startOffset, endOffset);
     highlighter.putUserData(SONAR_DATA_KEY, true);
     highlighter.setGreedyToRight(true);
@@ -110,8 +99,8 @@ public class ShowViolationsTask extends Task.Backgroundable {
     return highlighter;
   }
 
-  protected static void addHighlighter(MarkupModel markupModel, int line, ViolationGutterIconRenderer renderer) {
-    RangeHighlighter highlighter = addSonarHighlighter(markupModel, line, HighlighterLayer.ERROR + 1);
+  protected void addHighlighter(int line, ViolationGutterIconRenderer renderer) {
+    RangeHighlighter highlighter = addSonarHighlighter(line, HighlighterLayer.ERROR + 1);
     highlighter.setGutterIconRenderer(renderer);
     highlighter.setErrorStripeMarkColor(renderer.getErrorStripeMarkColor());
     highlighter.setErrorStripeTooltip(renderer.getTooltipText());
@@ -120,36 +109,24 @@ public class ShowViolationsTask extends Task.Backgroundable {
   /**
    * Adds highlighter for specified duplications.
    *
-   * @param markupModel  markup model
    * @param line         numer of line
    * @param duplications duplications
    */
-  protected static void addDuplicationsHighlighter(MarkupModel markupModel, int line, List<Duplication> duplications) {
-    addHighlighter(markupModel, line, new ViolationGutterIconRenderer(Collections.<Violation>emptyList(), duplications));
+  protected void addDuplicationsHighlighter(int line, List<Duplication> duplications) {
+    addHighlighter(line, new ViolationGutterIconRenderer(Collections.<Violation>emptyList(), duplications));
   }
 
   /**
    * Adds highlighter for specified violations.
    *
-   * @param markupModel markup model
-   * @param line        number of line
-   * @param violations  violations
+   * @param line       number of line
+   * @param violations violations
    */
-  protected static void addViolationsHighlighter(MarkupModel markupModel, int line, List<Violation> violations) {
-    addHighlighter(markupModel, line, new ViolationGutterIconRenderer(violations));
+  protected void addViolationsHighlighter(int line, List<Violation> violations) {
+    addHighlighter(line, new ViolationGutterIconRenderer(violations));
   }
 
-  /**
-   * Removes all Sonar highlighters. Should be called before adding new markers to avoid duplicate markers.
-   *
-   * @param markupModel markup model
-   */
-  protected static void removeSonarHighlighters(MarkupModel markupModel) {
-    for (RangeHighlighter rangeHighlighter : markupModel.getAllHighlighters()) {
-      Boolean marker = rangeHighlighter.getUserData(ShowViolationsTask.SONAR_DATA_KEY);
-      if (marker != null) {
-        markupModel.removeHighlighter(rangeHighlighter);
-      }
-    }
+  public static void removeSonarHighlighters(MarkupModel markupModel) {
+    removeSonarHighlighters(markupModel, SONAR_DATA_KEY);
   }
 }

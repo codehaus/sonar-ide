@@ -76,6 +76,11 @@ public class ViolationGutterIconRenderer extends GutterIconRenderer {
   }
 
   @Override
+  public Alignment getAlignment() {
+    return Alignment.LEFT;
+  }
+
+  @Override
   public AnAction getClickAction() {
     return new AnAction() {
       @Override
