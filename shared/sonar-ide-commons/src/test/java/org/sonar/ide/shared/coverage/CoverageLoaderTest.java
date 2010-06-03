@@ -7,8 +7,7 @@ import org.sonar.ide.test.AbstractSonarIdeTest;
 
 import java.io.File;
 
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.notNullValue;
+import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertThat;
 
 /**
@@ -29,10 +28,11 @@ public class CoverageLoaderTest extends AbstractSonarIdeTest {
   public void testGetCoverage() throws Exception {
     CoverageData coverage = getCoverage(getProject("coverage"), "Coverage");
     assertThat(coverage, notNullValue());
-    assertThat(coverage.isCovered(1), is(false)); // class
-    assertThat(coverage.isCovered(2), is(true));  // method
-    assertThat(coverage.isCovered(3), is(true));  // if (false)
-    assertThat(coverage.isCovered(4), is(false));
+    assertThat(coverage.getLineHits(1), equalTo(-1));             // class
+    assertThat(coverage.getLineHits(2), greaterThanOrEqualTo(1)); // method
+    assertThat(coverage.getLineHits(3), greaterThanOrEqualTo(1)); // if (false) {
+    assertThat(coverage.getLineHits(4), equalTo(0));              //   System.out.println("Never");
+    assertThat(coverage.getLineHits(5), equalTo(-1));             // }
   }
 
   private CoverageData getCoverage(File project, String className) throws Exception {

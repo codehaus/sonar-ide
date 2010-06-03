@@ -16,8 +16,15 @@ public class CoverageData {
     }
   }
 
-  public boolean isCovered(int line) {
-    return coverageLineHits.containsKey(line) && coverageLineHits.get(line) > 0;
+  /**
+   * @param line number of line
+   * @return line hits or -1, if no coverage data
+   */
+  public int getLineHits(int line) {
+    if (!coverageLineHits.containsKey(line)) {
+      return -1;
+    }
+    return coverageLineHits.get(line);
   }
 
 }
