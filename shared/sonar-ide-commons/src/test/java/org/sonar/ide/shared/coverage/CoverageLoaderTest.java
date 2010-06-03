@@ -33,7 +33,9 @@ public class CoverageLoaderTest extends AbstractSonarIdeTest {
     assertThat(coverage.getCoverageStatus(2), is(CoverageData.CoverageStatus.FULLY_COVERED));     // method
     assertThat(coverage.getCoverageStatus(3), is(CoverageData.CoverageStatus.PARTIALLY_COVERED)); // if (false) {
     assertThat(coverage.getCoverageStatus(4), is(CoverageData.CoverageStatus.UNCOVERED));         //   System.out.println("Never");
-    assertThat(coverage.getCoverageStatus(5), is(CoverageData.CoverageStatus.NO_DATA));           // }
+    assertThat(coverage.getCoverageStatus(5), is(CoverageData.CoverageStatus.NO_DATA));           // } else {
+    assertThat(coverage.getCoverageStatus(6), is(CoverageData.CoverageStatus.FULLY_COVERED));     //   System.out.println("Once");
+    assertThat(coverage.getCoverageStatus(7), is(CoverageData.CoverageStatus.NO_DATA));           // } 
   }
 
   private CoverageData getCoverage(File project, String className) throws Exception {

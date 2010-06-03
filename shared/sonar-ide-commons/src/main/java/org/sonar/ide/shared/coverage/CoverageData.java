@@ -6,7 +6,7 @@ import java.util.Map;
 /**
  * @author Evgeny Mandrikov
  */
-public class CoverageData {
+public final class CoverageData {
   private Map<Integer, String> hitsByLine = new HashMap<Integer, String>();
   private Map<Integer, String> branchHitsByLine = new HashMap<Integer, String>();
 

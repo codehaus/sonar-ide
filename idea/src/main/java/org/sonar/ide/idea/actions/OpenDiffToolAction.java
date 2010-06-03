@@ -47,26 +47,32 @@ public class OpenDiffToolAction extends SonarAction {
   }
 
   private DiffRequest getDiffRequest(final Project project, Document doc1, Document doc2) {
-    return getDiffRequest(project, new DocumentContent(doc2), new DocumentContent(doc1));
+    return new SonarDiffRequest(project, new DocumentContent(doc2), new DocumentContent(doc1));
   }
 
-  private DiffRequest getDiffRequest(final Project project, final DocumentContent doc1, final DocumentContent doc2) {
-    return new DiffRequest(project) {
-      @Override
-      public DiffContent[] getContents() {
-        return new DiffContent[]{doc1, doc2};
-      }
+  private static class SonarDiffRequest extends DiffRequest {
+    private DocumentContent doc1, doc2;
 
-      @Override
-      public String[] getContentTitles() {
-        return new String[]{"Sonar server", "Local copy"};
-      }
+    private SonarDiffRequest(Project project, DocumentContent doc1, DocumentContent doc2) {
+      super(project);
+      this.doc1 = doc1;
+      this.doc2 = doc2;
+    }
 
-      @Override
-      public String getWindowTitle() {
-        return "Diff"; // TODO
-      }
-    };
+    @Override
+    public DiffContent[] getContents() {
+      return new DiffContent[]{doc1, doc2};
+    }
+
+    @Override
+    public String[] getContentTitles() {
+      return new String[]{"Sonar server", "Local copy"};
+    }
+
+    @Override
+    public String getWindowTitle() {
+      return "Diff"; // TODO
+    }
   }
 
   private DiffContent createDiffContent(final Project project, final VirtualFile virtualFile) {
