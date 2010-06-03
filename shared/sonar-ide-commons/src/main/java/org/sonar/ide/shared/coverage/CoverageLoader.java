@@ -16,7 +16,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
 
-package org.sonar.ide.shared;
+package org.sonar.ide.shared.coverage;
 
 import org.sonar.wsclient.Sonar;
 import org.sonar.wsclient.services.Measure;
@@ -33,6 +33,10 @@ public final class CoverageLoader {
   public static final String COVERAGE_LINE_HITS_DATA_KEY = "coverage_line_hits_data";
   public static final String BRANCH_COVERAGE_HITS_DATA_KEY = "branch_coverage_hits_data";
 
+  public static CoverageData getCoverage(Sonar sonar, String resourceKey) {
+    return new CoverageData(getCoverageLineHits(sonar, resourceKey));
+  }
+
   public static Map<Integer, String> getCoverageLineHits(Sonar sonar, String resourceKey) {
     return getMeasure(sonar, resourceKey, COVERAGE_LINE_HITS_DATA_KEY);
   }
@@ -44,6 +48,7 @@ public final class CoverageLoader {
   protected static Map<Integer, String> getMeasure(Sonar sonar, String resourceKey, String metricKey) {
     ResourceQuery query = new ResourceQuery(resourceKey)
         .setMetrics(metricKey);
+    System.out.println(query.getUrl());
     Resource resource = sonar.find(query);
     Measure measure = resource.getMeasure(metricKey);
     return unmarshall(measure.getData());

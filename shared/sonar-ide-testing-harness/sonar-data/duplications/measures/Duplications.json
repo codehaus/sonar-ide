@@ -11,7 +11,7 @@
     "msr": [
       {
         "key": "duplications_data",
-        "data":  "<duplications><duplication lines=\"11\" start=\"4\" target-start=\"17\" target-resource=\"org.codehaus.sonar-ide.test-project:module1:[default].Duplications\"/><duplication lines=\"11\" start=\"17\" target-start=\"4\" target-resource=\"org.codehaus.sonar-ide.test-project:module1:[default].Duplications\"/></duplications>"
+        "data": "<duplications><duplication lines=\"11\" start=\"4\" target-start=\"17\" target-resource=\"org.codehaus.sonar-ide.test-project:module1:[default].Duplications\"/><duplication lines=\"11\" start=\"17\" target-start=\"4\" target-resource=\"org.codehaus.sonar-ide.test-project:module1:[default].Duplications\"/></duplications>"
       }
     ]
   }

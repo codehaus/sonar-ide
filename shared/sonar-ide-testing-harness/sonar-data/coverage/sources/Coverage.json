@@ -1,0 +1,13 @@
+[
+  {
+    "1":"public class Coverage {",
+    "2":"  public void m1() {",
+    "3":"    if (false) {",
+    "4":"      System.out.println(\"Never\");",
+    "5":"    } else {",
+    "6":"      System.out.println(\"Once\");",
+    "7":"    }",
+    "8":"  }",
+    "9":"}"
+  }
+]
