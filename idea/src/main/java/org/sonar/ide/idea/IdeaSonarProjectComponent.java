@@ -25,6 +25,9 @@ import com.intellij.openapi.components.Storage;
 import com.intellij.openapi.editor.EditorFactory;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.startup.StartupManager;
+import com.intellij.openapi.wm.ToolWindow;
+import com.intellij.openapi.wm.ToolWindowAnchor;
+import com.intellij.openapi.wm.ToolWindowManager;
 import org.sonar.ide.idea.editor.SonarEditorListener;
 import org.sonar.ide.shared.SonarUrlUtils;
 import org.sonar.ide.ui.AbstractConfigPanel;
@@ -45,6 +48,7 @@ import org.sonar.wsclient.Host;
 public class IdeaSonarProjectComponent extends AbstractConfigurableComponent
     implements ProjectComponent, PersistentStateComponent<IdeaSonarProjectComponent.State> {
 
+  private Project project;
   private State state = new State();
 
   public static class State {
@@ -98,6 +102,7 @@ public class IdeaSonarProjectComponent extends AbstractConfigurableComponent
 
   public IdeaSonarProjectComponent(Project project) {
     getLog().info("Loaded component for {}", project);
+    this.project = project;
     StartupManager.getInstance(project).registerPostStartupActivity(new Runnable() {
       public void run() {
         getLog().info("Start: project initializing");
@@ -110,11 +115,13 @@ public class IdeaSonarProjectComponent extends AbstractConfigurableComponent
   @Override
   public void projectOpened() {
     getLog().debug("Project opened");
+    registerToolWindow();
   }
 
   @Override
   public void projectClosed() {
     getLog().debug("Project closed");
+    unregisterToolWindow();
   }
 
   @Override
@@ -143,5 +150,22 @@ public class IdeaSonarProjectComponent extends AbstractConfigurableComponent
 
   public Host getServer() {
     return new Host(state.host).setPassword(state.password).setUsername(state.username);
+  }
+
+  private static final String ID_TOOLWINDOW = "Sonar";
+  private ToolWindow toolWindow;
+
+  private void registerToolWindow() {
+    getLog().debug("Registering tool window");
+    final ToolWindowManager toolWindowManager = ToolWindowManager.getInstance(project);
+    toolWindow = toolWindowManager.registerToolWindow(ID_TOOLWINDOW, false, ToolWindowAnchor.RIGHT);
+    toolWindow.setTitle("Sonar");
+    toolWindow.setIcon(getIcon());
+  }
+
+  private void unregisterToolWindow() {
+    getLog().debug("Deregistering tool window");
+    final ToolWindowManager toolWindowManager = ToolWindowManager.getInstance(project);
+    toolWindowManager.unregisterToolWindow(ID_TOOLWINDOW);
   }
 }
