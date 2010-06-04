@@ -21,6 +21,9 @@ package org.sonar.ide.idea;
 import com.intellij.codeInspection.InspectionToolProvider;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.components.ApplicationComponent;
+import com.intellij.openapi.components.PersistentStateComponent;
+import com.intellij.openapi.components.State;
+import com.intellij.openapi.components.Storage;
 import org.sonar.ide.idea.inspection.Duplications;
 import org.sonar.ide.idea.inspection.Violations;
 import org.sonar.ide.ui.AbstractConfigPanel;
@@ -32,14 +35,31 @@ import java.util.Properties;
  *
  * @author Evgeny Mandrikov
  */
-//@State(
-//    name = "Sonar", // TODO name
-//    storages = { // TODO StorageScheme
-//        @Storage(id = "default", file = "$APP_CONFIG$/sonar.xml")
-//    }
-//)
+@State(
+    name = "Sonar", // TODO name
+    storages = { // TODO StorageScheme
+        @Storage(id = "default", file = "$APP_CONFIG$/sonar.xml")
+    }
+)
 public class IdeaSonarApplicationComponent extends AbstractConfigurableComponent
-    implements ApplicationComponent, InspectionToolProvider {
+    implements ApplicationComponent, InspectionToolProvider, PersistentStateComponent<IdeaSonarApplicationComponent.State> {
+
+  private State state = new State();
+
+  public static class State {
+    public State() {
+    }
+  }
+
+  @Override
+  public State getState() {
+    return state;
+  }
+
+  @Override
+  public void loadState(State state) {
+    this.state = state;
+  }
 
   /**
    * @return application component

@@ -57,6 +57,10 @@ public class IdeaSonarModuleComponent extends AbstractConfigurableComponent
     public String artifactId;
     public String branch;
 
+    /**
+     * Note that the state class must have a default constructor.
+     * It should return the default state of the component (one used if there is nothing persisted in the XML files yet).
+     */
     public State() {
       // Defaults:
       groupId = "";
