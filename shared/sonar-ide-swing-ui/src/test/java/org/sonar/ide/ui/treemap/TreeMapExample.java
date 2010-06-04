@@ -24,7 +24,7 @@ import org.sonar.ide.ui.treemap.split.SplitByWeight;
 /**
  * @author Evgeny Mandrikov
  */
-public class TreeMapExample {
+public final class TreeMapExample {
   protected static class Resource {
     final String label;
     final double size;

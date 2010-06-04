@@ -25,13 +25,9 @@ import com.intellij.openapi.module.Module;
 import com.intellij.openapi.module.ModuleComponent;
 import com.intellij.openapi.module.ModuleUtil;
 import com.intellij.psi.PsiFile;
-import com.jgoodies.forms.builder.DefaultFormBuilder;
-import com.jgoodies.forms.layout.FormLayout;
 import org.jetbrains.annotations.Nullable;
 import org.sonar.ide.ui.AbstractConfigPanel;
-
-import javax.swing.*;
-import java.util.Properties;
+import org.sonar.ide.ui.ModulePanel;
 
 /**
  * Per-module plugin component.
@@ -161,60 +157,18 @@ public class IdeaSonarModuleComponent extends AbstractConfigurableComponent
 
   @Override
   protected AbstractConfigPanel initConfigPanel() {
-    return new MyConfigPanel(this);
+    ModulePanel modulePanel = new ModulePanel();
+    modulePanel.setGroupId(getGroupId());
+    modulePanel.setArtifactId(getArtifactId());
+    modulePanel.setBranch(getBranch());
+    return modulePanel;
   }
 
   @Override
   protected void saveConfig(AbstractConfigPanel configPanel) {
-    MyConfigPanel myConfigPanel = (MyConfigPanel) configPanel;
-    setArtifactId(myConfigPanel.getArtifactId());
-    setGroupId(myConfigPanel.getGroupId());
-    setBranch(myConfigPanel.getBranch());
-  }
-
-  class MyConfigPanel extends AbstractConfigPanel {
-    private final JTextField artifactId;
-    private final JTextField groupId;
-    private final JTextField branch;
-
-    MyConfigPanel(IdeaSonarModuleComponent sonarModule) {
-      artifactId = new JTextField(sonarModule.getArtifactId());
-      groupId = new JTextField(sonarModule.getGroupId());
-      branch = new JTextField(sonarModule.getBranch());
-
-      DefaultFormBuilder formBuilder = new DefaultFormBuilder(new FormLayout(""));
-      formBuilder.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-      formBuilder.appendColumn("right:pref");
-      formBuilder.appendColumn("3dlu");
-      formBuilder.appendColumn("fill:p:g");
-      formBuilder.append("GroupId:", groupId);
-      formBuilder.append("ArtifactId:", artifactId);
-      formBuilder.append("Branch:", branch);
-
-      add(formBuilder.getPanel());
-    }
-
-    @Override
-    public boolean isModified() {
-      // TODO
-      return true;
-    }
-
-    @Override
-    public Properties getProperties() {
-      return null;
-    }
-
-    public String getArtifactId() {
-      return artifactId.getText();
-    }
-
-    public String getGroupId() {
-      return groupId.getText();
-    }
-
-    public String getBranch() {
-      return branch.getText();
-    }
+    ModulePanel modulePanel = (ModulePanel) configPanel;
+    setGroupId(modulePanel.getGroupId());
+    setArtifactId(modulePanel.getArtifactId());
+    setBranch(modulePanel.getBranch());
   }
 }
