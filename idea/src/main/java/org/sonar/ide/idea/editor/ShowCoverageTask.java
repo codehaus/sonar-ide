@@ -40,17 +40,23 @@ public class ShowCoverageTask extends AbstractSonarTask {
       @Override
       public void run() {
         removeSonarHighlighters(getMarkupModel());
-        for (int line = 0; line < getDocument().getLineCount(); line++) {
-          CoverageData.CoverageStatus status = coverageData.getCoverageStatus(line + 1);
+        for (int line = 1; line <= getDocument().getLineCount(); line++) {
+          StringBuilder sb = new StringBuilder("Hits: ")
+              .append(coverageData.getHitsByLine(line));
+          if (coverageData.getBranchHitsByLine(line) != null) {
+            sb.append(" (").append(coverageData.getBranchHitsByLine(line)).append(')');
+          }
+          String tooltip = sb.toString();
+          CoverageData.CoverageStatus status = coverageData.getCoverageStatus(line);
           switch (status) {
             case FULLY_COVERED:
-              addCoverageHighlighter(line, FULLY_COVERED);
+              addCoverageHighlighter(line, FULLY_COVERED, tooltip);
               break;
             case PARTIALLY_COVERED:
-              addCoverageHighlighter(line, PARTIALLY_COVERED);
+              addCoverageHighlighter(line, PARTIALLY_COVERED, tooltip);
               break;
             case UNCOVERED:
-              addCoverageHighlighter(line, UNCOVERED);
+              addCoverageHighlighter(line, UNCOVERED, tooltip);
               break;
             case NO_DATA:
               break;
@@ -63,10 +69,10 @@ public class ShowCoverageTask extends AbstractSonarTask {
     });
   }
 
-  protected void addCoverageHighlighter(int line, Color color) {
+  protected void addCoverageHighlighter(int line, Color color, String tooltip) {
     TextAttributes attr = new TextAttributes();
     attr.setBackgroundColor(color);
-    RangeHighlighter highlighter = getMarkupModel().addLineHighlighter(line, HighlighterLayer.FIRST, attr);
+    RangeHighlighter highlighter = getMarkupModel().addLineHighlighter(line - 1, HighlighterLayer.FIRST, attr);
     highlighter.putUserData(SONAR_COVERAGE_DATA_KEY, true);
     /* TODO
     highlighter.setLineMarkerRenderer(new LineMarkerRenderer(){
@@ -79,7 +85,7 @@ public class ShowCoverageTask extends AbstractSonarTask {
     */
 
     highlighter.setThinErrorStripeMark(false);
-    highlighter.setGutterIconRenderer(new CoverageGutterIconRenderer(color));
+    highlighter.setGutterIconRenderer(new CoverageGutterIconRenderer(color, tooltip));
     highlighter.setGreedyToRight(false);
     highlighter.setGreedyToLeft(true);
   }

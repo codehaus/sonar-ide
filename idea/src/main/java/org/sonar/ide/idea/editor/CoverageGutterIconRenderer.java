@@ -11,9 +11,11 @@ import java.awt.*;
  */
 public class CoverageGutterIconRenderer extends GutterIconRenderer {
   private Color color;
+  private String tooltip;
 
-  public CoverageGutterIconRenderer(Color color) {
+  public CoverageGutterIconRenderer(Color color, String tooltip) {
     this.color = color;
+    this.tooltip = tooltip;
   }
 
   @NotNull
@@ -25,6 +27,11 @@ public class CoverageGutterIconRenderer extends GutterIconRenderer {
   @Override
   public Alignment getAlignment() {
     return Alignment.RIGHT;
+  }
+
+  @Override
+  public String getTooltipText() {
+    return tooltip;
   }
 
   private class MyIcon implements Icon {

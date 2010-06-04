@@ -15,6 +15,14 @@ public final class CoverageData {
     this.branchHitsByLine = branchHitsByLine;
   }
 
+  public String getHitsByLine(int line) {
+    return hitsByLine.get(line);
+  }
+
+  public String getBranchHitsByLine(int line) {
+    return branchHitsByLine.get(line);
+  }
+
   public CoverageStatus getCoverageStatus(int line) {
     String hits = hitsByLine.get(line);
     String branchHits = branchHitsByLine.get(line);
