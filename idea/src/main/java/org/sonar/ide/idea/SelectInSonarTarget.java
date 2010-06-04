@@ -58,7 +58,7 @@ public class SelectInSonarTarget implements SelectInTarget {
       PsiFile psiFile = psiElement.getContainingFile();
       String resourceKey = IdeaResourceUtils.getInstance().getFileKey(psiFile);
       return SonarUrlUtils.getDashboard(
-          SonarUtils.getSonarSettings(project).getServer().getHost(),
+          SonarUtils.getServer(project).getHost(),
           resourceKey
       );
     }

@@ -32,7 +32,14 @@ import java.util.Properties;
  *
  * @author Evgeny Mandrikov
  */
-public class IdeaSonarApplicationComponent extends AbstractConfigurableComponent implements ApplicationComponent, InspectionToolProvider {
+//@State(
+//    name = "Sonar", // TODO name
+//    storages = { // TODO StorageScheme
+//        @Storage(id = "default", file = "$APP_CONFIG$/sonar.xml")
+//    }
+//)
+public class IdeaSonarApplicationComponent extends AbstractConfigurableComponent
+    implements ApplicationComponent, InspectionToolProvider {
 
   /**
    * @return application component

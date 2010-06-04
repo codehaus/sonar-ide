@@ -95,20 +95,32 @@ public class SonarConfigPanel extends AbstractConfigPanel {
   }
 
   public void setProperties(Properties properties) {
-    host.setText(properties.getProperty(SonarProperties.HOST_PROPERTY));
-    username.setText(properties.getProperty(SonarProperties.USERNAME_PROPERTY));
-    password.setText(properties.getProperty(SonarProperties.PASSWORD_PROPERTY));
+    setHost(properties.getProperty(SonarProperties.HOST_PROPERTY));
+    setUsername(properties.getProperty(SonarProperties.USERNAME_PROPERTY));
+    setPassword(properties.getProperty(SonarProperties.PASSWORD_PROPERTY));
   }
 
-  private String getHost() {
+  public String getHost() {
     return host.getText();
   }
 
-  private String getUsername() {
+  public void setHost(String host) {
+    this.host.setText(host);
+  }
+
+  public String getUsername() {
     return username.getText();
   }
 
-  private String getPassword() {
+  public void setUsername(String username) {
+    this.username.setText(username);
+  }
+
+  public String getPassword() {
     return new String(password.getPassword());
+  }
+
+  public void setPassword(String password) {
+    this.password.setText(password);
   }
 }

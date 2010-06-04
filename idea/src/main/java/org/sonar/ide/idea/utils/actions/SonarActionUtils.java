@@ -48,7 +48,7 @@ public final class SonarActionUtils {
   }
 
   public static Host getSonarServer(AnActionEvent event) {
-    return SonarUtils.getSonarSettings(getProject(event)).getServer();
+    return SonarUtils.getServer(getProject(event));
   }
 
   public static Project getProject(AnActionEvent event) {

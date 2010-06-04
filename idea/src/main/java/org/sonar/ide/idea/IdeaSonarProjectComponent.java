@@ -18,26 +18,74 @@
 
 package org.sonar.ide.idea;
 
+import com.intellij.openapi.components.PersistentStateComponent;
 import com.intellij.openapi.components.ProjectComponent;
+import com.intellij.openapi.components.State;
+import com.intellij.openapi.components.Storage;
 import com.intellij.openapi.editor.EditorFactory;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.startup.StartupManager;
-import com.intellij.openapi.vfs.VirtualFile;
 import org.sonar.ide.idea.editor.SonarEditorListener;
-import org.sonar.ide.shared.SonarProperties;
 import org.sonar.ide.ui.AbstractConfigPanel;
 import org.sonar.ide.ui.SonarConfigPanel;
-
-import java.io.File;
+import org.sonar.wsclient.Host;
 
 /**
  * Per-project plugin component.
  *
  * @author Evgeny Mandrikov
  */
-public class IdeaSonarProjectComponent extends AbstractConfigurableComponent implements ProjectComponent {
+@State(
+    name = "Sonar", // TODO name
+    storages = { // TODO StorageScheme
+        @Storage(id = "default", file = "$PROJECT_FILE$")
+    }
+)
+public class IdeaSonarProjectComponent extends AbstractConfigurableComponent
+    implements ProjectComponent, PersistentStateComponent<IdeaSonarProjectComponent.State> {
 
-  private Project project;
+  private State state = new State();
+
+  public static class State {
+    public String host;
+    public String username;
+    public String password;
+
+    public State() {
+      // Defaults:
+      host = "http://localhost:9000";
+      username = "";
+      password = "";
+    }
+
+    @Override
+    public boolean equals(Object o) {
+      if (this == o) return true;
+      if (o == null || getClass() != o.getClass()) return false;
+      State state = (State) o;
+      return host.equals(state.host) && password.equals(state.password) && username.equals(state.username);
+    }
+
+    @Override
+    public int hashCode() {
+      int result = host.hashCode();
+      result = 31 * result + username.hashCode();
+      result = 31 * result + password.hashCode();
+      return result;
+    }
+  }
+
+  @Override
+  public State getState() {
+    getLog().debug("Get state");
+    return state;
+  }
+
+  @Override
+  public void loadState(State state) {
+    getLog().debug("Load state");
+    this.state = state;
+  }
 
   /**
    * @param project project
@@ -49,7 +97,6 @@ public class IdeaSonarProjectComponent extends AbstractConfigurableComponent imp
 
   public IdeaSonarProjectComponent(Project project) {
     getLog().info("Loaded component for {}", project);
-    this.project = project;
     StartupManager.getInstance(project).registerPostStartupActivity(new Runnable() {
       public void run() {
         getLog().info("Start: project initializing");
@@ -72,25 +119,18 @@ public class IdeaSonarProjectComponent extends AbstractConfigurableComponent imp
   @Override
   protected AbstractConfigPanel initConfigPanel() {
     SonarConfigPanel configPanel = new SonarConfigPanel();
-    configPanel.setProperties(SonarProperties.load(getConfigFilename()));
+    configPanel.setHost(state.host);
+    configPanel.setUsername(state.username);
+    configPanel.setPassword(state.password);
     return configPanel;
   }
 
   @Override
   protected void saveConfig(AbstractConfigPanel configPanel) {
-    SonarProperties.save(configPanel.getProperties(), getConfigFilename());
-  }
-
-  private String getConfigFilename() {
-    VirtualFile baseDir = project.getBaseDir();
-    getLog().info("Project BaseDir: {}", baseDir);
-    if (baseDir == null) {
-      // Template settings
-      return SonarProperties.getDefaultPath();
-    } else {
-      // Project settings
-      return baseDir.getPath() + File.separator + SonarProperties.FILENAME;
-    }
+    SonarConfigPanel config = (SonarConfigPanel) configPanel;
+    state.host = config.getHost();
+    state.username = config.getUsername();
+    state.password = config.getPassword();
   }
 
   private void initPlugin() {
@@ -100,7 +140,7 @@ public class IdeaSonarProjectComponent extends AbstractConfigurableComponent imp
     EditorFactory.getInstance().addEditorFactoryListener(new SonarEditorListener());
   }
 
-  public SonarProperties getSettings() {
-    return new SonarProperties(getConfigFilename());
+  public Host getServer() {
+    return new Host(state.host).setPassword(state.password).setUsername(state.username);
   }
 }

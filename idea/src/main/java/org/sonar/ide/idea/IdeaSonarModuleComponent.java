@@ -18,6 +18,9 @@
 
 package org.sonar.ide.idea;
 
+import com.intellij.openapi.components.PersistentStateComponent;
+import com.intellij.openapi.components.State;
+import com.intellij.openapi.components.Storage;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.module.ModuleComponent;
 import com.intellij.openapi.module.ModuleUtil;
@@ -35,11 +38,62 @@ import java.util.Properties;
  *
  * @author Evgeny Mandrikov
  */
-public class IdeaSonarModuleComponent extends AbstractConfigurableComponent implements ModuleComponent {
+@State(
+    name = "Sonar", // TODO name
+    storages = { // TODO StorageScheme
+        @Storage(id = "default", file = "$MODULE_FILE$")
+    }
+)
+public class IdeaSonarModuleComponent extends AbstractConfigurableComponent
+    implements ModuleComponent, PersistentStateComponent<IdeaSonarModuleComponent.State> {
 
-  private String groupId;
-  private String artifactId;
-  private String branch;
+  /**
+   * The implementation of PersistentStateComponent works by serializing public fields and bean properties into an XML format.
+   * The following types of values can be persisted: numbers, booleans, strings, collections, maps, enums.
+   * See http://confluence.jetbrains.net/display/IDEADEV/Persisting+State+of+Components
+   */
+  public static class State {
+    public String groupId;
+    public String artifactId;
+    public String branch;
+
+    public State() {
+      // Defaults:
+      groupId = "";
+      artifactId = "";
+      branch = "";
+    }
+
+    @Override
+    public boolean equals(Object o) {
+      if (this == o) return true;
+      if (o == null || getClass() != o.getClass()) return false;
+      State state = (State) o;
+      return artifactId.equals(state.artifactId) && branch.equals(state.branch) && groupId.equals(state.groupId);
+    }
+
+    @Override
+    public int hashCode() {
+      int result = groupId.hashCode();
+      result = 31 * result + artifactId.hashCode();
+      result = 31 * result + branch.hashCode();
+      return result;
+    }
+  }
+
+  private State state = new State();
+
+  @Override
+  public State getState() {
+    getLog().debug("Get state");
+    return state;
+  }
+
+  @Override
+  public void loadState(State state) {
+    getLog().debug("Load state");
+    this.state = state;
+  }
 
   /**
    * @param module module
@@ -78,27 +132,27 @@ public class IdeaSonarModuleComponent extends AbstractConfigurableComponent impl
   }
 
   public String getGroupId() {
-    return groupId;
+    return state.groupId;
   }
 
   public void setGroupId(String groupId) {
-    this.groupId = groupId;
+    state.groupId = groupId;
   }
 
   public String getArtifactId() {
-    return artifactId;
+    return state.artifactId;
   }
 
   public void setArtifactId(String artifactId) {
-    this.artifactId = artifactId;
+    state.artifactId = artifactId;
   }
 
   public String getBranch() {
-    return branch;
+    return state.branch;
   }
 
   public void setBranch(String branch) {
-    this.branch = branch;
+    state.branch = branch;
   }
 
   @Override

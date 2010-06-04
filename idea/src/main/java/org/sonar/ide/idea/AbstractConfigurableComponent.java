@@ -114,5 +114,10 @@ public abstract class AbstractConfigurableComponent implements Configurable, Bas
 
   protected abstract AbstractConfigPanel initConfigPanel();
 
+  /**
+   * Called for saving configuration from panel into component.
+   *
+   * @param configPanel configuration panel
+   */
   protected abstract void saveConfig(AbstractConfigPanel configPanel);
 }

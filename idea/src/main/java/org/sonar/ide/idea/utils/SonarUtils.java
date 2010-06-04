@@ -39,12 +39,12 @@ public final class SonarUtils {
   private SonarUtils() {
   }
 
-  public static SonarProperties getSonarSettings(Project project) {
-    return IdeaSonarProjectComponent.getInstance(project).getSettings();
+  public static Host getServer(Project project) {
+    return IdeaSonarProjectComponent.getInstance(project).getServer();
   }
 
   public static Sonar getSonar(Project project) {
-    Host server = getSonarSettings(project).getServer();
+    Host server = getServer(project);
     LOG.debug("Sonar server: {}", server.getHost());
     return new Sonar(new HttpClient4Connector(server));
   }
