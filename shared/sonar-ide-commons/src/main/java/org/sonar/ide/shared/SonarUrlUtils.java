@@ -24,6 +24,8 @@ import org.apache.commons.lang.StringUtils;
  * @author Evgeny Mandrikov
  */
 public final class SonarUrlUtils {
+  public static final String HOST_DEFAULT = "http://localhost:9000";
+
   private static final String PROJECT = "/project/index/";
   private static final String COMPONENTS = "/components/index/";
   private static final String RESOURCE = "/resource/index/";

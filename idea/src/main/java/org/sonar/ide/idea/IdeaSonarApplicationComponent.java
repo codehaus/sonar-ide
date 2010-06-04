@@ -37,7 +37,7 @@ import java.util.Properties;
  */
 @State(
     name = "Sonar", // TODO name
-    storages = { // TODO StorageScheme
+    storages = {
         @Storage(id = "default", file = "$APP_CONFIG$/sonar.xml")
     }
 )

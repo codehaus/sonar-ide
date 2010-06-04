@@ -26,6 +26,7 @@ import com.intellij.openapi.editor.EditorFactory;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.startup.StartupManager;
 import org.sonar.ide.idea.editor.SonarEditorListener;
+import org.sonar.ide.shared.SonarUrlUtils;
 import org.sonar.ide.ui.AbstractConfigPanel;
 import org.sonar.ide.ui.SonarConfigPanel;
 import org.sonar.wsclient.Host;
@@ -37,7 +38,7 @@ import org.sonar.wsclient.Host;
  */
 @State(
     name = "Sonar", // TODO name
-    storages = { // TODO StorageScheme
+    storages = {
         @Storage(id = "default", file = "$PROJECT_FILE$")
     }
 )
@@ -53,7 +54,7 @@ public class IdeaSonarProjectComponent extends AbstractConfigurableComponent
 
     public State() {
       // Defaults:
-      host = "http://localhost:9000";
+      host = SonarUrlUtils.HOST_DEFAULT;
       username = "";
       password = "";
     }

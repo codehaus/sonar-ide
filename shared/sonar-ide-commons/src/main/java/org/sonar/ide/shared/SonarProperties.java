@@ -27,7 +27,9 @@ import java.util.Properties;
 
 /**
  * @author Evgeny Mandrikov
+ * @deprecated since 0.2
  */
+@Deprecated
 public final class SonarProperties {
   public static final Logger LOG = LoggerFactory.getLogger(SonarProperties.class);
 
