@@ -31,7 +31,9 @@ import java.util.Map;
 
 /**
  * @author Evgeny Mandrikov
+ * @deprecated since 0.2, instead of it use {@link org.sonar.ide.ui.MeasuresPanel}
  */
+@Deprecated
 public class MeasuresViewer extends JTabbedPane {
   private final String resourceKey;
 
