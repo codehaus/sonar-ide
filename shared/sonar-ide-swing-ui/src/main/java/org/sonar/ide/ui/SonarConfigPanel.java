@@ -123,4 +123,8 @@ public class SonarConfigPanel extends AbstractConfigPanel {
   public void setPassword(String password) {
     this.password.setText(password);
   }
+
+  public static void main(String[] args) {
+    SwingAppRunner.run(new SonarConfigPanel());
+  }
 }

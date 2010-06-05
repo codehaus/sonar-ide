@@ -151,4 +151,8 @@ public class ServerPanel extends JPanel {
   public void getProxyPassword(String proxyPassword) {
     this.proxyPassword.setText(proxyPassword);
   }
+
+  public static void main(String[] args) {
+    SwingAppRunner.run(new ServerPanel());
+  }
 }

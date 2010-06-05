@@ -28,9 +28,12 @@ import com.intellij.openapi.startup.StartupManager;
 import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.openapi.wm.ToolWindowAnchor;
 import com.intellij.openapi.wm.ToolWindowManager;
+import com.intellij.ui.content.Content;
+import com.intellij.ui.content.ContentFactory;
 import org.sonar.ide.idea.editor.SonarEditorListener;
 import org.sonar.ide.shared.SonarUrlUtils;
 import org.sonar.ide.ui.AbstractConfigPanel;
+import org.sonar.ide.ui.MeasuresPanel;
 import org.sonar.ide.ui.SonarConfigPanel;
 import org.sonar.wsclient.Host;
 
@@ -159,8 +162,11 @@ public class IdeaSonarProjectComponent extends AbstractConfigurableComponent
     getLog().debug("Registering tool window");
     final ToolWindowManager toolWindowManager = ToolWindowManager.getInstance(project);
     toolWindow = toolWindowManager.registerToolWindow(ID_TOOLWINDOW, false, ToolWindowAnchor.RIGHT);
-    toolWindow.setTitle("Sonar");
     toolWindow.setIcon(getIcon());
+
+    ContentFactory contentFactory = toolWindow.getContentManager().getFactory();
+    Content content = contentFactory.createContent(new MeasuresPanel(), "Measures", false);
+    toolWindow.getContentManager().addContent(content);
   }
 
   private void unregisterToolWindow() {

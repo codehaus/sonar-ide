@@ -84,4 +84,8 @@ public class ModulePanel extends AbstractConfigPanel {
     // TODO
     return null;
   }
+
+  public static void main(String[] args) {
+    SwingAppRunner.run(new ModulePanel());
+  }
 }
