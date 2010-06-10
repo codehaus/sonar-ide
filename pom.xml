@@ -130,9 +130,7 @@
           <aggregate>true</aggregate>
           <header>${project.basedir}/LICENSE.txt</header>
           <includes>
-            <include>**/src/main/java/**</include>
-            <include>**/src/test/java/**</include>
-            <!-- TODO include Eclipse sources -->
+            <include>**/src/**/*.java</include>
           </includes>
           <excludes>
             <!-- Exclude test projects -->
