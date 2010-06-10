@@ -21,7 +21,7 @@ package org.sonar.ide.shared.coverage;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.sonar.ide.test.AbstractSonarIdeTest;
+import org.sonar.ide.test.SonarIdeTestCase;
 
 import java.io.File;
 
@@ -32,15 +32,15 @@ import static org.junit.Assert.assertThat;
 /**
  * @author Evgeny Mandrikov
  */
-public class CoverageLoaderTest extends AbstractSonarIdeTest {
+public class CoverageLoaderTest extends SonarIdeTestCase {
   @BeforeClass
   public static void init() throws Exception {
-    AbstractSonarIdeTest.init();
+    SonarIdeTestCase.init();
   }
 
   @AfterClass
   public static void cleanup() throws Exception {
-    AbstractSonarIdeTest.cleanup();
+    SonarIdeTestCase.cleanup();
   }
 
   @Test

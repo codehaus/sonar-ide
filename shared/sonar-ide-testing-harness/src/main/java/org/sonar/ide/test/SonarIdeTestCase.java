@@ -33,8 +33,8 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
  *
  * @author Evgeny Mandrikov
  */
-public abstract class AbstractSonarIdeTest {
-  private static final Logger LOG = LoggerFactory.getLogger(AbstractSonarIdeTest.class);
+public abstract class SonarIdeTestCase {
+  private static final Logger LOG = LoggerFactory.getLogger(SonarIdeTestCase.class);
 
   private static final ReadWriteLock copyProjectLock = new ReentrantReadWriteLock();
 

@@ -22,7 +22,7 @@ import org.apache.commons.io.FileUtils;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.sonar.ide.test.AbstractSonarIdeTest;
+import org.sonar.ide.test.SonarIdeTestCase;
 
 import java.io.File;
 import java.util.List;
@@ -33,15 +33,15 @@ import static org.junit.Assert.assertThat;
 /**
  * @author Evgeny Mandrikov
  */
-public class DuplicationsLoaderTest extends AbstractSonarIdeTest {
+public class DuplicationsLoaderTest extends SonarIdeTestCase {
   @BeforeClass
   public static void init() throws Exception {
-    AbstractSonarIdeTest.init();
+    SonarIdeTestCase.init();
   }
 
   @AfterClass
   public static void cleanup() throws Exception {
-    AbstractSonarIdeTest.cleanup();
+    SonarIdeTestCase.cleanup();
   }
 
   @Test
