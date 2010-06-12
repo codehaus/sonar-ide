@@ -18,13 +18,15 @@
 
 package org.sonar.ide.shared.coverage;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.sonar.wsclient.Sonar;
 import org.sonar.wsclient.services.Measure;
 import org.sonar.wsclient.services.Resource;
 import org.sonar.wsclient.services.ResourceQuery;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * @author Evgeny Mandrikov
@@ -33,33 +35,43 @@ public final class CoverageLoader {
   public static final String COVERAGE_LINE_HITS_DATA_KEY = "coverage_line_hits_data";
   public static final String BRANCH_COVERAGE_HITS_DATA_KEY = "branch_coverage_hits_data";
 
-  public static CoverageData getCoverage(Sonar sonar, String resourceKey) {
+  public static CoverageData getCoverage(final Sonar sonar, final String resourceKey) {
     return new CoverageData(getCoverageLineHits(sonar, resourceKey), getBranchCoverageHits(sonar, resourceKey));
   }
 
-  public static Map<Integer, String> getCoverageLineHits(Sonar sonar, String resourceKey) {
+  public static Collection<CoverageLine> getCoverageLines(final Sonar sonar, final String resourceKey) {
+    final Map<Integer, String> hitsByLine = getCoverageLineHits(sonar, resourceKey);
+    final Map<Integer, String> branchHitsByLine = getBranchCoverageHits(sonar, resourceKey);
+    final Collection<CoverageLine> coverageLines = new ArrayList<CoverageLine>();
+    for (final Integer line : hitsByLine.keySet()) {
+      coverageLines.add(new CoverageLine(line, hitsByLine.get(line), branchHitsByLine.get(line)));
+    }
+    return coverageLines;
+  }
+
+  public static Map<Integer, String> getCoverageLineHits(final Sonar sonar, final String resourceKey) {
     return getMeasure(sonar, resourceKey, COVERAGE_LINE_HITS_DATA_KEY);
   }
 
-  public static Map<Integer, String> getBranchCoverageHits(Sonar sonar, String resourceKey) {
+  public static Map<Integer, String> getBranchCoverageHits(final Sonar sonar, final String resourceKey) {
     return getMeasure(sonar, resourceKey, BRANCH_COVERAGE_HITS_DATA_KEY);
   }
 
-  protected static Map<Integer, String> getMeasure(Sonar sonar, String resourceKey, String metricKey) {
-    ResourceQuery query = new ResourceQuery(resourceKey)
-        .setMetrics(metricKey);
+  protected static Map<Integer, String> getMeasure(final Sonar sonar, final String resourceKey, final String metricKey) {
+    final ResourceQuery query = new ResourceQuery(resourceKey)
+    .setMetrics(metricKey);
     System.out.println(query.getUrl());
-    Resource resource = sonar.find(query);
-    Measure measure = resource.getMeasure(metricKey);
+    final Resource resource = sonar.find(query);
+    final Measure measure = resource.getMeasure(metricKey);
     return unmarshall(measure.getData());
   }
 
-  protected static Map<Integer, String> unmarshall(String data) {
-    Map<Integer, String> result = new HashMap<Integer, String>();
-    String[] values = data.split(";");
-    for (String value : values) {
-      String[] pair = value.split("=");
-      int line = Integer.parseInt(pair[0]);
+  protected static Map<Integer, String> unmarshall(final String data) {
+    final Map<Integer, String> result = new HashMap<Integer, String>();
+    final String[] values = data.split(";");
+    for (final String value : values) {
+      final String[] pair = value.split("=");
+      final int line = Integer.parseInt(pair[0]);
       result.put(line, pair[1]);
     }
     return result;
