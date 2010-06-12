@@ -30,8 +30,10 @@ import org.sonar.wsclient.services.ResourceQuery;
 
 /**
  * @author Evgeny Mandrikov
+ * @since 0.2
  */
 public final class CoverageLoader {
+
   public static final String COVERAGE_LINE_HITS_DATA_KEY = "coverage_line_hits_data";
   public static final String BRANCH_COVERAGE_HITS_DATA_KEY = "branch_coverage_hits_data";
 
@@ -58,8 +60,7 @@ public final class CoverageLoader {
   }
 
   protected static Map<Integer, String> getMeasure(final Sonar sonar, final String resourceKey, final String metricKey) {
-    final ResourceQuery query = new ResourceQuery(resourceKey)
-    .setMetrics(metricKey);
+    final ResourceQuery query = new ResourceQuery(resourceKey).setMetrics(metricKey);
     System.out.println(query.getUrl());
     final Resource resource = sonar.find(query);
     final Measure measure = resource.getMeasure(metricKey);
@@ -82,4 +83,5 @@ public final class CoverageLoader {
    */
   private CoverageLoader() {
   }
+
 }

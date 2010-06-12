@@ -19,12 +19,13 @@ package org.sonar.ide.shared.coverage;
 
 /**
  * @author Jérémie Lagarde
+ * @since 0.2
  */
 public class CoverageLine {
 
   private final Integer line;
-  private final String  hits;
-  private final String  branchHits;
+  private final String hits;
+  private final String branchHits;
 
   protected CoverageLine(final Integer line, final String hits, final String branchHits) {
     super();

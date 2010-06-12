@@ -38,8 +38,7 @@ public abstract class TestServlet extends GenericServlet {
   protected abstract String getResource(String classKey);
 
   protected File getResourceAsFile(String testName, String classKey) {
-    String baseDir = StringUtils.defaultIfEmpty(getServletConfig().getInitParameter("baseDir"), "target/sonar-data");
-    return new File(baseDir + "/" + testName + "/" + getResource(classKey));
+    return new File(getBaseDir(this) + "/" + testName + "/" + getResource(classKey));
   }
 
   @Override
@@ -70,5 +69,9 @@ public abstract class TestServlet extends GenericServlet {
       json = "[]";
     }
     out.println(json);
+  }
+
+  public static String getBaseDir(GenericServlet servlet) {
+    return StringUtils.defaultIfEmpty(servlet.getServletConfig().getInitParameter("baseDir"), "target/sonar-data");
   }
 }

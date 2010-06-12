@@ -1,0 +1,1342 @@
+[
+    {
+        "key":"packages",
+        "name":"Packages",
+        "description":"Packages",
+        "domain":"Size",
+        "qualitative":false,
+        "user_managed":false,
+        "direction":-1,
+        "val_type":"INT"
+    },
+    {
+        "key":"classes",
+        "name":"Classes",
+        "description":"Classes",
+        "domain":"Size",
+        "qualitative":false,
+        "user_managed":false,
+        "direction":-1,
+        "val_type":"INT"
+    },
+    {
+        "key":"ncloc",
+        "name":"Lines of code",
+        "description":"Non Commenting Lines of Code",
+        "domain":"Size",
+        "qualitative":false,
+        "user_managed":false,
+        "direction":-1,
+        "val_type":"INT"
+    },
+    {
+        "key":"functions",
+        "name":"Methods",
+        "description":"Methods",
+        "domain":"Size",
+        "qualitative":false,
+        "user_managed":false,
+        "direction":-1,
+        "val_type":"INT"
+    },
+    {
+        "key":"duplicated_lines",
+        "name":"Duplicated lines",
+        "description":"Duplicated lines",
+        "domain":"Duplication",
+        "qualitative":false,
+        "user_managed":false,
+        "direction":-1,
+        "val_type":"INT"
+    },
+    {
+        "key":"test_errors",
+        "name":"Unit test errors",
+        "description":"Number of unit test errors",
+        "domain":"Tests",
+        "qualitative":false,
+        "user_managed":false,
+        "direction":-1,
+        "val_type":"INT"
+    },
+    {
+        "key":"skipped_tests",
+        "name":"Skipped unit tests",
+        "description":"Number of skipped unit tests",
+        "domain":"Tests",
+        "qualitative":false,
+        "user_managed":false,
+        "direction":-1,
+        "val_type":"INT"
+    },
+    {
+        "key":"test_failures",
+        "name":"Unit test failures",
+        "description":"Number of unit test failures",
+        "domain":"Tests",
+        "qualitative":false,
+        "user_managed":false,
+        "direction":-1,
+        "val_type":"INT"
+    },
+    {
+        "key":"tests",
+        "name":"Unit tests",
+        "description":"Number of unit tests",
+        "domain":"Tests",
+        "qualitative":false,
+        "user_managed":false,
+        "direction":-1,
+        "val_type":"INT"
+    },
+    {
+        "key":"test_execution_time",
+        "name":"Unit tests duration",
+        "description":"Execution duration of unit tests ",
+        "domain":"Tests",
+        "qualitative":false,
+        "user_managed":false,
+        "direction":-1,
+        "val_type":"MILLISEC"
+    },
+    {
+        "key":"test_success_density",
+        "name":"Unit test success (%)",
+        "description":"Density of successful unit tests",
+        "domain":"Tests",
+        "qualitative":true,
+        "user_managed":false,
+        "direction":1,
+        "val_type":"PERCENT"
+    },
+    {
+        "key":"coverage",
+        "name":"Coverage",
+        "description":"Coverage by unit tests",
+        "domain":"Tests",
+        "qualitative":true,
+        "user_managed":false,
+        "direction":1,
+        "val_type":"PERCENT"
+    },
+    {
+        "key":"complexity",
+        "name":"Complexity",
+        "description":"Cyclomatic complexity",
+        "domain":"Complexity",
+        "qualitative":false,
+        "user_managed":false,
+        "direction":-1,
+        "val_type":"INT"
+    },
+    {
+        "key":"class_complexity",
+        "name":"Complexity /class",
+        "description":"Complexity average by class",
+        "domain":"Complexity",
+        "qualitative":true,
+        "user_managed":false,
+        "direction":-1,
+        "val_type":"FLOAT"
+    },
+    {
+        "key":"function_complexity",
+        "name":"Complexity /method",
+        "description":"Complexity average by method",
+        "domain":"Complexity",
+        "qualitative":true,
+        "user_managed":false,
+        "direction":-1,
+        "val_type":"FLOAT"
+    },
+    {
+        "key":"class_complexity_distribution",
+        "name":"Classes distribution /complexity",
+        "description":"Classes distribution /complexity",
+        "domain":"Complexity",
+        "qualitative":true,
+        "user_managed":false,
+        "direction":0,
+        "val_type":"DISTRIB"
+    },
+    {
+        "key":"comment_lines",
+        "name":"Comment lines",
+        "description":"Number of comment lines",
+        "domain":"Documentation",
+        "qualitative":false,
+        "user_managed":false,
+        "direction":1,
+        "val_type":"INT"
+    },
+    {
+        "key":"comment_lines_density",
+        "name":"Comments (%)",
+        "description":"Comments balanced by ncloc + comment lines",
+        "domain":"Documentation",
+        "qualitative":true,
+        "user_managed":false,
+        "direction":1,
+        "val_type":"PERCENT"
+    },
+    {
+        "key":"duplicated_lines_density",
+        "name":"Duplicated lines (%)",
+        "description":"Duplicated lines balanced by statements",
+        "domain":"Duplication",
+        "qualitative":true,
+        "user_managed":false,
+        "direction":-1,
+        "val_type":"PERCENT"
+    },
+    {
+        "key":"files",
+        "name":"Files",
+        "description":"Number of files",
+        "domain":"Size",
+        "qualitative":false,
+        "user_managed":false,
+        "direction":-1,
+        "val_type":"INT"
+    },
+    {
+        "key":"directories",
+        "name":"Directories",
+        "description":"Directories",
+        "domain":"Size",
+        "qualitative":false,
+        "user_managed":false,
+        "direction":-1,
+        "val_type":"INT"
+    },
+    {
+        "key":"file_complexity",
+        "name":"Complexity /file",
+        "description":"Complexity average by file",
+        "domain":"Complexity",
+        "qualitative":true,
+        "user_managed":false,
+        "direction":-1,
+        "val_type":"FLOAT"
+    },
+    {
+        "key":"violations_density",
+        "name":"Rules compliance",
+        "description":"Rules compliance",
+        "domain":"Rules",
+        "qualitative":true,
+        "user_managed":false,
+        "direction":1,
+        "val_type":"PERCENT"
+    },
+    {
+        "key":"violations",
+        "name":"Violations",
+        "description":"Violations",
+        "domain":"Rules",
+        "qualitative":false,
+        "user_managed":false,
+        "direction":-1,
+        "val_type":"INT"
+    },
+    {
+        "key":"burned_budget",
+        "name":"Burned budget",
+        "description":"The budget already used in the project",
+        "domain":"Management",
+        "qualitative":false,
+        "user_managed":true,
+        "direction":0,
+        "val_type":"FLOAT"
+    },
+    {
+        "key":"team_size",
+        "name":"Team size",
+        "description":"Size of the project team",
+        "domain":"Management",
+        "qualitative":false,
+        "user_managed":true,
+        "direction":0,
+        "val_type":"INT"
+    },
+    {
+        "key":"business_value",
+        "name":"Business value",
+        "description":"An indication on the value of the project for the business",
+        "domain":"Management",
+        "qualitative":true,
+        "user_managed":true,
+        "direction":1,
+        "val_type":"FLOAT"
+    },
+    {
+        "key":"profile",
+        "name":"Profile",
+        "description":"Selected quality profile",
+        "domain":"General",
+        "qualitative":false,
+        "user_managed":false,
+        "direction":0,
+        "val_type":"DATA"
+    },
+    {
+        "key":"alert_status",
+        "name":"Alert",
+        "description":"Alert",
+        "domain":"General",
+        "qualitative":true,
+        "user_managed":false,
+        "direction":1,
+        "val_type":"LEVEL"
+    },
+    {
+        "key":"test_data",
+        "name":"Unit tests details",
+        "description":"Unit tests details",
+        "domain":"Tests",
+        "qualitative":false,
+        "user_managed":false,
+        "direction":-1,
+        "val_type":"DATA"
+    },
+    {
+        "key":"coverage_line_hits_data",
+        "name":"Coverage hits data",
+        "description":"Code coverage line hits data",
+        "domain":"Tests",
+        "qualitative":false,
+        "user_managed":false,
+        "direction":0,
+        "val_type":"DATA"
+    },
+    {
+        "key":"duplicated_blocks",
+        "name":"Duplicated blocks",
+        "description":"Duplicated blocks",
+        "domain":"Duplication",
+        "qualitative":false,
+        "user_managed":false,
+        "direction":-1,
+        "val_type":"INT"
+    },
+    {
+        "key":"duplicated_files",
+        "name":"Duplicated files",
+        "description":"Duplicated files",
+        "domain":"Duplication",
+        "qualitative":true,
+        "user_managed":false,
+        "direction":-1,
+        "val_type":"INT"
+    },
+    {
+        "key":"duplications_data",
+        "name":"Duplications details",
+        "description":"Duplications details",
+        "domain":"Duplication",
+        "qualitative":false,
+        "user_managed":false,
+        "direction":0,
+        "val_type":"DATA"
+    },
+    {
+        "key":"lines",
+        "name":"Lines",
+        "description":"Lines",
+        "domain":"Size",
+        "qualitative":false,
+        "user_managed":false,
+        "direction":-1,
+        "val_type":"INT"
+    },
+    {
+        "key":"uncovered_complexity_by_tests",
+        "name":"Uncovered complexity",
+        "description":"Uncovered complexity",
+        "domain":"Complexity",
+        "qualitative":false,
+        "user_managed":false,
+        "direction":-1,
+        "val_type":"INT"
+    },
+    {
+        "key":"accessors",
+        "name":"Accessors",
+        "description":"Accessors",
+        "domain":"Size",
+        "qualitative":false,
+        "user_managed":false,
+        "direction":-1,
+        "val_type":"INT"
+    },
+    {
+        "key":"public_api",
+        "name":"Public API",
+        "description":"Public API",
+        "domain":"Size",
+        "qualitative":false,
+        "user_managed":false,
+        "direction":-1,
+        "val_type":"INT"
+    },
+    {
+        "key":"function_complexity_distribution",
+        "name":"Functions distribution /complexity",
+        "description":"Functions distribution /complexity",
+        "domain":"Complexity",
+        "qualitative":true,
+        "user_managed":false,
+        "direction":0,
+        "val_type":"DISTRIB"
+    },
+    {
+        "key":"statements",
+        "name":"Statements",
+        "description":"Number of statements",
+        "domain":"Size",
+        "qualitative":false,
+        "user_managed":false,
+        "direction":-1,
+        "val_type":"INT"
+    },
+    {
+        "key":"public_documented_api_density",
+        "name":"Public documented API (%)",
+        "description":"Public documented classes and methods balanced by ncloc",
+        "domain":"Documentation",
+        "qualitative":true,
+        "user_managed":false,
+        "direction":1,
+        "val_type":"PERCENT"
+    },
+    {
+        "key":"public_undocumented_api",
+        "name":"Public undocumented API",
+        "description":"Public undocumented classes, methods and variables",
+        "domain":"Documentation",
+        "qualitative":true,
+        "user_managed":false,
+        "direction":-1,
+        "val_type":"INT"
+    },
+    {
+        "key":"technical_debt",
+        "name":"Technical Debt ($)",
+        "description":"Technical debt ($)",
+        "domain":"General",
+        "qualitative":false,
+        "user_managed":false,
+        "direction":-1,
+        "val_type":"INT"
+    },
+    {
+        "key":"technical_debt_days",
+        "name":"Technical Debt in days",
+        "description":"This is the technical debt of the component in man days",
+        "domain":"General",
+        "qualitative":false,
+        "user_managed":false,
+        "direction":-1,
+        "val_type":"INT"
+    },
+    {
+        "key":"technical_debt_repart",
+        "name":"Technical debt repartition",
+        "description":"This is the detail of the technical debt",
+        "domain":"General",
+        "qualitative":false,
+        "user_managed":false,
+        "direction":0,
+        "val_type":"DISTRIB"
+    },
+    {
+        "key":"tags",
+        "name":"Tags",
+        "description":"Number of tags in the source code",
+        "domain":"Rules",
+        "qualitative":true,
+        "user_managed":false,
+        "direction":-1,
+        "val_type":"INT"
+    },
+    {
+        "key":"mandatory_tags",
+        "name":"Mandatory tags",
+        "description":"Number of mandatory tags in the source code",
+        "domain":"Rules",
+        "qualitative":true,
+        "user_managed":false,
+        "direction":-1,
+        "val_type":"INT"
+    },
+    {
+        "key":"optional_tags",
+        "name":"Optional tags",
+        "description":"Number of optional tags in the source code",
+        "domain":"Rules",
+        "qualitative":true,
+        "user_managed":false,
+        "direction":-1,
+        "val_type":"INT"
+    },
+    {
+        "key":"tags_distribution",
+        "name":"Tags distribution",
+        "description":"Distribution of tags in the source code",
+        "domain":"Rules",
+        "qualitative":false,
+        "user_managed":false,
+        "direction":0,
+        "val_type":"DISTRIB"
+    },
+    {
+        "key":"usability",
+        "name":"Usability",
+        "description":"Usability",
+        "domain":"Rule categories",
+        "qualitative":true,
+        "user_managed":false,
+        "direction":1,
+        "val_type":"PERCENT"
+    },
+    {
+        "key":"reliability",
+        "name":"Reliability",
+        "description":"Reliability",
+        "domain":"Rule categories",
+        "qualitative":true,
+        "user_managed":false,
+        "direction":1,
+        "val_type":"PERCENT"
+    },
+    {
+        "key":"efficiency",
+        "name":"Efficiency",
+        "description":"Efficiency",
+        "domain":"Rule categories",
+        "qualitative":true,
+        "user_managed":false,
+        "direction":1,
+        "val_type":"PERCENT"
+    },
+    {
+        "key":"portability",
+        "name":"Portability",
+        "description":"Portability",
+        "domain":"Rule categories",
+        "qualitative":true,
+        "user_managed":false,
+        "direction":1,
+        "val_type":"PERCENT"
+    },
+    {
+        "key":"maintainability",
+        "name":"Maintainability",
+        "description":"Maintainability",
+        "domain":"Rule categories",
+        "qualitative":true,
+        "user_managed":false,
+        "direction":1,
+        "val_type":"PERCENT"
+    },
+    {
+        "key":"weighted_violations",
+        "name":"Weighted violations",
+        "description":"Weighted Violations",
+        "domain":"Rules",
+        "qualitative":true,
+        "user_managed":false,
+        "direction":-1,
+        "val_type":"INT"
+    },
+    {
+        "key":"blocker_violations",
+        "name":"Blocker violations",
+        "description":"Blocker violations",
+        "domain":"Rules",
+        "qualitative":false,
+        "user_managed":false,
+        "direction":-1,
+        "val_type":"INT"
+    },
+    {
+        "key":"critical_violations",
+        "name":"Critical violations",
+        "description":"Critical violations",
+        "domain":"Rules",
+        "qualitative":false,
+        "user_managed":false,
+        "direction":-1,
+        "val_type":"INT"
+    },
+    {
+        "key":"major_violations",
+        "name":"Major violations",
+        "description":"Major violations",
+        "domain":"Rules",
+        "qualitative":false,
+        "user_managed":false,
+        "direction":-1,
+        "val_type":"INT"
+    },
+    {
+        "key":"minor_violations",
+        "name":"Minor violations",
+        "description":"Minor violations",
+        "domain":"Rules",
+        "qualitative":false,
+        "user_managed":false,
+        "direction":-1,
+        "val_type":"INT"
+    },
+    {
+        "key":"info_violations",
+        "name":"Info violations",
+        "description":"Info violations",
+        "domain":"Rules",
+        "qualitative":false,
+        "user_managed":false,
+        "direction":-1,
+        "val_type":"INT"
+    },
+    {
+        "key":"technical_debt_ratio",
+        "name":"Technical Debt ratio",
+        "description":"This is the debt ratio",
+        "domain":"General",
+        "qualitative":true,
+        "user_managed":false,
+        "direction":-1,
+        "val_type":"PERCENT"
+    },
+    {
+        "key":"greenpepper_tests",
+        "name":"GreenPepper tests",
+        "description":"Number of GreenPepper tests",
+        "domain":"Tests",
+        "qualitative":false,
+        "user_managed":false,
+        "direction":-1,
+        "val_type":"INT"
+    },
+    {
+        "key":"greenpepper_test_errors",
+        "name":"GreenPepper test errors",
+        "description":"Number of GreenPepper test errors",
+        "domain":"Tests",
+        "qualitative":false,
+        "user_managed":false,
+        "direction":-1,
+        "val_type":"INT"
+    },
+    {
+        "key":"greenpepper_test_failures",
+        "name":"GreenPepper test failures",
+        "description":"Number of GreenPepper test failures",
+        "domain":"Tests",
+        "qualitative":false,
+        "user_managed":false,
+        "direction":-1,
+        "val_type":"INT"
+    },
+    {
+        "key":"greenpepper_skipped_tests",
+        "name":"GreenPepper skipped tests",
+        "description":"Number of skipped GreenPepper tests",
+        "domain":"Tests",
+        "qualitative":false,
+        "user_managed":false,
+        "direction":-1,
+        "val_type":"INT"
+    },
+    {
+        "key":"greenpepper_test_success_density",
+        "name":"GreenPepper test success (%)",
+        "description":"Ratio of successful GreenPepper tests",
+        "domain":"Tests",
+        "qualitative":true,
+        "user_managed":false,
+        "direction":1,
+        "val_type":"PERCENT"
+    },
+    {
+        "key":"commented_out_code_lines",
+        "name":"Commented LOCs",
+        "description":"Commented lines of code",
+        "domain":"Documentation",
+        "qualitative":true,
+        "user_managed":false,
+        "direction":-1,
+        "val_type":"INT"
+    },
+    {
+        "key":"lines_to_cover",
+        "name":"Lines to cover",
+        "description":"Lines to cover",
+        "domain":"Tests",
+        "qualitative":false,
+        "user_managed":false,
+        "direction":1,
+        "val_type":"INT"
+    },
+    {
+        "key":"uncovered_lines",
+        "name":"Uncovered lines",
+        "description":"Uncovered lines",
+        "domain":"Tests",
+        "qualitative":false,
+        "user_managed":false,
+        "direction":-1,
+        "val_type":"INT"
+    },
+    {
+        "key":"line_coverage",
+        "name":"Line coverage",
+        "description":"Line coverage",
+        "domain":"Tests",
+        "qualitative":true,
+        "user_managed":false,
+        "direction":1,
+        "val_type":"PERCENT"
+    },
+    {
+        "key":"conditions_to_cover",
+        "name":"Conditions to cover",
+        "description":"Conditions to cover",
+        "domain":"Tests",
+        "qualitative":false,
+        "user_managed":false,
+        "direction":1,
+        "val_type":"INT"
+    },
+    {
+        "key":"uncovered_conditions",
+        "name":"Uncovered conditions",
+        "description":"Uncovered conditions",
+        "domain":"Tests",
+        "qualitative":false,
+        "user_managed":false,
+        "direction":-1,
+        "val_type":"INT"
+    },
+    {
+        "key":"branch_coverage",
+        "name":"Branch coverage",
+        "description":"Branch coverage",
+        "domain":"Tests",
+        "qualitative":true,
+        "user_managed":false,
+        "direction":1,
+        "val_type":"PERCENT"
+    },
+    {
+        "key":"branch_coverage_hits_data",
+        "name":"Branch coverage hits",
+        "description":"Branch coverage hits",
+        "domain":"Tests",
+        "qualitative":false,
+        "user_managed":false,
+        "direction":0,
+        "val_type":"DATA"
+    },
+    {
+        "key":"sigmm-analysability",
+        "name":"Analysability Value",
+        "description":"Analysability in an interval of [--, ++]",
+        "domain":"General",
+        "qualitative":true,
+        "user_managed":false,
+        "direction":1,
+        "val_type":"INT"
+    },
+    {
+        "key":"sigmm-changeability",
+        "name":"Changeability Value",
+        "description":"Changeability in an interval of [--, ++]",
+        "domain":"General",
+        "qualitative":true,
+        "user_managed":false,
+        "direction":1,
+        "val_type":"INT"
+    },
+    {
+        "key":"sigmm-testability",
+        "name":"Testability Value",
+        "description":"Testability in an interval of [--, ++]",
+        "domain":"General",
+        "qualitative":true,
+        "user_managed":false,
+        "direction":1,
+        "val_type":"INT"
+    },
+    {
+        "key":"sigmm-stability",
+        "name":"Stability Value",
+        "description":"Stability in an interval of [--, ++]",
+        "domain":"General",
+        "qualitative":true,
+        "user_managed":false,
+        "direction":1,
+        "val_type":"INT"
+    },
+    {
+        "key":"sigmm-maintainability",
+        "name":"SIG MM",
+        "description":"Maintainability in an interval of [--, ++]",
+        "domain":"General",
+        "qualitative":true,
+        "user_managed":false,
+        "direction":1,
+        "val_type":"INT"
+    },
+    {
+        "key":"sigmm-ncloc-by-cc",
+        "name":"SIG NCLOC by CC",
+        "description":"Repartition of the ncloc on cc range",
+        "domain":"General",
+        "qualitative":false,
+        "user_managed":false,
+        "direction":-1,
+        "val_type":"DISTRIB"
+    },
+    {
+        "key":"sigmm-ncloc-by-ncloc",
+        "name":"SIG NCLOC by CC",
+        "description":"Repartition of the ncloc on ncloc range",
+        "domain":"General",
+        "qualitative":false,
+        "user_managed":false,
+        "direction":-1,
+        "val_type":"DISTRIB"
+    },
+    {
+        "key":"last_commit",
+        "name":"Last Commit",
+        "description":"Last Commit",
+        "domain":"SCM",
+        "qualitative":false,
+        "user_managed":false,
+        "direction":0,
+        "val_type":"STRING"
+    },
+    {
+        "key":"revision",
+        "name":"Revision",
+        "description":"Revision",
+        "domain":"SCM",
+        "qualitative":false,
+        "user_managed":false,
+        "direction":0,
+        "val_type":"STRING"
+    },
+    {
+        "key":"blame_authors_data",
+        "name":"Blame data",
+        "description":"Blame data",
+        "domain":"SCM",
+        "qualitative":false,
+        "user_managed":false,
+        "direction":0,
+        "val_type":"DATA"
+    },
+    {
+        "key":"blame_date_data",
+        "name":"Blame date data",
+        "description":"Blame date data",
+        "domain":"SCM",
+        "qualitative":false,
+        "user_managed":false,
+        "direction":0,
+        "val_type":"DATA"
+    },
+    {
+        "key":"blame_revision_data",
+        "name":"Blae revision data",
+        "description":"Blae revision data",
+        "domain":"SCM",
+        "qualitative":false,
+        "user_managed":false,
+        "direction":0,
+        "val_type":"DATA"
+    },
+    {
+        "key":"build_failures",
+        "name":"Failed Builds",
+        "description":"Number of failed builds",
+        "domain":"Continuous integration",
+        "qualitative":false,
+        "user_managed":false,
+        "direction":-1,
+        "val_type":"INT"
+    },
+    {
+        "key":"build_success_density",
+        "name":"Success Rate (%)",
+        "description":"Ratio of successful builds",
+        "domain":"Continuous integration",
+        "qualitative":false,
+        "user_managed":false,
+        "direction":1,
+        "val_type":"PERCENT"
+    },
+    {
+        "key":"build_average_duration",
+        "name":"Average Duration",
+        "description":"Average Duration",
+        "domain":"Continuous integration",
+        "qualitative":false,
+        "user_managed":false,
+        "direction":-1,
+        "val_type":"MILLISEC"
+    },
+    {
+        "key":"dit",
+        "name":"Depth in Tree",
+        "description":"Depth in Inheritance Tree",
+        "domain":"Design",
+        "qualitative":false,
+        "user_managed":false,
+        "direction":0,
+        "val_type":"INT"
+    },
+    {
+        "key":"noc",
+        "name":"Number of Children",
+        "description":"Number of Children",
+        "domain":"Design",
+        "qualitative":false,
+        "user_managed":false,
+        "direction":0,
+        "val_type":"INT"
+    },
+    {
+        "key":"rfc",
+        "name":"RFC",
+        "description":"Response for Class",
+        "domain":"Design",
+        "qualitative":false,
+        "user_managed":false,
+        "direction":-1,
+        "val_type":"INT"
+    },
+    {
+        "key":"rfc_distribution",
+        "name":"Class distribution /RFC",
+        "description":"Class distribution /RFC",
+        "domain":"Design",
+        "qualitative":true,
+        "user_managed":false,
+        "direction":0,
+        "val_type":"DISTRIB"
+    },
+    {
+        "key":"lcom4",
+        "name":"LCOM4",
+        "description":"Lack of Cohesion of Methods",
+        "domain":"Design",
+        "qualitative":true,
+        "user_managed":false,
+        "direction":-1,
+        "val_type":"FLOAT"
+    },
+    {
+        "key":"lcom4_blocks",
+        "name":"LCOM4 blocks",
+        "description":"LCOM4 blocks",
+        "domain":"Design",
+        "qualitative":false,
+        "user_managed":false,
+        "direction":0,
+        "val_type":"DATA"
+    },
+    {
+        "key":"lcom4_distribution",
+        "name":"Class distribution /LCOM4",
+        "description":"Class distribution /LCOM4",
+        "domain":"Design",
+        "qualitative":true,
+        "user_managed":false,
+        "direction":0,
+        "val_type":"DISTRIB"
+    },
+    {
+        "key":"suspect_lcom4_density",
+        "name":"Suspect LCOM4 density",
+        "description":"Density of classes having LCOM4>1",
+        "domain":"Design",
+        "qualitative":true,
+        "user_managed":false,
+        "direction":-1,
+        "val_type":"PERCENT"
+    },
+    {
+        "key":"ca",
+        "name":"Afferent couplings",
+        "description":"Afferent couplings",
+        "domain":"Design",
+        "qualitative":false,
+        "user_managed":false,
+        "direction":-1,
+        "val_type":"INT"
+    },
+    {
+        "key":"ce",
+        "name":"Efferent couplings",
+        "description":"Efferent couplings",
+        "domain":"Design",
+        "qualitative":false,
+        "user_managed":false,
+        "direction":-1,
+        "val_type":"INT"
+    },
+    {
+        "key":"dsm",
+        "name":"Dependency Matrix",
+        "description":"Dependency Matrix",
+        "domain":"Design",
+        "qualitative":false,
+        "user_managed":false,
+        "direction":0,
+        "val_type":"DATA"
+    },
+    {
+        "key":"package_cycles",
+        "name":"Package cycles",
+        "description":"Package cycles",
+        "domain":"Design",
+        "qualitative":true,
+        "user_managed":false,
+        "direction":-1,
+        "val_type":"INT"
+    },
+    {
+        "key":"package_tangle_index",
+        "name":"Package tangle index",
+        "description":"Package tangle index",
+        "domain":"Design",
+        "qualitative":true,
+        "user_managed":false,
+        "direction":-1,
+        "val_type":"PERCENT"
+    },
+    {
+        "key":"package_tangles",
+        "name":"File dependencies to cut",
+        "description":"File dependencies to cut",
+        "domain":"Design",
+        "qualitative":false,
+        "user_managed":false,
+        "direction":-1,
+        "val_type":"INT"
+    },
+    {
+        "key":"package_feedback_edges",
+        "name":"Package dependencies to cut",
+        "description":"Package dependencies to cut",
+        "domain":"Design",
+        "qualitative":false,
+        "user_managed":false,
+        "direction":-1,
+        "val_type":"INT"
+    },
+    {
+        "key":"package_edges_weight",
+        "name":"Package edges weight",
+        "description":"Package edges weight",
+        "domain":"Design",
+        "qualitative":false,
+        "user_managed":false,
+        "direction":1,
+        "val_type":"INT"
+    },
+    {
+        "key":"file_cycles",
+        "name":"File cycles",
+        "description":"File cycles",
+        "domain":"Design",
+        "qualitative":true,
+        "user_managed":false,
+        "direction":-1,
+        "val_type":"INT"
+    },
+    {
+        "key":"file_tangle_index",
+        "name":"File tangle index",
+        "description":"File tangle index",
+        "domain":"Design",
+        "qualitative":true,
+        "user_managed":false,
+        "direction":-1,
+        "val_type":"PERCENT"
+    },
+    {
+        "key":"file_tangles",
+        "name":"File tangles",
+        "description":"Files tangles",
+        "domain":"Design",
+        "qualitative":false,
+        "user_managed":false,
+        "direction":-1,
+        "val_type":"INT"
+    },
+    {
+        "key":"file_feedback_edges",
+        "name":"Suspect file dependencies",
+        "description":"Suspect file dependencies",
+        "domain":"Design",
+        "qualitative":false,
+        "user_managed":false,
+        "direction":-1,
+        "val_type":"INT"
+    },
+    {
+        "key":"file_edges_weight",
+        "name":"File edges weight",
+        "description":"File edges weight",
+        "domain":"Design",
+        "qualitative":false,
+        "user_managed":false,
+        "direction":1,
+        "val_type":"INT"
+    },
+    {
+        "key":"builds",
+        "name":"Builds",
+        "description":"Number of builds",
+        "domain":"Continuous integration",
+        "qualitative":false,
+        "user_managed":false,
+        "direction":0,
+        "val_type":"INT"
+    },
+    {
+        "key":"build_longest_duration",
+        "name":"Longest duration",
+        "description":"Duration of longest successful build",
+        "domain":"Continuous integration",
+        "qualitative":false,
+        "user_managed":false,
+        "direction":-1,
+        "val_type":"MILLISEC"
+    },
+    {
+        "key":"build_shortest_duration",
+        "name":"Shortest duration",
+        "description":"Duration of shortest successful build",
+        "domain":"Continuous integration",
+        "qualitative":false,
+        "user_managed":false,
+        "direction":-1,
+        "val_type":"MILLISEC"
+    },
+    {
+        "key":"build_durations",
+        "name":"Durations",
+        "description":"Durations",
+        "domain":"Continuous integration",
+        "qualitative":false,
+        "user_managed":false,
+        "direction":0,
+        "val_type":"DATA"
+    },
+    {
+        "key":"build_results",
+        "name":"Results",
+        "description":"Results",
+        "domain":"Continuous integration",
+        "qualitative":false,
+        "user_managed":false,
+        "direction":0,
+        "val_type":"DATA"
+    },
+    {
+        "key":"abstractness",
+        "name":"Abstractness",
+        "description":"Abstractness",
+        "domain":"Design",
+        "qualitative":false,
+        "user_managed":false,
+        "direction":0,
+        "val_type":"PERCENT"
+    },
+    {
+        "key":"instability",
+        "name":"Instability",
+        "description":"Instability",
+        "domain":"Design",
+        "qualitative":false,
+        "user_managed":false,
+        "direction":0,
+        "val_type":"PERCENT"
+    },
+    {
+        "key":"distance",
+        "name":"Distance",
+        "description":"Distance",
+        "domain":"Design",
+        "qualitative":false,
+        "user_managed":false,
+        "direction":0,
+        "val_type":"FLOAT"
+    },
+    {
+        "key":"technical_debt_complexity",
+        "name":"Technical debt complexity",
+        "description":"This is the number of methods and classes above max complexity",
+        "domain":"General",
+        "qualitative":false,
+        "user_managed":false,
+        "direction":0,
+        "val_type":"DISTRIB"
+    },
+    {
+        "key":"build_average_time_to_fix_failure",
+        "name":"Average time to fix a failure",
+        "description":"Average time to fix a failure",
+        "domain":"Continuous integration",
+        "qualitative":false,
+        "user_managed":false,
+        "direction":-1,
+        "val_type":"MILLISEC"
+    },
+    {
+        "key":"build_longest_time_to_fix_failure",
+        "name":"Longest time to fix a failure",
+        "description":"Longest time to fix a failure",
+        "domain":"Continuous integration",
+        "qualitative":false,
+        "user_managed":false,
+        "direction":-1,
+        "val_type":"MILLISEC"
+    },
+    {
+        "key":"build_average_builds_to_fix_failure",
+        "name":"Average number of builds between fixes",
+        "description":"Average number of builds between fixes",
+        "domain":"Continuous integration",
+        "qualitative":false,
+        "user_managed":false,
+        "direction":-1,
+        "val_type":"INT"
+    },
+    {
+        "key":"generated_lines",
+        "name":"Generated Lines",
+        "description":"Number of generated lines",
+        "domain":"Size",
+        "qualitative":false,
+        "user_managed":false,
+        "direction":-1,
+        "val_type":"INT"
+    },
+    {
+        "key":"generated_ncloc",
+        "name":"Generated lines of code",
+        "description":"Generated non Commenting Lines of Code",
+        "domain":"Size",
+        "qualitative":false,
+        "user_managed":false,
+        "direction":-1,
+        "val_type":"INT"
+    },
+    {
+        "key":"paragraphs",
+        "name":"Paragraphs",
+        "description":"Number of paragraphs",
+        "domain":"Size",
+        "qualitative":false,
+        "user_managed":false,
+        "direction":-1,
+        "val_type":"INT"
+    },
+    {
+        "key":"paragraph_complexity",
+        "name":"Complexity /paragraph",
+        "description":"Complexity average by paragraph",
+        "domain":"Complexity",
+        "qualitative":true,
+        "user_managed":false,
+        "direction":-1,
+        "val_type":"FLOAT"
+    },
+    {
+        "key":"file_complexity_distribution",
+        "name":"Files distribution /complexity",
+        "description":"Files distribution /complexity",
+        "domain":"Complexity",
+        "qualitative":true,
+        "user_managed":false,
+        "direction":0,
+        "val_type":"DISTRIB"
+    },
+    {
+        "key":"paragraph_complexity_distribution",
+        "name":"Paragraph distribution /complexity",
+        "description":"Paragraph distribution /complexity",
+        "domain":"Complexity",
+        "qualitative":true,
+        "user_managed":false,
+        "direction":0,
+        "val_type":"DISTRIB"
+    },
+    {
+        "key":"comment_blank_lines",
+        "name":"Blank comments",
+        "description":"Comments that do not contain comments",
+        "domain":"Documentation",
+        "qualitative":false,
+        "user_managed":false,
+        "direction":-1,
+        "val_type":"INT"
+    },
+    {
+        "key":"cobol_data_division_ncloc",
+        "name":"LOCs in Data Divisions",
+        "description":"LOCs in Data Divisions",
+        "domain":"Size",
+        "qualitative":false,
+        "user_managed":false,
+        "direction":-1,
+        "val_type":"INT"
+    },
+    {
+        "key":"cobol_procedure_division_ncloc",
+        "name":"LOCs in Procedure Divisions",
+        "description":"LOCs in Procedure Divisions",
+        "domain":"Size",
+        "qualitative":false,
+        "user_managed":false,
+        "direction":-1,
+        "val_type":"INT"
+    },
+    {
+        "key":"cobol_outside_ctrlflow_statements",
+        "name":"Outside Control Flow Statements",
+        "description":"Outside Control Flow Statements",
+        "domain":"Size",
+        "qualitative":false,
+        "user_managed":false,
+        "direction":-1,
+        "val_type":"INT"
+    },
+    {
+        "key":"cobol_inside_ctrlflow_statements",
+        "name":"Inside Control Flow Statements",
+        "description":"Inside Control Flow Statements",
+        "domain":"Size",
+        "qualitative":false,
+        "user_managed":false,
+        "direction":-1,
+        "val_type":"INT"
+    },
+    {
+        "key":"cobol_procedure_division_comment_lines",
+        "name":"Comments in Procedure Divisions",
+        "description":"Comments in Procedure Divisions",
+        "domain":"Documentation",
+        "qualitative":false,
+        "user_managed":false,
+        "direction":1,
+        "val_type":"INT"
+    }
+]

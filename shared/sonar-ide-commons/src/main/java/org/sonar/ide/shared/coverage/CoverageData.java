@@ -23,6 +23,7 @@ import java.util.Map;
 
 /**
  * @author Evgeny Mandrikov
+ * @since 0.2
  */
 public final class CoverageData {
   private Map<Integer, String> hitsByLine = new HashMap<Integer, String>();

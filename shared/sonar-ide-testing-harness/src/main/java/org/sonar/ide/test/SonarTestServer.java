@@ -28,10 +28,7 @@ import org.slf4j.LoggerFactory;
 import org.sonar.wsclient.Host;
 import org.sonar.wsclient.Sonar;
 import org.sonar.wsclient.connectors.HttpClient4Connector;
-import org.sonar.wsclient.services.ResourceQuery;
-import org.sonar.wsclient.services.ServerQuery;
-import org.sonar.wsclient.services.SourceQuery;
-import org.sonar.wsclient.services.ViolationQuery;
+import org.sonar.wsclient.services.*;
 
 /**
  * See {@link org.mortbay.jetty.testing.ServletTester}
@@ -71,6 +68,7 @@ public class SonarTestServer {
     addServlet(ViolationServlet.class, ViolationQuery.BASE_URL);
     addServlet(SourceServlet.class, SourceQuery.BASE_URL);
     addServlet(MeasureServlet.class, ResourceQuery.BASE_URL);
+    addServlet(MetricServlet.class, MetricQuery.BASE_URL);
     baseUrl = createSocketConnector(port);
   }
 

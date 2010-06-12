@@ -2,8 +2,9 @@ package org.sonar.ide.shared.measures;
 
 /**
  * @author Evgeny Mandrikov
+ * @since 0.2
  */
-public class MeasureData {
+public final class MeasureData {
 
   private String name;
   private String domain;
