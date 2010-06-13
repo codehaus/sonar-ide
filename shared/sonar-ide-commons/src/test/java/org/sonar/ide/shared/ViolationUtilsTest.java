@@ -19,6 +19,7 @@
 package org.sonar.ide.shared;
 
 import org.junit.Test;
+import org.sonar.ide.shared.violations.ViolationUtils;
 import org.sonar.wsclient.services.Violation;
 
 import java.util.Arrays;

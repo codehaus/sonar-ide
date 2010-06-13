@@ -18,31 +18,24 @@
 
 package org.sonar.ide.shared.duplications;
 
-import org.apache.commons.io.FileUtils;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import org.sonar.ide.test.SonarIdeTestCase;
+import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.greaterThan;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.not;
+import static org.hamcrest.Matchers.notNullValue;
+import static org.junit.Assert.assertThat;
 
 import java.io.File;
 import java.util.List;
 
-import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.assertThat;
+import org.apache.commons.io.FileUtils;
+import org.junit.Test;
+import org.sonar.ide.test.SonarIdeTestCase;
 
 /**
  * @author Evgeny Mandrikov
  */
 public class DuplicationsLoaderTest extends SonarIdeTestCase {
-  @BeforeClass
-  public static void init() throws Exception {
-    SonarIdeTestCase.init();
-  }
-
-  @AfterClass
-  public static void cleanup() throws Exception {
-    SonarIdeTestCase.cleanup();
-  }
 
   @Test
   public void testGetDuplications() throws Exception {
@@ -56,10 +49,7 @@ public class DuplicationsLoaderTest extends SonarIdeTestCase {
   }
 
   private List<Duplication> getDuplications(File project, String className) throws Exception {
-    return DuplicationsLoader.getDuplications(
-        getTestServer().getSonar(),
-        getProjectKey(project) + ":[default]." + className,
-        FileUtils.readFileToString(getProjectFile(project, "/src/main/java/" + className + ".java"))
-    );
+    return DuplicationsLoader.getDuplications(getTestServer().getSonar(), getProjectKey(project) + ":[default]." + className, FileUtils
+        .readFileToString(getProjectFile(project, "/src/main/java/" + className + ".java")));
   }
 }

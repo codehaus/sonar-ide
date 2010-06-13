@@ -18,7 +18,7 @@
 
 package org.sonar.ide.ui;
 
-import org.sonar.ide.shared.ViolationUtils;
+import org.sonar.ide.shared.violations.ViolationUtils;
 import org.sonar.wsclient.services.Measure;
 import org.sonar.wsclient.services.Violation;
 

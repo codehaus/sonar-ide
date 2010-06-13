@@ -18,35 +18,24 @@
 
 package org.sonar.ide.shared;
 
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertThat;
+
+import java.io.File;
+import java.util.List;
+
 import org.apache.commons.io.FileUtils;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
 import org.junit.Test;
+import org.sonar.ide.shared.violations.ViolationsLoader;
 import org.sonar.ide.test.SonarIdeTestCase;
 import org.sonar.wsclient.Sonar;
 import org.sonar.wsclient.connectors.ConnectionException;
 import org.sonar.wsclient.services.Violation;
 
-import java.io.File;
-import java.util.List;
-
-import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertThat;
-
 /**
  * @author Evgeny Mandrikov
  */
 public class ViolationsLoaderTest extends SonarIdeTestCase {
-  @BeforeClass
-  public static void init() throws Exception {
-    SonarIdeTestCase.init();
-  }
-
-  @AfterClass
-  public static void cleanup() throws Exception {
-    SonarIdeTestCase.cleanup();
-  }
-
   @Test(expected = ConnectionException.class)
   public void testServerUnavailable() throws Exception {
     ViolationsLoader.getViolations(Sonar.create("http://localhost:9999"), "test:test:[default].ClassOnDefaultPackage", "");

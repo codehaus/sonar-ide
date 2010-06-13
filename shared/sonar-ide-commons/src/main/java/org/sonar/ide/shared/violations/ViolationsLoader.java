@@ -16,10 +16,11 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
 
-package org.sonar.ide.shared;
+package org.sonar.ide.shared.violations;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.sonar.ide.shared.SourceCodeMatcher;
 import org.sonar.wsclient.Sonar;
 import org.sonar.wsclient.services.Source;
 import org.sonar.wsclient.services.SourceQuery;

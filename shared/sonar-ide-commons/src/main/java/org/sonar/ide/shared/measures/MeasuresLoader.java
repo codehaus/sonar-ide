@@ -34,7 +34,6 @@ public final class MeasuresLoader {
     }
     String[] metricKeys = metricsByKey.keySet().toArray(new String[metrics.size()]);
     ResourceQuery query = ResourceQuery.createForMetrics(resourceKey, metricKeys);
-    System.out.println(query.getUrl());
     Resource resource = sonar.find(query);
     List<MeasureData> result = new ArrayList<MeasureData>();
     for (Measure measure : resource.getMeasures()) {
