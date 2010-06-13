@@ -18,15 +18,17 @@
 
 package org.sonar.ide.test;
 
-import org.apache.commons.io.FileUtils;
-import org.junit.Assert;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
+
+import org.apache.commons.io.FileUtils;
+import org.junit.AfterClass;
+import org.junit.Assert;
+import org.junit.BeforeClass;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Base class for Sonar-IDE tests.
@@ -44,8 +46,7 @@ public abstract class SonarIdeTestCase {
 
   protected static SonarTestServer testServer;
 
-//  @BeforeClass
-
+  @BeforeClass
   public static void init() throws Exception {
     projectsSource = new File("target/projects-source");
     projectsWorkdir = new File("target/projects-target");
@@ -56,7 +57,7 @@ public abstract class SonarIdeTestCase {
    *
    * @throws Exception if something wrong
    */
-//  @AfterClass
+  @AfterClass
   public static void cleanup() throws Exception {
     if (testServer != null) {
       testServer.stop();
