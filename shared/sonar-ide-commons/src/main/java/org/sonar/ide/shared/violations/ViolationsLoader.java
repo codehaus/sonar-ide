@@ -20,14 +20,14 @@ package org.sonar.ide.shared.violations;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.sonar.ide.shared.SourceCodeMatcher;
+import org.sonar.ide.api.SourceCodeDiff;
+import org.sonar.ide.wsclient.SimpleSourceCodeDiffEngine;
 import org.sonar.wsclient.Sonar;
 import org.sonar.wsclient.services.Source;
 import org.sonar.wsclient.services.SourceQuery;
 import org.sonar.wsclient.services.Violation;
 import org.sonar.wsclient.services.ViolationQuery;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -48,28 +48,13 @@ public final class ViolationsLoader {
    * @param source     source code from server
    * @param lines      source code
    * @return violations with proper line numbers
+   * @deprecated beacause uses {@link org.sonar.ide.wsclient.SimpleSourceCodeDiffEngine} directly
    */
+  @Deprecated
   public static List<Violation> convertLines(Collection<Violation> violations, Source source, String[] lines) {
-    List<Violation> result = new ArrayList<Violation>();
-
-    SourceCodeMatcher codeMatcher = new SourceCodeMatcher(source, lines);
-
-    for (Violation violation : violations) {
-      Integer originalLine = violation.getLine();
-      if (originalLine == null || originalLine == 0) {
-        // skip violation on whole file
-        // TODO Godin: we can show them on first line
-        continue;
-      }
-
-      int newLine = codeMatcher.match(originalLine);
-      // skip violation, which doesn't match any line
-      if (newLine != -1) {
-        violation.setLine(newLine);
-        result.add(violation);
-      }
-    }
-    return result;
+    String[] remote = SimpleSourceCodeDiffEngine.getLines(source);
+    SourceCodeDiff diff = SimpleSourceCodeDiffEngine.getInstance().diff(lines, remote);
+    return ViolationUtils.convertLines(violations, diff);
   }
 
   /**

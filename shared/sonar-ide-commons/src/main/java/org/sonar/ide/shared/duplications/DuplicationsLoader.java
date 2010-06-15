@@ -18,19 +18,12 @@
 
 package org.sonar.ide.shared.duplications;
 
-import org.jdom.Document;
-import org.jdom.Element;
-import org.jdom.JDOMException;
-import org.jdom.input.SAXBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.sonar.ide.api.SonarIdeException;
 import org.sonar.ide.shared.SourceCodeMatcher;
 import org.sonar.wsclient.Sonar;
 import org.sonar.wsclient.services.*;
 
-import java.io.IOException;
-import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -44,8 +37,6 @@ import java.util.List;
 public final class DuplicationsLoader {
   private static final Logger LOG = LoggerFactory.getLogger(DuplicationsLoader.class);
 
-  public static final String DUPLICATIONS_DATA = "duplications_data";
-
   /**
    * Returns violations from specified sonar for specified resource and source code.
    *
@@ -56,13 +47,13 @@ public final class DuplicationsLoader {
    */
   public static List<Duplication> getDuplications(Sonar sonar, String resourceKey, String[] lines) {
     LOG.info("Loading duplications for {}", resourceKey);
-    Resource resource = sonar.find(ResourceQuery.createForMetrics(resourceKey, DUPLICATIONS_DATA));
-    Measure measure = resource.getMeasure(DUPLICATIONS_DATA);
+    Resource resource = sonar.find(ResourceQuery.createForMetrics(resourceKey, DuplicationUtils.DUPLICATIONS_DATA));
+    Measure measure = resource.getMeasure(DuplicationUtils.DUPLICATIONS_DATA);
     if (measure == null) {
       return Collections.emptyList();
     }
-    List<Duplication> duplications = parse(measure.getData());
-    LOG.info("Loaded {} violations: {}", duplications.size(), duplications);
+    List<Duplication> duplications = DuplicationUtils.parse(measure.getData());
+    LOG.info("Loaded {} duplications: {}", duplications.size(), duplications);
     SourceQuery sourceQuery = new SourceQuery(resourceKey);
     Source source = sonar.find(sourceQuery);
     return convertLines(duplications, source, lines);
@@ -83,34 +74,6 @@ public final class DuplicationsLoader {
         // TODO convert targetStart 
         result.add(duplication);
       }
-    }
-    return result;
-  }
-
-  private static List<Duplication> parse(String xml) {
-    List<Duplication> result = new ArrayList<Duplication>();
-    SAXBuilder builder = new SAXBuilder();
-    Document doc;
-    try {
-      doc = builder.build(new StringReader(xml));
-    } catch (JDOMException e) {
-      throw new SonarIdeException("Unable to parse duplications", e);
-    } catch (IOException e) {
-      throw new SonarIdeException("Unable to parse duplications", e);
-    }
-    List duplications = doc.getRootElement().getChildren("duplication");
-    for (Object elementObj : duplications) {
-      Element element = (Element) elementObj;
-      String lines = element.getAttributeValue("lines");
-      String start = element.getAttributeValue("start");
-      String targetStart = element.getAttributeValue("target-start");
-      String targetResource = element.getAttributeValue("target-resource");
-      result.add(new Duplication(
-          Integer.parseInt(lines),
-          Integer.parseInt(start),
-          Integer.parseInt(targetStart),
-          targetResource
-      ));
     }
     return result;
   }

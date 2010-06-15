@@ -13,6 +13,10 @@ public class RemoteSonar implements SourceCodeSearchEngine {
 
   private RemoteSonarIndex index;
 
+  public RemoteSonar(Sonar sonar) {
+    this(sonar, new SimpleSourceCodeDiffEngine());
+  }
+
   public RemoteSonar(Sonar sonar, SourceCodeDiffEngine diffEngine) {
     index = new RemoteSonarIndex(sonar, diffEngine);
   }

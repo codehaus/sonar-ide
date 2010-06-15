@@ -33,7 +33,9 @@ import java.util.List;
 
 /**
  * @author Evgeny Mandrikov
+ * @deprecated since 0.2, use {@link org.sonar.ide.api.SourceCodeSearchEngine} instead of it
  */
+@Deprecated
 public class SonarClient extends Sonar {
   private static final Logger LOG = LoggerFactory.getLogger(SonarClient.class);
 

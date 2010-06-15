@@ -3,7 +3,6 @@ package org.sonar.ide.wsclient;
 import org.junit.Before;
 import org.junit.Test;
 import org.sonar.ide.api.SourceCode;
-import org.sonar.ide.api.SourceCodeDiffEngine;
 import org.sonar.ide.test.SonarIdeTestCase;
 import org.sonar.wsclient.Sonar;
 
@@ -19,11 +18,7 @@ public class RemoteSonarTest extends SonarIdeTestCase {
 //    SonarTestServer server = getTestServer();
 //    Sonar sonar = server.getSonar()
     Sonar sonar = Sonar.create("http://nemo.sonarsource.org");
-    remoteSonar = new RemoteSonar(sonar, new SourceCodeDiffEngine() {
-      public String getLocalCode(String key) {
-        return "";
-      }
-    });
+    remoteSonar = new RemoteSonar(sonar);
   }
 
   @Test

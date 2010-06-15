@@ -1,18 +1,20 @@
 package org.sonar.ide.wsclient;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
+import org.sonar.ide.api.Logs;
 import org.sonar.ide.api.SourceCode;
+import org.sonar.ide.api.SourceCodeDiff;
 import org.sonar.ide.shared.coverage.CoverageData;
 import org.sonar.ide.shared.coverage.CoverageLoader;
 import org.sonar.ide.shared.duplications.Duplication;
-import org.sonar.ide.shared.duplications.DuplicationsLoader;
+import org.sonar.ide.shared.duplications.DuplicationUtils;
 import org.sonar.ide.shared.measures.MeasureData;
 import org.sonar.ide.shared.measures.MeasuresLoader;
-import org.sonar.ide.shared.violations.ViolationsLoader;
-import org.sonar.wsclient.services.Source;
-import org.sonar.wsclient.services.SourceQuery;
-import org.sonar.wsclient.services.Violation;
+import org.sonar.ide.shared.violations.ViolationUtils;
+import org.sonar.wsclient.services.*;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -22,7 +24,18 @@ import java.util.List;
 class RemoteSourceCode implements SourceCode {
   private final String key;
   private RemoteSonarIndex index;
-  private String content;
+
+  private String localContent;
+
+  /**
+   * Lazy initialization - see {@link #getDiff()}.
+   */
+  private SourceCodeDiff diff;
+
+  /**
+   * Lazy initialization - see {@link #getRemoteContent()}.
+   */
+  private String[] remoteContent;
 
   public RemoteSourceCode(String key) {
     this.key = key;
@@ -39,15 +52,29 @@ class RemoteSourceCode implements SourceCode {
    * {@inheritDoc}
    */
   public SourceCode setLocalContent(String content) {
-    this.content = content;
+    this.localContent = content;
     return this;
   }
 
   private String getLocalContent() {
-    if (content == null) {
+    if (localContent == null) {
       return "";
     }
-    return content;
+    return localContent;
+  }
+
+  private String[] getRemoteContent() {
+    if (remoteContent == null) {
+      remoteContent = SimpleSourceCodeDiffEngine.getLines(getCode());
+    }
+    return remoteContent;
+  }
+
+  private SourceCodeDiff getDiff() {
+    if (diff == null) {
+      diff = index.getDiffEngine().diff(SimpleSourceCodeDiffEngine.split(getLocalContent()), getRemoteContent());
+    }
+    return diff;
   }
 
   /**
@@ -68,14 +95,25 @@ class RemoteSourceCode implements SourceCode {
    * {@inheritDoc}
    */
   public List<Violation> getViolations() {
-    return ViolationsLoader.getViolations(index.getSonar(), getKey(), getLocalContent());
+    Logs.INFO.info("Loading violations for {}", getKey());
+    Collection<Violation> violations = index.getSonar().findAll(ViolationQuery.createForResource(getKey()));
+    Logs.INFO.info("Loaded {} violations: {}", violations.size(), ViolationUtils.toString(violations));
+    return ViolationUtils.convertLines(violations, getDiff());
   }
 
   /**
    * {@inheritDoc}
    */
   public List<Duplication> getDuplications() {
-    return DuplicationsLoader.getDuplications(index.getSonar(), getKey(), getLocalContent());
+    Logs.INFO.info("Loading duplications for {}", getKey());
+    Resource resource = index.getSonar().find(ResourceQuery.createForMetrics(getKey(), DuplicationUtils.DUPLICATIONS_DATA));
+    Measure measure = resource.getMeasure(DuplicationUtils.DUPLICATIONS_DATA);
+    if (measure == null) {
+      return Collections.emptyList();
+    }
+    List<Duplication> duplications = DuplicationUtils.parse(measure.getData());
+    Logs.INFO.info("Loaded {} duplications: {}", duplications.size(), duplications);
+    return DuplicationUtils.convertLines(duplications, getDiff());
   }
 
   /**

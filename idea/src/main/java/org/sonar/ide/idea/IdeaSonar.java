@@ -14,7 +14,7 @@ import org.sonar.wsclient.Sonar;
 public class IdeaSonar extends RemoteSonar {
 
   public IdeaSonar(Sonar sonar) {
-    super(sonar, null); // TODO diffEngine
+    super(sonar);
   }
 
   /**

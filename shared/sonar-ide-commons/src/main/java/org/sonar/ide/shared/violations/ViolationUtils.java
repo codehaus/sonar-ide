@@ -19,6 +19,7 @@
 package org.sonar.ide.shared.violations;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
+import org.sonar.ide.api.SourceCodeDiff;
 import org.sonar.wsclient.services.Violation;
 
 import java.util.*;
@@ -82,6 +83,27 @@ public final class ViolationUtils {
 
   public static String getDescription(Violation violation) {
     return violation.getRuleName() + " : " + violation.getMessage();
+  }
+
+  public static List<Violation> convertLines(Collection<Violation> violations, SourceCodeDiff diff) {
+    List<Violation> result = new ArrayList<Violation>();
+
+    for (Violation violation : violations) {
+      Integer originalLine = violation.getLine();
+      if (originalLine == null || originalLine == 0) {
+        // skip violation on whole file
+        // TODO Godin: we can show them on first line
+        continue;
+      }
+
+      int newLine = diff.newLine(originalLine);
+      // skip violation, which doesn't match any line
+      if (newLine != -1) {
+        violation.setLine(newLine);
+        result.add(violation);
+      }
+    }
+    return result;
   }
 
   static class PriorityComparator implements Comparator<Violation> {
