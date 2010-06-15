@@ -28,10 +28,8 @@ import com.intellij.openapi.util.Key;
 import com.intellij.util.ui.UIUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.sonar.ide.shared.violations.ViolationUtils;
-import org.sonar.ide.shared.violations.ViolationsLoader;
 import org.sonar.ide.shared.duplications.Duplication;
-import org.sonar.ide.shared.duplications.DuplicationsLoader;
+import org.sonar.ide.shared.violations.ViolationUtils;
 import org.sonar.wsclient.services.Violation;
 
 import java.util.*;
@@ -53,10 +51,10 @@ public class ShowViolationsTask extends AbstractSonarTask {
     try {
       String text = getDocument().getText();
       // Load violations
-      final Collection<Violation> violations = ViolationsLoader.getViolations(getSonar(), getResourceKey(), text);
+      final Collection<Violation> violations = getIdeaSonar().search(getResourceKey()).getViolations();
       final Map<Integer, List<Violation>> violationsByLine = ViolationUtils.splitByLines(violations);
       // Load duplications
-      final Collection<Duplication> duplications = DuplicationsLoader.getDuplications(getSonar(), getResourceKey(), text);
+      final Collection<Duplication> duplications = getIdeaSonar().search(getResourceKey()).getDuplications();
       // Add to UI
       UIUtil.invokeLaterIfNeeded(new Runnable() {
         @Override

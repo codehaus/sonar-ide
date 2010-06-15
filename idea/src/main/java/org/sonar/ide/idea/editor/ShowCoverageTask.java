@@ -31,7 +31,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.sonar.ide.api.Logs;
 import org.sonar.ide.shared.coverage.CoverageData;
-import org.sonar.ide.shared.coverage.CoverageLoader;
 
 import java.awt.*;
 
@@ -52,7 +51,7 @@ public class ShowCoverageTask extends AbstractSonarTask {
   @Override
   public void run(@NotNull ProgressIndicator progressIndicator) {
     // Load coverage
-    final CoverageData coverageData = CoverageLoader.getCoverage(getSonar(), getResourceKey());
+    final CoverageData coverageData = getIdeaSonar().search(getResourceKey()).getCoverage();
     // Add to UI
     UIUtil.invokeLaterIfNeeded(new Runnable() {
       @Override

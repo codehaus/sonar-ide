@@ -26,6 +26,7 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Key;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.sonar.ide.idea.IdeaSonar;
 import org.sonar.ide.idea.utils.SonarUtils;
 import org.sonar.wsclient.Sonar;
 
@@ -54,8 +55,8 @@ public abstract class AbstractSonarTask extends Task.Backgroundable {
     return getDocument().getMarkupModel(getProject());
   }
 
-  public Sonar getSonar() {
-    return SonarUtils.getSonar(getProject());
+  public IdeaSonar getIdeaSonar() {
+    return SonarUtils.getIdeaSonar(getProject());
   }
 
   /**

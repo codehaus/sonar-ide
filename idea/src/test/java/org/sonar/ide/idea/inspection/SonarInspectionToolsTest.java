@@ -21,10 +21,10 @@ package org.sonar.ide.idea.inspection;
 import com.intellij.codeInspection.InspectionManager;
 import com.intellij.psi.PsiFile;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
-import org.sonar.wsclient.Sonar;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -49,8 +49,7 @@ public class SonarInspectionToolsTest {
   public static Collection<Object[]> data() {
     return Arrays.asList(new Object[][]{
         {new Violations()},
-        {new Duplications()},
-        {new Dependencies()}
+        {new Duplications()}
     });
   }
 
@@ -69,10 +68,10 @@ public class SonarInspectionToolsTest {
   }
 
   @Test
+  @Ignore("Picocontainer required")
   public void shouldSkipOnTheFly() {
     PsiFile psiFile = mock(PsiFile.class);
     InspectionManager inspectionManager = mock(InspectionManager.class);
-    Sonar sonar = mock(Sonar.class);
-    assertThat(inspectionTool.checkFileBySonar(psiFile, inspectionManager, true, sonar), nullValue());
+    assertThat(inspectionTool.checkFile(psiFile, inspectionManager, true), nullValue());
   }
 }

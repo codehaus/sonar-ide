@@ -83,8 +83,7 @@ public class IdeaSonarApplicationComponent extends AbstractConfigurableComponent
   public Class[] getInspectionClasses() {
     return new Class[]{
         Violations.class,
-        Duplications.class,
-//        Dependencies.class
+        Duplications.class
     };
   }
 

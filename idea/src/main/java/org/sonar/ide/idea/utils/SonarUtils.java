@@ -21,6 +21,7 @@ package org.sonar.ide.idea.utils;
 import com.intellij.openapi.project.Project;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.sonar.ide.idea.IdeaSonar;
 import org.sonar.ide.idea.IdeaSonarProjectComponent;
 import org.sonar.wsclient.Host;
 import org.sonar.wsclient.Sonar;
@@ -42,9 +43,17 @@ public final class SonarUtils {
     return IdeaSonarProjectComponent.getInstance(project).getServer();
   }
 
+  /**
+   * @deprecated use {@link #getIdeaSonar(com.intellij.openapi.project.Project)} instead of it
+   */
+  @Deprecated
   public static Sonar getSonar(Project project) {
     Host server = getServer(project);
     LOG.debug("Sonar server: {}", server.getHost());
     return new Sonar(new HttpClient4Connector(server));
+  }
+
+  public static IdeaSonar getIdeaSonar(Project project) {
+    return new IdeaSonar(getSonar(project));
   }
 }

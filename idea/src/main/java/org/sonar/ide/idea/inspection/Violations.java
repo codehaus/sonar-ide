@@ -30,10 +30,8 @@ import com.intellij.psi.PsiFile;
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.sonar.ide.idea.utils.IdeaResourceUtils;
+import org.sonar.ide.idea.utils.SonarUtils;
 import org.sonar.ide.shared.violations.ViolationUtils;
-import org.sonar.ide.shared.violations.ViolationsLoader;
-import org.sonar.wsclient.Sonar;
 import org.sonar.wsclient.services.Violation;
 
 import java.util.ArrayList;
@@ -64,24 +62,20 @@ public class Violations extends AbstractSonarInspectionTool {
 
   @Nullable
   @Override
-  public List<ProblemDescriptor> checkFileBySonar(@NotNull PsiFile file, @NotNull InspectionManager manager, boolean isOnTheFly, Sonar sonar) {
-    if (isOnTheFly) {
-      return null;
-    }
+  public ProblemDescriptor[] checkFile(@NotNull PsiFile file, @NotNull InspectionManager manager, boolean isOnTheFly) {
+    getLog().debug("Running " + (isOnTheFly ? "on the fly" : "offline") + " inspection for " + file);
 
-    String text = file.getText();
-    Collection<Violation> violations = ViolationsLoader.getViolations(
-        sonar,
-        IdeaResourceUtils.getInstance().getFileKey(file),
-        text
-    );
-
-    return buildProblemDescriptors(
-        violations,
+    List<ProblemDescriptor> problems = buildProblemDescriptors(
+        SonarUtils.getIdeaSonar(file.getProject()).search(file).getViolations(),
         manager,
         file,
         isOnTheFly
     );
+
+    if (problems == null) {
+      return null;
+    }
+    return problems.toArray(new ProblemDescriptor[problems.size()]);
   }
 
   @Nullable

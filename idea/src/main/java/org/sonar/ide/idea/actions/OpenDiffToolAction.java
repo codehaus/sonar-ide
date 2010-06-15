@@ -27,13 +27,10 @@ import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiDocumentManager;
 import com.intellij.psi.PsiFile;
 import org.apache.commons.lang.StringUtils;
-import org.sonar.ide.idea.utils.IdeaResourceUtils;
+import org.sonar.ide.api.SourceCode;
 import org.sonar.ide.idea.utils.actions.SonarAction;
 import org.sonar.ide.idea.utils.actions.SonarActionUtils;
 import org.sonar.ide.idea.vfs.SonarVirtualFile;
-import org.sonar.wsclient.Sonar;
-import org.sonar.wsclient.services.Source;
-import org.sonar.wsclient.services.SourceQuery;
 
 /**
  * TODO Experimental SONARIDE-97
@@ -49,13 +46,10 @@ public class OpenDiffToolAction extends SonarAction {
     Document doc1 = FileDocumentManager.getInstance().getDocument(file);
     PsiFile psiFile = PsiDocumentManager.getInstance(project).getPsiFile(doc1);
     // Load code from Sonar
-    String resourceKey = IdeaResourceUtils.getInstance().getFileKey(psiFile);
-    Sonar sonar = SonarActionUtils.getSonar(event);
-    SourceQuery sourceQuery = new SourceQuery(resourceKey);
-    Source source = sonar.find(sourceQuery);
-    String content = StringUtils.join(source.getLines().toArray(), "\n");
+    SourceCode source = SonarActionUtils.getIdeaSonar(event).search(psiFile);
+    String content = StringUtils.join(source.getCode().getLines().toArray(), "\n");
     // Prepare content for diff
-    SonarVirtualFile sonarVirtualFile = new SonarVirtualFile("Test.java", content.getBytes(), resourceKey);
+    SonarVirtualFile sonarVirtualFile = new SonarVirtualFile("Test.java", content.getBytes(), source.getKey());
     DiffContent sonarDiffContent = createDiffContent(project, sonarVirtualFile);
     Document doc2 = sonarDiffContent.getDocument();
     doc2.setReadOnly(true);

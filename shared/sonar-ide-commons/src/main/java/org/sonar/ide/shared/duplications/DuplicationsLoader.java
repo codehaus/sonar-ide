@@ -33,6 +33,7 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -56,6 +57,9 @@ public final class DuplicationsLoader {
     LOG.info("Loading duplications for {}", resourceKey);
     Resource resource = sonar.find(ResourceQuery.createForMetrics(resourceKey, DUPLICATIONS_DATA));
     Measure measure = resource.getMeasure(DUPLICATIONS_DATA);
+    if (measure == null) {
+      return Collections.emptyList();
+    }
     List<Duplication> duplications = parse(measure.getData());
     LOG.info("Loaded {} violations: {}", duplications.size(), duplications);
     SourceQuery sourceQuery = new SourceQuery(resourceKey);

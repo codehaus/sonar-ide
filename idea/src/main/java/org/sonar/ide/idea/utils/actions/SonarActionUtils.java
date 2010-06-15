@@ -24,6 +24,7 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiManager;
+import org.sonar.ide.idea.IdeaSonar;
 import org.sonar.ide.idea.utils.IdeaResourceUtils;
 import org.sonar.ide.idea.utils.SonarUtils;
 import org.sonar.wsclient.Host;
@@ -43,6 +44,10 @@ public final class SonarActionUtils {
     return IdeaResourceUtils.getInstance().getFileKey(psiFile);
   }
 
+  /**
+   * @deprecated ues {@link #getIdeaSonar(com.intellij.openapi.actionSystem.AnActionEvent)} instead of it
+   */
+  @Deprecated
   public static Sonar getSonar(AnActionEvent event) {
     return SonarUtils.getSonar(getProject(event));
   }
@@ -59,5 +64,9 @@ public final class SonarActionUtils {
    * Hide utility-class constructor.
    */
   private SonarActionUtils() {
+  }
+
+  public static IdeaSonar getIdeaSonar(AnActionEvent event) {
+    return SonarUtils.getIdeaSonar(getProject(event));
   }
 }
