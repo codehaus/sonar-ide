@@ -23,6 +23,9 @@ public class SimpleSourceCodeDiffEngine implements SourceCodeDiffEngine {
     return diff(split(local), split(remote));
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public SourceCodeDiff diff(String[] local, String remote[]) {
     SourceCodeDiff result = new SourceCodeDiff();
 

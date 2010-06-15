@@ -7,9 +7,12 @@ import java.util.Map;
  * @author Evgeny Mandrikov
  * @since 0.2
  */
-public class SourceCodeDiff {
+public final class SourceCodeDiff {
 
   private Map<Integer, Integer> diff = new HashMap<Integer, Integer>();
+
+  public SourceCodeDiff() {
+  }
 
   public void map(int oldLine, int newLine) {
     diff.put(oldLine, newLine);
