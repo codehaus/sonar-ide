@@ -26,7 +26,7 @@ import com.intellij.openapi.ui.popup.PopupStep;
 import com.intellij.openapi.ui.popup.util.BaseListPopupStep;
 import com.intellij.openapi.util.IconLoader;
 import org.jetbrains.annotations.NotNull;
-import org.sonar.ide.shared.ViolationUtils;
+import org.sonar.ide.shared.violations.ViolationUtils;
 import org.sonar.ide.shared.duplications.Duplication;
 import org.sonar.ide.shared.duplications.DuplicationsLoader;
 import org.sonar.ide.ui.IconsUtils;

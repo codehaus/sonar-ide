@@ -31,8 +31,8 @@ import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.sonar.ide.idea.utils.IdeaResourceUtils;
-import org.sonar.ide.shared.ViolationUtils;
-import org.sonar.ide.shared.ViolationsLoader;
+import org.sonar.ide.shared.violations.ViolationUtils;
+import org.sonar.ide.shared.violations.ViolationsLoader;
 import org.sonar.wsclient.Sonar;
 import org.sonar.wsclient.services.Violation;
 
