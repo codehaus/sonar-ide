@@ -20,11 +20,11 @@ package org.sonar.ide.shared.duplications;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.sonar.ide.shared.SourceCodeMatcher;
+import org.sonar.ide.api.SourceCodeDiff;
+import org.sonar.ide.wsclient.SimpleSourceCodeDiffEngine;
 import org.sonar.wsclient.Sonar;
 import org.sonar.wsclient.services.*;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -65,17 +65,9 @@ public final class DuplicationsLoader {
   }
 
   public static List<Duplication> convertLines(Collection<Duplication> duplications, Source source, String[] lines) {
-    List<Duplication> result = new ArrayList<Duplication>();
-    SourceCodeMatcher codeMatcher = new SourceCodeMatcher(source, lines);
-    for (Duplication duplication : duplications) {
-      int newLine = codeMatcher.match(duplication.getStart());
-      if (newLine != -1) {
-        duplication.setStart(newLine);
-        // TODO convert targetStart 
-        result.add(duplication);
-      }
-    }
-    return result;
+    String[] remote = SimpleSourceCodeDiffEngine.getLines(source);
+    SourceCodeDiff diff = SimpleSourceCodeDiffEngine.getInstance().diff(lines, remote);
+    return DuplicationUtils.convertLines(duplications, diff);
   }
 
   public static String getDescription(Duplication duplication) {
