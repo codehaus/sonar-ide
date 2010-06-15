@@ -10,6 +10,7 @@ import java.util.List;
 
 /**
  * @author Evgeny Mandrikov
+ * @since 0.2
  */
 public interface Measurable {
 

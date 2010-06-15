@@ -18,20 +18,21 @@
 
 package org.sonar.ide.shared.coverage;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-
 import org.sonar.wsclient.Sonar;
 import org.sonar.wsclient.services.Measure;
 import org.sonar.wsclient.services.Resource;
 import org.sonar.wsclient.services.ResourceQuery;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * @author Evgeny Mandrikov
- * @since 0.2
+ * @deprecated use {@link org.sonar.ide.api.SourceCodeSearchEngine} instead of it
  */
+@Deprecated
 public final class CoverageLoader {
 
   public static final String COVERAGE_LINE_HITS_DATA_KEY = "coverage_line_hits_data";

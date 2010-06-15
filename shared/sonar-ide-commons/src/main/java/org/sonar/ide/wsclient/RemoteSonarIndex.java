@@ -13,6 +13,7 @@ import org.sonar.wsclient.services.ResourceQuery;
  * Sonar IDE -> RemoteSonarIndex -> sonar-ws-client -> Sonar
  *
  * @author Evgeny Mandrikov
+ * @since 0.2
  */
 class RemoteSonarIndex implements SourceCodeSearchEngine {
 

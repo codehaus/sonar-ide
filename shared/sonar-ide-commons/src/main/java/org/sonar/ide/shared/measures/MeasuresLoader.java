@@ -18,22 +18,19 @@
 
 package org.sonar.ide.shared.measures;
 
+import org.sonar.wsclient.Sonar;
+import org.sonar.wsclient.services.*;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.sonar.wsclient.Sonar;
-import org.sonar.wsclient.services.Measure;
-import org.sonar.wsclient.services.Metric;
-import org.sonar.wsclient.services.MetricQuery;
-import org.sonar.wsclient.services.Resource;
-import org.sonar.wsclient.services.ResourceQuery;
-
 /**
  * @author Evgeny Mandrikov
- * @since 0.2
+ * @deprecated use {@link org.sonar.ide.api.SourceCodeSearchEngine} instead of it
  */
+@Deprecated
 public final class MeasuresLoader {
   /**
    * Returns measures from specified sonar for specified resource.

@@ -38,8 +38,9 @@ import java.util.List;
 
 /**
  * @author Evgeny Mandrikov
- * @since 0.2
+ * @deprecated use {@link org.sonar.ide.api.SourceCodeSearchEngine} instead of it
  */
+@Deprecated
 public final class DuplicationsLoader {
   private static final Logger LOG = LoggerFactory.getLogger(DuplicationsLoader.class);
 

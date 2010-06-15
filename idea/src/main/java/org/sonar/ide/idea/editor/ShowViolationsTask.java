@@ -49,12 +49,11 @@ public class ShowViolationsTask extends AbstractSonarTask {
   @Override
   public void run(@NotNull ProgressIndicator progressIndicator) {
     try {
-      String text = getDocument().getText();
       // Load violations
-      final Collection<Violation> violations = getIdeaSonar().search(getResourceKey()).getViolations();
+      final Collection<Violation> violations = getIdeaSonar().search(getPsiFile()).getViolations();
       final Map<Integer, List<Violation>> violationsByLine = ViolationUtils.splitByLines(violations);
       // Load duplications
-      final Collection<Duplication> duplications = getIdeaSonar().search(getResourceKey()).getDuplications();
+      final Collection<Duplication> duplications = getIdeaSonar().search(getPsiFile()).getDuplications();
       // Add to UI
       UIUtil.invokeLaterIfNeeded(new Runnable() {
         @Override

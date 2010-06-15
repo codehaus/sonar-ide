@@ -35,7 +35,9 @@ import java.util.List;
  * Note: Violation on zero line means violation on whole file.
  *
  * @author Evgeny Mandrikov
+ * @deprecated use {@link org.sonar.ide.api.SourceCodeSearchEngine} instead of it
  */
+@Deprecated
 public final class ViolationsLoader {
   private static final Logger LOG = LoggerFactory.getLogger(ViolationsLoader.class);
 

@@ -51,7 +51,7 @@ public class ShowCoverageTask extends AbstractSonarTask {
   @Override
   public void run(@NotNull ProgressIndicator progressIndicator) {
     // Load coverage
-    final CoverageData coverageData = getIdeaSonar().search(getResourceKey()).getCoverage();
+    final CoverageData coverageData = getIdeaSonar().search(getPsiFile()).getCoverage();
     // Add to UI
     UIUtil.invokeLaterIfNeeded(new Runnable() {
       @Override

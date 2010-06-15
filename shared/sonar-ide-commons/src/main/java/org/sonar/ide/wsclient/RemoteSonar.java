@@ -7,6 +7,7 @@ import org.sonar.wsclient.Sonar;
 
 /**
  * @author Evgeny Mandrikov
+ * @since 0.2
  */
 public class RemoteSonar implements SourceCodeSearchEngine {
 

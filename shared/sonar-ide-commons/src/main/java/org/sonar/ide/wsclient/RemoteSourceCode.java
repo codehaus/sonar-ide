@@ -17,43 +17,77 @@ import java.util.List;
 
 /**
  * @author Evgeny Mandrikov
+ * @since 0.2
  */
 class RemoteSourceCode implements SourceCode {
   private final String key;
-  protected RemoteSonarIndex index;
+  private RemoteSonarIndex index;
+  private String content;
 
   public RemoteSourceCode(String key) {
     this.key = key;
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public String getKey() {
     return key;
   }
 
+  /**
+   * {@inheritDoc}
+   */
+  public SourceCode setLocalContent(String content) {
+    this.content = content;
+    return this;
+  }
+
+  private String getLocalContent() {
+    if (content == null) {
+      return "";
+    }
+    return content;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
   public List<MeasureData> getMeasures() {
     return MeasuresLoader.getMeasures(index.getSonar(), getKey());
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public CoverageData getCoverage() {
     return CoverageLoader.getCoverage(index.getSonar(), getKey());
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public List<Violation> getViolations() {
-    return ViolationsLoader.getViolations(index.getSonar(), getKey(), getLocalCode());
+    return ViolationsLoader.getViolations(index.getSonar(), getKey(), getLocalContent());
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public List<Duplication> getDuplications() {
-    return DuplicationsLoader.getDuplications(index.getSonar(), getKey(), getLocalCode());
+    return DuplicationsLoader.getDuplications(index.getSonar(), getKey(), getLocalContent());
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public Source getCode() {
     return index.getSonar().find(new SourceQuery(getKey()));
   }
 
-  private String getLocalCode() {
-    return index.getDiffEngine().getLocalCode(getKey());
-  }
-
+  /**
+   * {@inheritDoc}
+   */
   public int compareTo(SourceCode resource) {
     return key.compareTo(resource.getKey());
   }

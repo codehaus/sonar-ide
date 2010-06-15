@@ -18,14 +18,20 @@
 
 package org.sonar.ide.idea.editor;
 
+import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.editor.markup.MarkupModel;
 import com.intellij.openapi.editor.markup.RangeHighlighter;
 import com.intellij.openapi.progress.Task;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.util.Computable;
 import com.intellij.openapi.util.Key;
+import com.intellij.psi.PsiDocumentManager;
+import com.intellij.psi.PsiFile;
+import com.intellij.psi.PsiManager;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.sonar.ide.api.SourceCode;
 import org.sonar.ide.idea.IdeaSonar;
 import org.sonar.ide.idea.utils.SonarUtils;
 import org.sonar.wsclient.Sonar;
@@ -47,6 +53,18 @@ public abstract class AbstractSonarTask extends Task.Backgroundable {
     return document;
   }
 
+  public PsiFile getPsiFile() {
+    return ApplicationManager.getApplication().runReadAction(new Computable<PsiFile>() {
+      @Override
+      public PsiFile compute() {
+        return PsiDocumentManager.getInstance(getProject()).getPsiFile(document);
+      }
+    });
+  }
+
+  /**
+   * @deprecated use {@link #getPsiFile()} instead of it
+   */
   public String getResourceKey() {
     return resourceKey;
   }
