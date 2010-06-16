@@ -16,26 +16,24 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
 
-package org.sonar.ide.shared.duplications;
+package org.sonar.ide.wsclient;
 
-import static org.hamcrest.Matchers.allOf;
-import static org.hamcrest.Matchers.greaterThan;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.not;
-import static org.hamcrest.Matchers.notNullValue;
-import static org.junit.Assert.assertThat;
+import org.apache.commons.io.FileUtils;
+import org.junit.Test;
+import org.sonar.ide.shared.duplications.Duplication;
+import org.sonar.ide.test.SonarIdeTestCase;
+import org.sonar.ide.wsclient.RemoteSonar;
 
 import java.io.File;
 import java.util.List;
 
-import org.apache.commons.io.FileUtils;
-import org.junit.Test;
-import org.sonar.ide.test.SonarIdeTestCase;
+import static org.hamcrest.Matchers.*;
+import static org.junit.Assert.assertThat;
 
 /**
  * @author Evgeny Mandrikov
  */
-public class DuplicationsLoaderTest extends SonarIdeTestCase {
+public class DuplicationsTest extends SonarIdeTestCase {
 
   @Test
   public void testGetDuplications() throws Exception {
@@ -49,7 +47,9 @@ public class DuplicationsLoaderTest extends SonarIdeTestCase {
   }
 
   private List<Duplication> getDuplications(File project, String className) throws Exception {
-    return DuplicationsLoader.getDuplications(getTestServer().getSonar(), getProjectKey(project) + ":[default]." + className, FileUtils
-        .readFileToString(getProjectFile(project, "/src/main/java/" + className + ".java")));
+    return new RemoteSonar(getTestServer().getSonar())
+        .search(getProjectKey(project) + ":[default]." + className)
+        .setLocalContent(FileUtils.readFileToString(getProjectFile(project, "/src/main/java/" + className + ".java")))
+        .getDuplications();
   }
 }

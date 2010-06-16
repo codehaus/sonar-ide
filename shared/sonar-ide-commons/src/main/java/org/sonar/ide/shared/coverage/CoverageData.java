@@ -18,6 +18,8 @@
 
 package org.sonar.ide.shared.coverage;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -29,7 +31,7 @@ public final class CoverageData {
   private Map<Integer, String> hitsByLine = new HashMap<Integer, String>();
   private Map<Integer, String> branchHitsByLine = new HashMap<Integer, String>();
 
-  protected CoverageData(Map<Integer, String> hitsByLine, Map<Integer, String> branchHitsByLine) {
+  public CoverageData(Map<Integer, String> hitsByLine, Map<Integer, String> branchHitsByLine) {
     this.hitsByLine = hitsByLine;
     this.branchHitsByLine = branchHitsByLine;
   }
@@ -62,6 +64,17 @@ public final class CoverageData {
       return CoverageStatus.UNCOVERED;
     }
     return CoverageStatus.NO_DATA;
+  }
+
+  /**
+   * For eclipse.
+   */
+  public Collection<CoverageLine> getCoverageLines() {
+    final Collection<CoverageLine> coverageLines = new ArrayList<CoverageLine>();
+    for (final Integer line : hitsByLine.keySet()) {
+      coverageLines.add(new CoverageLine(line, hitsByLine.get(line), branchHitsByLine.get(line)));
+    }
+    return coverageLines;
   }
 
   public enum CoverageStatus {

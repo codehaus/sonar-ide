@@ -16,21 +16,22 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
 
-package org.sonar.ide.shared.coverage;
+package org.sonar.ide.wsclient;
+
+import org.junit.Test;
+import org.sonar.ide.shared.coverage.CoverageData;
+import org.sonar.ide.test.SonarIdeTestCase;
+
+import java.io.File;
 
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.Assert.assertThat;
 
-import java.io.File;
-
-import org.junit.Test;
-import org.sonar.ide.test.SonarIdeTestCase;
-
 /**
  * @author Evgeny Mandrikov
  */
-public class CoverageLoaderTest extends SonarIdeTestCase {
+public class CoverageTest extends SonarIdeTestCase {
 
   @Test
   public void testGetCoverage() throws Exception {
@@ -46,6 +47,8 @@ public class CoverageLoaderTest extends SonarIdeTestCase {
   }
 
   private CoverageData getCoverage(File project, String className) throws Exception {
-    return CoverageLoader.getCoverage(getTestServer().getSonar(), getProjectKey(project) + ":[default]." + className);
+    return new RemoteSonar(getTestServer().getSonar())
+        .search(getProjectKey(project) + ":[default]." + className)
+        .getCoverage();
   }
 }

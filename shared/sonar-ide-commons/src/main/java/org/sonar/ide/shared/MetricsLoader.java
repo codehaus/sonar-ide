@@ -18,21 +18,23 @@
 
 package org.sonar.ide.shared;
 
-import java.util.List;
-
 import org.sonar.wsclient.Sonar;
 import org.sonar.wsclient.services.Metric;
 import org.sonar.wsclient.services.MetricQuery;
 
+import java.util.List;
+
 /**
  * @author Jérémie Lagarde
+ * @deprecated since 0.2
  */
+@Deprecated
 public class MetricsLoader {
 
   /**
    * Returns metrics from specified sonar server.
-   * 
-   * @param sonar sonar
+   *
+   * @param sonar     sonar
    * @param metricKey metric key
    * @return metrics
    */

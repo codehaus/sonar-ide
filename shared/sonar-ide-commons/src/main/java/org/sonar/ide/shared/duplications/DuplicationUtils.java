@@ -67,4 +67,12 @@ public final class DuplicationUtils {
   private DuplicationUtils() {
   }
 
+  public static String getDescription(Duplication duplication) {
+    return String.format(
+        "Duplicates %s lines from %s starting from %s",
+        duplication.getLines(),
+        duplication.getTargetResource(),
+        duplication.getTargetStart()
+    );
+  }
 }

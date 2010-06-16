@@ -26,9 +26,9 @@ import com.intellij.openapi.ui.popup.PopupStep;
 import com.intellij.openapi.ui.popup.util.BaseListPopupStep;
 import com.intellij.openapi.util.IconLoader;
 import org.jetbrains.annotations.NotNull;
+import org.sonar.ide.shared.duplications.DuplicationUtils;
 import org.sonar.ide.shared.violations.ViolationUtils;
 import org.sonar.ide.shared.duplications.Duplication;
-import org.sonar.ide.shared.duplications.DuplicationsLoader;
 import org.sonar.ide.ui.IconsUtils;
 import org.sonar.wsclient.services.Violation;
 
@@ -116,7 +116,7 @@ public class ViolationGutterIconRenderer extends GutterIconRenderer {
           .append("<hr/>");
     }
     for (Duplication duplication : duplications) {
-      sb.append(DuplicationsLoader.getDescription(duplication)).append("<hr/>");
+      sb.append(DuplicationUtils.getDescription(duplication)).append("<hr/>");
     }
     return sb.toString();
   }

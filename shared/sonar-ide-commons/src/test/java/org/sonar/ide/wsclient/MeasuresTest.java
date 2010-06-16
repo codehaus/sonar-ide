@@ -16,26 +16,24 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
 
-package org.sonar.ide.shared.measures;
+package org.sonar.ide.wsclient;
 
-import static org.hamcrest.Matchers.greaterThan;
-import static org.hamcrest.Matchers.hasItem;
-import static org.hamcrest.Matchers.hasProperty;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.not;
-import static org.junit.Assert.assertThat;
+import org.junit.Ignore;
+import org.junit.Test;
+import org.sonar.ide.shared.measures.MeasureData;
+import org.sonar.ide.test.SonarIdeTestCase;
+import org.sonar.ide.wsclient.RemoteSonar;
 
 import java.io.File;
 import java.util.List;
 
-import org.junit.Ignore;
-import org.junit.Test;
-import org.sonar.ide.test.SonarIdeTestCase;
+import static org.hamcrest.Matchers.*;
+import static org.junit.Assert.assertThat;
 
 /**
  * @author Evgeny Mandrikov
  */
-public class MeasuresLoaderTest extends SonarIdeTestCase {
+public class MeasuresTest extends SonarIdeTestCase {
 
   @Test
   public void testGetMeasures() throws Exception {
@@ -54,6 +52,8 @@ public class MeasuresLoaderTest extends SonarIdeTestCase {
   }
 
   private List<MeasureData> getMeasures(File project, String className) throws Exception {
-    return MeasuresLoader.getMeasures(getTestServer().getSonar(), getProjectKey(project) + ":[default]." + className);
+    return new RemoteSonar(getTestServer().getSonar())
+        .search(getProjectKey(project) + ":[default]." + className)
+        .getMeasures();
   }
 }

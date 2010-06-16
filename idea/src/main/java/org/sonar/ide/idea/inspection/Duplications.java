@@ -32,7 +32,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.sonar.ide.idea.utils.SonarUtils;
 import org.sonar.ide.shared.duplications.Duplication;
-import org.sonar.ide.shared.duplications.DuplicationsLoader;
+import org.sonar.ide.shared.duplications.DuplicationUtils;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -84,7 +84,7 @@ public class Duplications extends AbstractSonarInspectionTool {
       problems.add(manager.createProblemDescriptor(
           element,
           getTextRange(document, line),
-          DuplicationsLoader.getDescription(duplication),
+          DuplicationUtils.getDescription(duplication),
           ProblemHighlightType.GENERIC_ERROR_OR_WARNING,
           isOnTheFly,
           LocalQuickFix.EMPTY_ARRAY

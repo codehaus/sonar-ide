@@ -16,7 +16,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
 
-package org.sonar.ide.shared;
+package org.sonar.ide.wsclient;
 
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
@@ -26,27 +26,18 @@ import java.util.List;
 
 import org.apache.commons.io.FileUtils;
 import org.junit.Test;
-import org.sonar.ide.shared.violations.ViolationsLoader;
 import org.sonar.ide.test.SonarIdeTestCase;
-import org.sonar.wsclient.Sonar;
-import org.sonar.wsclient.connectors.ConnectionException;
 import org.sonar.wsclient.services.Violation;
 
 /**
  * @author Evgeny Mandrikov
  */
-public class ViolationsLoaderTest extends SonarIdeTestCase {
-  @Test(expected = ConnectionException.class)
-  public void testServerUnavailable() throws Exception {
-    ViolationsLoader.getViolations(Sonar.create("http://localhost:9999"), "test:test:[default].ClassOnDefaultPackage", "");
-  }
-
+public class ViolationsTest extends SonarIdeTestCase {
   private List<Violation> getViolations(File project, String className) throws Exception {
-    return ViolationsLoader.getViolations(
-        getTestServer().getSonar(),
-        getProjectKey(project) + ":[default]." + className,
-        FileUtils.readFileToString(getProjectFile(project, "/src/main/java/" + className + ".java"))
-    );
+    return new RemoteSonar(getTestServer().getSonar())
+        .search(getProjectKey(project) + ":[default]." + className)
+        .setLocalContent(FileUtils.readFileToString(getProjectFile(project, "/src/main/java/" + className + ".java")))
+        .getViolations();
   }
 
   @Test

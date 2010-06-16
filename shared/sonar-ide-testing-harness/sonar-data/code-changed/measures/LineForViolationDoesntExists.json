@@ -1,0 +1,11 @@
+[
+  {
+    "id": 172317,
+    "key": "org.codehaus.sonar-ide.test-project:module1:[default].LineForViolationDoesntExists",
+    "name": "LineForViolationDoesntExists",
+    "scope": "FIL",
+    "qualifier": "CLA",
+    "date": "2010-06-11T22:16:17+0000",
+    "lname": "LineForViolationDoesntExists"
+  }
+]

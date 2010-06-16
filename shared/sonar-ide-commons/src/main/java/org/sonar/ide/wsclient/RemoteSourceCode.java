@@ -5,17 +5,14 @@ import org.sonar.ide.api.Logs;
 import org.sonar.ide.api.SourceCode;
 import org.sonar.ide.api.SourceCodeDiff;
 import org.sonar.ide.shared.coverage.CoverageData;
-import org.sonar.ide.shared.coverage.CoverageLoader;
+import org.sonar.ide.shared.coverage.CoverageUtils;
 import org.sonar.ide.shared.duplications.Duplication;
 import org.sonar.ide.shared.duplications.DuplicationUtils;
 import org.sonar.ide.shared.measures.MeasureData;
-import org.sonar.ide.shared.measures.MeasuresLoader;
 import org.sonar.ide.shared.violations.ViolationUtils;
 import org.sonar.wsclient.services.*;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author Evgeny Mandrikov
@@ -81,14 +78,42 @@ class RemoteSourceCode implements SourceCode {
    * {@inheritDoc}
    */
   public List<MeasureData> getMeasures() {
-    return MeasuresLoader.getMeasures(index.getSonar(), getKey());
+    // TODO Godin: This is not optimal. Would be better to load metrics only once.
+    List<Metric> metrics = index.getSonar().findAll(MetricQuery.all());
+    Map<String, Metric> metricsByKey = new HashMap<String, Metric>();
+    // TODO Godin: We shouldn't load all measures.
+    for (Metric metric : metrics) {
+      metricsByKey.put(metric.getKey(), metric);
+    }
+    String[] metricKeys = metricsByKey.keySet().toArray(new String[metrics.size()]);
+    ResourceQuery query = ResourceQuery.createForMetrics(getKey(), metricKeys);
+    Resource resource = index.getSonar().find(query);
+    List<MeasureData> result = new ArrayList<MeasureData>();
+    for (Measure measure : resource.getMeasures()) {
+      Metric metric = metricsByKey.get(measure.getMetricKey());
+      result.add(new MeasureData()
+          .setName(metric.getName())
+          .setDomain(metric.getDomain())
+          .setValue(measure.getFormattedValue())
+      );
+    }
+    return result;
   }
 
   /**
    * {@inheritDoc}
    */
   public CoverageData getCoverage() {
-    return CoverageLoader.getCoverage(index.getSonar(), getKey());
+    Resource resource = index.getSonar().find(ResourceQuery.createForMetrics(
+        getKey(),
+        CoverageUtils.COVERAGE_LINE_HITS_DATA_KEY, CoverageUtils.BRANCH_COVERAGE_HITS_DATA_KEY
+    ));
+    final Measure measure = resource.getMeasure(CoverageUtils.COVERAGE_LINE_HITS_DATA_KEY);
+    final Measure measure2 = resource.getMeasure(CoverageUtils.BRANCH_COVERAGE_HITS_DATA_KEY);
+    return new CoverageData(
+        CoverageUtils.unmarshall(measure.getData()),
+        CoverageUtils.unmarshall(measure2.getData())
+    );
   }
 
   /**
