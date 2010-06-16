@@ -29,4 +29,8 @@ public final class SourceCodeDiff {
     return -1;
   }
 
+  @Override
+  public String toString() {
+    return diff.toString();
+  }
 }

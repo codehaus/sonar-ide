@@ -1,8 +1,10 @@
 package org.sonar.ide.wsclient;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 
 /**
@@ -22,6 +24,11 @@ public class SimpleSourceCodeDiffEngineTest {
     assertThat(hash3, equalTo(hash1));
     assertThat(hash4, equalTo(hash1));
     assertThat(hash5, equalTo(hash1));
+  }
+
+  @Test
+  public void testSplit() {
+    assertThat(SimpleSourceCodeDiffEngine.split("\ntest\n").length, is(3));
   }
 
 }

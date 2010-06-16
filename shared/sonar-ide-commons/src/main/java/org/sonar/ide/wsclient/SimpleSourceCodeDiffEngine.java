@@ -15,7 +15,7 @@ import org.sonar.wsclient.services.Source;
 public class SimpleSourceCodeDiffEngine implements SourceCodeDiffEngine {
   private static final Logger LOG = LoggerFactory.getLogger(SimpleSourceCodeDiffEngine.class);
 
-  public static SimpleSourceCodeDiffEngine getInstance() {
+  public static SourceCodeDiffEngine getInstance() {
     return new SimpleSourceCodeDiffEngine();
   }
 
@@ -70,7 +70,7 @@ public class SimpleSourceCodeDiffEngine implements SourceCodeDiffEngine {
   }
 
   public static String[] split(String text) {
-    return StringUtils.split(text, '\n');
+    return StringUtils.splitPreserveAllTokens(text, '\n');
   }
 
   /**
