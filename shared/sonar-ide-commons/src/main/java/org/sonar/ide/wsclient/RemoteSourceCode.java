@@ -1,5 +1,12 @@
 package org.sonar.ide.wsclient;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.sonar.ide.api.Logs;
 import org.sonar.ide.api.SourceCode;
@@ -10,9 +17,15 @@ import org.sonar.ide.shared.duplications.Duplication;
 import org.sonar.ide.shared.duplications.DuplicationUtils;
 import org.sonar.ide.shared.measures.MeasureData;
 import org.sonar.ide.shared.violations.ViolationUtils;
-import org.sonar.wsclient.services.*;
-
-import java.util.*;
+import org.sonar.wsclient.services.Measure;
+import org.sonar.wsclient.services.Metric;
+import org.sonar.wsclient.services.MetricQuery;
+import org.sonar.wsclient.services.Resource;
+import org.sonar.wsclient.services.ResourceQuery;
+import org.sonar.wsclient.services.Source;
+import org.sonar.wsclient.services.SourceQuery;
+import org.sonar.wsclient.services.Violation;
+import org.sonar.wsclient.services.ViolationQuery;
 
 /**
  * @author Evgeny Mandrikov
@@ -34,7 +47,7 @@ class RemoteSourceCode implements SourceCode {
    */
   private String[] remoteContent;
 
-  public RemoteSourceCode(String key) {
+  public RemoteSourceCode(final String key) {
     this.key = key;
   }
 
@@ -48,7 +61,7 @@ class RemoteSourceCode implements SourceCode {
   /**
    * {@inheritDoc}
    */
-  public SourceCode setLocalContent(String content) {
+  public SourceCode setLocalContent(final String content) {
     this.localContent = content;
     return this;
   }
@@ -79,22 +92,22 @@ class RemoteSourceCode implements SourceCode {
    */
   public List<MeasureData> getMeasures() {
     // TODO Godin: This is not optimal. Would be better to load metrics only once.
-    List<Metric> metrics = index.getSonar().findAll(MetricQuery.all());
-    Map<String, Metric> metricsByKey = new HashMap<String, Metric>();
+    final List<Metric> metrics = index.getSonar().findAll(MetricQuery.all());
+    final Map<String, Metric> metricsByKey = new HashMap<String, Metric>();
     // TODO Godin: We shouldn't load all measures.
-    for (Metric metric : metrics) {
+    for (final Metric metric : metrics) {
       metricsByKey.put(metric.getKey(), metric);
     }
-    String[] metricKeys = metricsByKey.keySet().toArray(new String[metrics.size()]);
-    ResourceQuery query = ResourceQuery.createForMetrics(getKey(), metricKeys);
-    Resource resource = index.getSonar().find(query);
-    List<MeasureData> result = new ArrayList<MeasureData>();
-    for (Measure measure : resource.getMeasures()) {
-      Metric metric = metricsByKey.get(measure.getMetricKey());
+    final String[] metricKeys = metricsByKey.keySet().toArray(new String[metrics.size()]);
+    final ResourceQuery query = ResourceQuery.createForMetrics(getKey(), metricKeys);
+    final Resource resource = index.getSonar().find(query);
+    final List<MeasureData> result = new ArrayList<MeasureData>();
+    for (final Measure measure : resource.getMeasures()) {
+      final Metric metric = metricsByKey.get(measure.getMetricKey());
       result.add(new MeasureData()
-          .setName(metric.getName())
-          .setDomain(metric.getDomain())
-          .setValue(measure.getFormattedValue())
+      .setName(metric.getName())
+      .setDomain(metric.getDomain())
+      .setValue(measure.getFormattedValue())
       );
     }
     return result;
@@ -104,16 +117,23 @@ class RemoteSourceCode implements SourceCode {
    * {@inheritDoc}
    */
   public CoverageData getCoverage() {
-    Resource resource = index.getSonar().find(ResourceQuery.createForMetrics(
+    final Resource resource = index.getSonar().find(ResourceQuery.createForMetrics(
         getKey(),
         CoverageUtils.COVERAGE_LINE_HITS_DATA_KEY, CoverageUtils.BRANCH_COVERAGE_HITS_DATA_KEY
     ));
     final Measure measure = resource.getMeasure(CoverageUtils.COVERAGE_LINE_HITS_DATA_KEY);
     final Measure measure2 = resource.getMeasure(CoverageUtils.BRANCH_COVERAGE_HITS_DATA_KEY);
-    return new CoverageData(
-        CoverageUtils.unmarshall(measure.getData()),
-        CoverageUtils.unmarshall(measure2.getData())
-    );
+    if (measure2 != null) {
+      return new CoverageData(
+          CoverageUtils.unmarshall(measure.getData()),
+          CoverageUtils.unmarshall(measure2.getData())
+      );
+    } else {
+      return new CoverageData(
+          CoverageUtils.unmarshall(measure.getData()),
+          new HashMap<Integer,String>()
+      );
+    }
   }
 
   /**
@@ -121,7 +141,7 @@ class RemoteSourceCode implements SourceCode {
    */
   public List<Violation> getViolations() {
     Logs.INFO.info("Loading violations for {}", getKey());
-    Collection<Violation> violations = index.getSonar().findAll(ViolationQuery.createForResource(getKey()));
+    final Collection<Violation> violations = index.getSonar().findAll(ViolationQuery.createForResource(getKey()));
     Logs.INFO.info("Loaded {} violations: {}", violations.size(), ViolationUtils.toString(violations));
     return ViolationUtils.convertLines(violations, getDiff());
   }
@@ -131,12 +151,12 @@ class RemoteSourceCode implements SourceCode {
    */
   public List<Duplication> getDuplications() {
     Logs.INFO.info("Loading duplications for {}", getKey());
-    Resource resource = index.getSonar().find(ResourceQuery.createForMetrics(getKey(), DuplicationUtils.DUPLICATIONS_DATA));
-    Measure measure = resource.getMeasure(DuplicationUtils.DUPLICATIONS_DATA);
+    final Resource resource = index.getSonar().find(ResourceQuery.createForMetrics(getKey(), DuplicationUtils.DUPLICATIONS_DATA));
+    final Measure measure = resource.getMeasure(DuplicationUtils.DUPLICATIONS_DATA);
     if (measure == null) {
       return Collections.emptyList();
     }
-    List<Duplication> duplications = DuplicationUtils.parse(measure.getData());
+    final List<Duplication> duplications = DuplicationUtils.parse(measure.getData());
     Logs.INFO.info("Loaded {} duplications: {}", duplications.size(), duplications);
     return DuplicationUtils.convertLines(duplications, getDiff());
   }
@@ -151,12 +171,12 @@ class RemoteSourceCode implements SourceCode {
   /**
    * {@inheritDoc}
    */
-  public int compareTo(SourceCode resource) {
+  public int compareTo(final SourceCode resource) {
     return key.compareTo(resource.getKey());
   }
 
   @Override
-  public boolean equals(Object obj) {
+  public boolean equals(final Object obj) {
     return (obj instanceof RemoteSourceCode) && (key.equals(((RemoteSourceCode) obj).key));
   }
 
@@ -168,11 +188,11 @@ class RemoteSourceCode implements SourceCode {
   @Override
   public String toString() {
     return new ToStringBuilder(this).
-        append("key", key).
-        toString();
+    append("key", key).
+    toString();
   }
 
-  protected RemoteSourceCode setRemoteSonarIndex(RemoteSonarIndex index) {
+  protected RemoteSourceCode setRemoteSonarIndex(final RemoteSonarIndex index) {
     this.index = index;
     return this;
   }
