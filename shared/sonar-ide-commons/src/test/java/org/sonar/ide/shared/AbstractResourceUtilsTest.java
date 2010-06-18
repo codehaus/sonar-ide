@@ -18,23 +18,28 @@
 
 package org.sonar.ide.shared;
 
-import org.junit.Test;
-
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.notNullValue;
+import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertThat;
+
+import org.junit.Test;
 
 /**
  * @author Evgeny Mandrikov
  */
 public abstract class AbstractResourceUtilsTest<MODEL> {
+
   @Test
   public void testGetProjectKey() {
     AbstractResourceUtils<MODEL> utils = newUtils(true, null, "org.sonar", "ClassOne");
-    assertThat(utils.getProjectKey(null, "myproject"), nullValue());
-    assertThat(utils.getProjectKey("org.example", null), nullValue());
-    assertThat(utils.getProjectKey("org.example", ""), nullValue());
-    assertThat(utils.getProjectKey("", "myproject"), nullValue());
-    assertThat(utils.getProjectKey("org.example", "myproject"), is("org.example:myproject"));
+    assertThat(utils.getProjectKey("org.example", "myproject", null), is("org.example:myproject"));
+    assertThat(utils.getProjectKey("org.example", "myproject", ""), is("org.example:myproject"));
+    assertThat(utils.getProjectKey("org.example", "myproject", "BRANCH-1.0"), is("org.example:myproject:BRANCH-1.0"));
+    assertThat(utils.getProjectKey("", "myproject", "BRANCH-1.0"), nullValue());
+    assertThat(utils.getProjectKey("org.example", "", "BRANCH-1.0"), nullValue());
+    assertThat(utils.getProjectKey(null, "myproject", "BRANCH-1.0"), nullValue());
+    assertThat(utils.getProjectKey("org.example", null, "BRANCH-1.0"), nullValue());
   }
 
   @Test
