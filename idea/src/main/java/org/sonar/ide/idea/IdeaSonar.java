@@ -6,6 +6,7 @@ import com.intellij.psi.PsiFile;
 import org.sonar.ide.api.SourceCode;
 import org.sonar.ide.idea.utils.IdeaResourceUtils;
 import org.sonar.ide.wsclient.RemoteSonar;
+import org.sonar.wsclient.Host;
 import org.sonar.wsclient.Sonar;
 
 /**
@@ -13,8 +14,8 @@ import org.sonar.wsclient.Sonar;
  */
 public class IdeaSonar extends RemoteSonar {
 
-  public IdeaSonar(Sonar sonar) {
-    super(sonar);
+  public IdeaSonar(Host host) {
+    super(host);
   }
 
   /**

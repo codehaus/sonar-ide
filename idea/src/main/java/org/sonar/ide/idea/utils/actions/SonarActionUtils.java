@@ -29,6 +29,7 @@ import org.sonar.ide.idea.utils.IdeaResourceUtils;
 import org.sonar.ide.idea.utils.SonarUtils;
 import org.sonar.wsclient.Host;
 import org.sonar.wsclient.Sonar;
+import org.sonar.wsclient.connectors.HttpClient4Connector;
 
 /**
  * @author Evgeny Mandrikov
@@ -42,14 +43,6 @@ public final class SonarActionUtils {
     VirtualFile virtualFile = getVirtualFile(event);
     PsiFile psiFile = PsiManager.getInstance(getProject(event)).findFile(virtualFile);
     return IdeaResourceUtils.getInstance().getFileKey(psiFile);
-  }
-
-  /**
-   * @deprecated ues {@link #getIdeaSonar(com.intellij.openapi.actionSystem.AnActionEvent)} instead of it
-   */
-  @Deprecated
-  public static Sonar getSonar(AnActionEvent event) {
-    return SonarUtils.getSonar(getProject(event));
   }
 
   public static Host getSonarServer(AnActionEvent event) {

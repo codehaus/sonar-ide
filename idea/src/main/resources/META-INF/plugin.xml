@@ -46,10 +46,6 @@
   </module-components>
 
   <actions>
-    <action id="Sonar.ShowMeasures"
-            class="org.sonar.ide.idea.actions.ShowMeasuresAction"
-            text="Show measures"/>
-
     <action id="Sonar.GoToDashboard"
             class="org.sonar.ide.idea.actions.GoToDashboardAction"
             text="Go to dashboard"/>

@@ -28,13 +28,10 @@ import com.intellij.openapi.util.Computable;
 import com.intellij.openapi.util.Key;
 import com.intellij.psi.PsiDocumentManager;
 import com.intellij.psi.PsiFile;
-import com.intellij.psi.PsiManager;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.sonar.ide.api.SourceCode;
 import org.sonar.ide.idea.IdeaSonar;
 import org.sonar.ide.idea.utils.SonarUtils;
-import org.sonar.wsclient.Sonar;
 
 /**
  * @author Evgeny Mandrikov
@@ -82,7 +79,7 @@ public abstract class AbstractSonarTask extends Task.Backgroundable {
    * Should be called before adding new markers to avoid duplicate markers.
    *
    * @param markupModel markup model
-   * @param key key
+   * @param key         key
    */
   protected static void removeSonarHighlighters(MarkupModel markupModel, Key<Boolean> key) {
     for (RangeHighlighter rangeHighlighter : markupModel.getAllHighlighters()) {

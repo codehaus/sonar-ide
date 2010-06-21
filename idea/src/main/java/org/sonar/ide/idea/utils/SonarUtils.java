@@ -43,17 +43,7 @@ public final class SonarUtils {
     return IdeaSonarProjectComponent.getInstance(project).getServer();
   }
 
-  /**
-   * @deprecated use {@link #getIdeaSonar(com.intellij.openapi.project.Project)} instead of it
-   */
-  @Deprecated
-  public static Sonar getSonar(Project project) {
-    Host server = getServer(project);
-    LOG.debug("Sonar server: {}", server.getHost());
-    return new Sonar(new HttpClient4Connector(server));
-  }
-
   public static IdeaSonar getIdeaSonar(Project project) {
-    return new IdeaSonar(getSonar(project));
+    return new IdeaSonar(getServer(project));
   }
 }
