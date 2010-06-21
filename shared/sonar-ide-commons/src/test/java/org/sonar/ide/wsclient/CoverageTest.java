@@ -18,20 +18,19 @@
 
 package org.sonar.ide.wsclient;
 
-import org.junit.Test;
-import org.sonar.ide.shared.coverage.CoverageData;
-import org.sonar.ide.test.SonarIdeTestCase;
-
-import java.io.File;
-
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.Assert.assertThat;
 
+import java.io.File;
+
+import org.junit.Test;
+import org.sonar.ide.shared.coverage.CoverageData;
+
 /**
  * @author Evgeny Mandrikov
  */
-public class CoverageTest extends SonarIdeTestCase {
+public class CoverageTest extends AbstractRemoteTestCase {
 
   @Test
   public void testGetCoverage() throws Exception {
@@ -47,8 +46,6 @@ public class CoverageTest extends SonarIdeTestCase {
   }
 
   private CoverageData getCoverage(File project, String className) throws Exception {
-    return new RemoteSonar(getTestServer().getSonar())
-        .search(getProjectKey(project) + ":[default]." + className)
-        .getCoverage();
+    return getRemoteSonar().search(getProjectKey(project) + ":[default]." + className).getCoverage();
   }
 }

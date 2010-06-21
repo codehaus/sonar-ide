@@ -26,18 +26,15 @@ import java.util.List;
 
 import org.apache.commons.io.FileUtils;
 import org.junit.Test;
-import org.sonar.ide.test.SonarIdeTestCase;
 import org.sonar.wsclient.services.Violation;
 
 /**
  * @author Evgeny Mandrikov
  */
-public class ViolationsTest extends SonarIdeTestCase {
+public class ViolationsTest extends AbstractRemoteTestCase {
   private List<Violation> getViolations(File project, String className) throws Exception {
-    return new RemoteSonar(getTestServer().getSonar())
-        .search(getProjectKey(project) + ":[default]." + className)
-        .setLocalContent(FileUtils.readFileToString(getProjectFile(project, "/src/main/java/" + className + ".java")))
-        .getViolations();
+    return getRemoteSonar().search(getProjectKey(project) + ":[default]." + className).setLocalContent(
+        FileUtils.readFileToString(getProjectFile(project, "/src/main/java/" + className + ".java"))).getViolations();
   }
 
   @Test

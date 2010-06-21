@@ -32,7 +32,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * Base class for Sonar-IDE tests.
- *
+ * 
  * @author Evgeny Mandrikov
  */
 public abstract class SonarIdeTestCase {
@@ -54,8 +54,9 @@ public abstract class SonarIdeTestCase {
 
   /**
    * Stops {@link org.sonar.ide.test.SonarTestServer} if started.
-   *
-   * @throws Exception if something wrong
+   * 
+   * @throws Exception
+   *           if something wrong
    */
   @AfterClass
   public static void cleanup() throws Exception {
@@ -67,7 +68,8 @@ public abstract class SonarIdeTestCase {
 
   /**
    * @return instance of {@link org.sonar.ide.test.SonarTestServer}
-   * @throws Exception if something wrong
+   * @throws Exception
+   *           if something wrong
    */
   protected SonarTestServer getTestServer() throws Exception {
     if (testServer == null) {
@@ -78,7 +80,8 @@ public abstract class SonarIdeTestCase {
   }
 
   /**
-   * @param project project (see {@link #getProject(String)})
+   * @param project
+   *          project (see {@link #getProject(String)})
    * @return Sonar key for specified project
    */
   protected static String getProjectKey(File project) {
@@ -87,8 +90,10 @@ public abstract class SonarIdeTestCase {
   }
 
   /**
-   * @param project  project (see {@link #getProject(String)})
-   * @param filename filename
+   * @param project
+   *          project (see {@link #getProject(String)})
+   * @param filename
+   *          filename
    * @return specified file from specified project
    */
   protected static File getProjectFile(File project, String filename) {
@@ -96,9 +101,11 @@ public abstract class SonarIdeTestCase {
   }
 
   /**
-   * @param projectName name of project
+   * @param projectName
+   *          name of project
    * @return project directory
-   * @throws IOException if unable to prepare project directory
+   * @throws IOException
+   *           if unable to prepare project directory
    */
   protected static File getProject(String projectName) throws IOException {
     File destDir = new File(projectsWorkdir, projectName); // TODO include testName
@@ -107,26 +114,26 @@ public abstract class SonarIdeTestCase {
 
   /**
    * Installs specified project to specified directory.
-   *
-   * @param projectName name of project
-   * @param destDir     destination directory
+   * 
+   * @param projectName
+   *          name of project
+   * @param destDir
+   *          destination directory
    * @return project directory
-   * @throws IOException if unable to prepare project directory
+   * @throws IOException
+   *           if unable to prepare project directory
    */
   protected static File getProject(String projectName, File destDir) throws IOException {
     copyProjectLock.writeLock().lock();
     try {
       File projectFolder = new File(projectsSource, projectName);
-      Assert.assertTrue(
-          "Project " + projectName + " folder not found.\n" + projectFolder.getAbsolutePath(),
-          projectFolder.isDirectory()
-      );
+      Assert.assertTrue("Project " + projectName + " folder not found.\n" + projectFolder.getAbsolutePath(), projectFolder.isDirectory());
       if (destDir.isDirectory()) {
         LOG.warn("Directory for project already exists: {}", destDir);
       }
 
       // TODO interpolate files
-//      FileUtils.copyDirectory(projectFolder, destDir, HiddenFileFilter.VISIBLE);
+      // FileUtils.copyDirectory(projectFolder, destDir, HiddenFileFilter.VISIBLE);
       FileUtils.copyDirectory(projectFolder, destDir);
       return destDir;
     } finally {

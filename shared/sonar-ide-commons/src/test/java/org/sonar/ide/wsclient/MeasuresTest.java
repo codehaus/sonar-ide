@@ -18,22 +18,24 @@
 
 package org.sonar.ide.wsclient;
 
-import org.junit.Ignore;
-import org.junit.Test;
-import org.sonar.ide.shared.measures.MeasureData;
-import org.sonar.ide.test.SonarIdeTestCase;
-import org.sonar.ide.wsclient.RemoteSonar;
+import static org.hamcrest.Matchers.greaterThan;
+import static org.hamcrest.Matchers.hasItem;
+import static org.hamcrest.Matchers.hasProperty;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.not;
+import static org.junit.Assert.assertThat;
 
 import java.io.File;
 import java.util.List;
 
-import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.assertThat;
+import org.junit.Ignore;
+import org.junit.Test;
+import org.sonar.ide.shared.measures.MeasureData;
 
 /**
  * @author Evgeny Mandrikov
  */
-public class MeasuresTest extends SonarIdeTestCase {
+public class MeasuresTest extends AbstractRemoteTestCase {
 
   @Test
   public void testGetMeasures() throws Exception {
@@ -52,8 +54,6 @@ public class MeasuresTest extends SonarIdeTestCase {
   }
 
   private List<MeasureData> getMeasures(File project, String className) throws Exception {
-    return new RemoteSonar(getTestServer().getSonar())
-        .search(getProjectKey(project) + ":[default]." + className)
-        .getMeasures();
+    return getRemoteSonar().search(getProjectKey(project) + ":[default]." + className).getMeasures();
   }
 }

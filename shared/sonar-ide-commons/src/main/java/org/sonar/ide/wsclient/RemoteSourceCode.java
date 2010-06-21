@@ -4,8 +4,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.sonar.ide.api.Logs;
@@ -33,6 +35,7 @@ import org.sonar.wsclient.services.ViolationQuery;
  */
 class RemoteSourceCode implements SourceCode {
   private final String key;
+  private final String name;
   private RemoteSonarIndex index;
 
   private String localContent;
@@ -47,8 +50,18 @@ class RemoteSourceCode implements SourceCode {
    */
   private String[] remoteContent;
 
-  public RemoteSourceCode(final String key) {
+  /**
+   * Lazy initialization - see {@link #getChildren()}.
+   */
+  private Set<SourceCode> children;
+
+  public RemoteSourceCode(String key) {
+    this(key, null);
+  }
+
+  public RemoteSourceCode(String key, String name) {
     this.key = key;
+    this.name = name;
   }
 
   /**
@@ -56,6 +69,28 @@ class RemoteSourceCode implements SourceCode {
    */
   public String getKey() {
     return key;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public String getName() {
+    return name;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public Set<SourceCode> getChildren() {
+    if (children == null) {
+      ResourceQuery query = new ResourceQuery().setDepth(1).setResourceKeyOrId(getKey());
+      Collection<Resource> resources = index.getSonar().findAll(query);
+      children = new HashSet<SourceCode>();
+      for (Resource resource : resources) {
+        children.add(new RemoteSourceCode(resource.getKey(), resource.getName()).setRemoteSonarIndex(index));
+      }
+    }
+    return children;
   }
 
   /**
@@ -104,11 +139,7 @@ class RemoteSourceCode implements SourceCode {
     final List<MeasureData> result = new ArrayList<MeasureData>();
     for (final Measure measure : resource.getMeasures()) {
       final Metric metric = metricsByKey.get(measure.getMetricKey());
-      result.add(new MeasureData()
-      .setName(metric.getName())
-      .setDomain(metric.getDomain())
-      .setValue(measure.getFormattedValue())
-      );
+      result.add(new MeasureData().setName(metric.getName()).setDomain(metric.getDomain()).setValue(measure.getFormattedValue()));
     }
     return result;
   }
@@ -117,22 +148,14 @@ class RemoteSourceCode implements SourceCode {
    * {@inheritDoc}
    */
   public CoverageData getCoverage() {
-    final Resource resource = index.getSonar().find(ResourceQuery.createForMetrics(
-        getKey(),
-        CoverageUtils.COVERAGE_LINE_HITS_DATA_KEY, CoverageUtils.BRANCH_COVERAGE_HITS_DATA_KEY
-    ));
+    final Resource resource = index.getSonar().find(
+        ResourceQuery.createForMetrics(getKey(), CoverageUtils.COVERAGE_LINE_HITS_DATA_KEY, CoverageUtils.BRANCH_COVERAGE_HITS_DATA_KEY));
     final Measure measure = resource.getMeasure(CoverageUtils.COVERAGE_LINE_HITS_DATA_KEY);
     final Measure measure2 = resource.getMeasure(CoverageUtils.BRANCH_COVERAGE_HITS_DATA_KEY);
     if (measure2 != null) {
-      return new CoverageData(
-          CoverageUtils.unmarshall(measure.getData()),
-          CoverageUtils.unmarshall(measure2.getData())
-      );
+      return new CoverageData(CoverageUtils.unmarshall(measure.getData()), CoverageUtils.unmarshall(measure2.getData()));
     } else {
-      return new CoverageData(
-          CoverageUtils.unmarshall(measure.getData()),
-          new HashMap<Integer,String>()
-      );
+      return new CoverageData(CoverageUtils.unmarshall(measure.getData()), new HashMap<Integer, String>());
     }
   }
 
@@ -187,13 +210,15 @@ class RemoteSourceCode implements SourceCode {
 
   @Override
   public String toString() {
-    return new ToStringBuilder(this).
-    append("key", key).
-    toString();
+    return new ToStringBuilder(this).append("key", key).toString();
   }
 
   protected RemoteSourceCode setRemoteSonarIndex(final RemoteSonarIndex index) {
     this.index = index;
     return this;
+  }
+
+  protected RemoteSonarIndex getRemoteSonarIndex() {
+    return index;
   }
 }
