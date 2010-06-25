@@ -1,6 +1,5 @@
 package org.sonar.ide.wsclient;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -10,6 +9,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
+import org.sonar.ide.api.IMeasure;
 import org.sonar.ide.api.Logs;
 import org.sonar.ide.api.SourceCode;
 import org.sonar.ide.api.SourceCodeDiff;
@@ -21,7 +21,6 @@ import org.sonar.ide.shared.measures.MeasureData;
 import org.sonar.ide.shared.violations.ViolationUtils;
 import org.sonar.wsclient.services.Measure;
 import org.sonar.wsclient.services.Metric;
-import org.sonar.wsclient.services.MetricQuery;
 import org.sonar.wsclient.services.Resource;
 import org.sonar.wsclient.services.ResourceQuery;
 import org.sonar.wsclient.services.Source;
@@ -29,11 +28,14 @@ import org.sonar.wsclient.services.SourceQuery;
 import org.sonar.wsclient.services.Violation;
 import org.sonar.wsclient.services.ViolationQuery;
 
+import com.google.common.collect.Lists;
+
 /**
  * @author Evgeny Mandrikov
  * @since 0.2
  */
 class RemoteSourceCode implements SourceCode {
+
   private final String key;
   private final String name;
   private RemoteSonarIndex index;
@@ -125,21 +127,17 @@ class RemoteSourceCode implements SourceCode {
   /**
    * {@inheritDoc}
    */
-  public List<MeasureData> getMeasures() {
-    // TODO Godin: This is not optimal. Would be better to load metrics only once.
-    final List<Metric> metrics = index.getSonar().findAll(MetricQuery.all());
-    final Map<String, Metric> metricsByKey = new HashMap<String, Metric>();
-    // TODO Godin: We shouldn't load all measures.
-    for (final Metric metric : metrics) {
-      metricsByKey.put(metric.getKey(), metric);
-    }
-    final String[] metricKeys = metricsByKey.keySet().toArray(new String[metrics.size()]);
-    final ResourceQuery query = ResourceQuery.createForMetrics(getKey(), metricKeys);
-    final Resource resource = index.getSonar().find(query);
-    final List<MeasureData> result = new ArrayList<MeasureData>();
-    for (final Measure measure : resource.getMeasures()) {
+  public List<IMeasure> getMeasures() {
+    // TODO Godin: We shouldn't load all measures - see http://jira.codehaus.org/browse/SONAR-1620
+    Map<String, Metric> metricsByKey = index.getMetrics();
+    Set<String> keys = metricsByKey.keySet();
+    String[] metricKeys = keys.toArray(new String[keys.size()]);
+    ResourceQuery query = ResourceQuery.createForMetrics(getKey(), metricKeys);
+    Resource resource = index.getSonar().find(query);
+    List<IMeasure> result = Lists.newArrayList();
+    for (Measure measure : resource.getMeasures()) {
       final Metric metric = metricsByKey.get(measure.getMetricKey());
-      result.add(new MeasureData().setName(metric.getName()).setDomain(metric.getDomain()).setValue(measure.getFormattedValue()));
+      result.add(new MeasureData().setMetricDef(metric).setValue(measure.getFormattedValue()));
     }
     return result;
   }

@@ -30,7 +30,7 @@ import java.util.List;
 
 import org.junit.Ignore;
 import org.junit.Test;
-import org.sonar.ide.shared.measures.MeasureData;
+import org.sonar.ide.api.IMeasure;
 
 /**
  * @author Evgeny Mandrikov
@@ -39,7 +39,7 @@ public class MeasuresTest extends AbstractRemoteTestCase {
 
   @Test
   public void testGetMeasures() throws Exception {
-    List<MeasureData> measures = getMeasures(getProject("measures"), "Measures");
+    List<IMeasure> measures = getMeasures(getProject("measures"), "Measures");
 
     assertThat(measures.size(), greaterThan(0));
   }
@@ -53,7 +53,8 @@ public class MeasuresTest extends AbstractRemoteTestCase {
     assertThat((List<Object>) measures, not(hasItem(hasProperty("name", is("Coverage hits data")))));
   }
 
-  private List<MeasureData> getMeasures(File project, String className) throws Exception {
+  private List<IMeasure> getMeasures(File project, String className) throws Exception {
     return getRemoteSonar().search(getProjectKey(project) + ":[default]." + className).getMeasures();
   }
+
 }

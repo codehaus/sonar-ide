@@ -17,8 +17,7 @@ public interface SourceCode extends Comparable<SourceCode>, Measurable {
   /**
    * HIGHLY EXPERIMENTAL!!!
    * 
-   * @param content
-   *          content of this resource
+   * @param content content of this resource
    * @return this (for method chaining)
    */
   SourceCode setLocalContent(String content);

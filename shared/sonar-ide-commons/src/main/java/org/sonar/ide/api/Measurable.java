@@ -1,12 +1,11 @@
 package org.sonar.ide.api;
 
+import java.util.List;
+
 import org.sonar.ide.shared.coverage.CoverageData;
 import org.sonar.ide.shared.duplications.Duplication;
-import org.sonar.ide.shared.measures.MeasureData;
 import org.sonar.wsclient.services.Source;
 import org.sonar.wsclient.services.Violation;
-
-import java.util.List;
 
 /**
  * @author Evgeny Mandrikov
@@ -14,7 +13,7 @@ import java.util.List;
  */
 public interface Measurable {
 
-  List<MeasureData> getMeasures();
+  List<IMeasure> getMeasures();
 
   /*
    * TODO Godin:
@@ -22,11 +21,11 @@ public interface Measurable {
    * Actually those methods work only for files.
    */
 
-  CoverageData getCoverage();
-
   List<Violation> getViolations();
 
   List<Duplication> getDuplications();
+
+  CoverageData getCoverage();
 
   Source getCode();
 

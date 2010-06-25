@@ -18,40 +18,63 @@
 
 package org.sonar.ide.shared.measures;
 
+import org.sonar.ide.api.IMeasure;
+import org.sonar.wsclient.services.Metric;
+
 /**
  * @author Evgeny Mandrikov
  * @since 0.2
  */
-public final class MeasureData {
+public final class MeasureData implements IMeasure {
 
-  private String name;
-  private String domain;
+  private Metric metric;
   private String value;
 
-  public String getName() {
-    return name;
+  /**
+   * {@inheritDoc}
+   */
+  public Metric getMetricDef() {
+    return metric;
   }
 
-  public MeasureData setName(String name) {
-    this.name = name;
+  public MeasureData setMetricDef(Metric metric) {
+    this.metric = metric;
     return this;
   }
 
-  public String getDomain() {
-    return domain;
-  }
-
-  public MeasureData setDomain(String domain) {
-    this.domain = domain;
-    return this;
-  }
-
+  /**
+   * {@inheritDoc}
+   */
   public String getValue() {
     return value;
   }
 
   public MeasureData setValue(String value) {
     this.value = value;
+    return this;
+  }
+
+  public String getName() {
+    return metric.getName();
+  }
+
+  /**
+   * @deprecated does nothing, use {@link #setMetricDef(Metric)} instead
+   */
+  @Deprecated
+  public MeasureData setName(String name) {
+    return this;
+  }
+
+  public String getDomain() {
+    return metric.getDomain();
+  }
+
+  /**
+   * @deprecated does nothing, use {@link #setMetricDef(Metric)} instead
+   */
+  @Deprecated
+  public MeasureData setDomain(String domain) {
     return this;
   }
 
