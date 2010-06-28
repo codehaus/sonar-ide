@@ -1,0 +1,31 @@
+<project name="Eclipse Sonar Plugin" basedir=".">
+  <property environment="env"/>
+  <property name="eclipse.dir" value="${basedir}/eclipse"/>
+  <property name="maven.home" value=""/>
+
+  <target name="update-dependencies">
+    <mvn dir="${eclipse.dir}/org.sonar.ide.eclipse.sonar_embedder" args="-Dtycho.mode=maven -Pupdate-dependencies clean org.sonatype.tycho:maven-osgi-packaging-plugin:generate-bundle"/>
+    <mvn dir="${eclipse.dir}/org.sonar.ide.eclipse.tests.common" args="-Dtycho.mode=maven -Pupdate-dependencies clean org.sonatype.tycho:maven-osgi-packaging-plugin:generate-bundle"/>
+  </target>
+
+  <target name="compile" depends="update-dependencies">
+    <mvn dir="${basedir}" args="-Peclipse clean install"/>
+  </target>
+
+  <macrodef name="mvn">
+    <attribute name="failonerror" default="true"/>
+    <attribute name="args" default=""/>
+    <attribute name="dir"/>
+
+    <sequential>
+      <echo>Executing ${maven.home}/bin/mvn @{args}</echo>
+      <exec dir="@{dir}" failonerror="@{failonerror}" executable="${maven.home}/bin/mvn.bat" osfamily="Windows">
+        <arg line="@{args} -B -e"/>
+      </exec>
+      <exec dir="@{dir}" failonerror="@{failonerror}" executable="${maven.home}/bin/mvn" osfamily="unix">
+        <arg line="@{args} -B -e"/>
+      </exec>
+    </sequential>
+  </macrodef>
+
+</project>
