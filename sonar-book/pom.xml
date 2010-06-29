@@ -114,6 +114,7 @@
             </configuration>
           </execution>
           -->
+          <!--
           <execution>
             <id>generate-pdf</id>
             <phase>compile</phase>
@@ -171,6 +172,7 @@
               </fonts>
             </configuration>
           </execution>
+          -->
         </executions>
       </plugin>
       <plugin>
