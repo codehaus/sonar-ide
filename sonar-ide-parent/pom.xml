@@ -96,12 +96,12 @@
   </ciManagement>
   <distributionManagement>
     <repository>
-      <id>sonar-ide</id>
+      <id>codehaus.org</id>
       <name>Sonar IDEs repository</name>
       <url>dav:https://dav.codehaus.org/repository/sonar-ide</url>
     </repository>
     <snapshotRepository>
-      <id>sonar-ide</id>
+      <id>codehaus.org</id>
       <name>Sonar IDEs snapshot repository</name>
       <!--
       Quote from https://cwiki.apache.org/MAVEN/maven-3x-compatibility-notes.html :
