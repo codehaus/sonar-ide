@@ -4,12 +4,12 @@
   <property name="maven.home" value=""/>
 
   <target name="update-dependencies">
-    <mvn dir="${eclipse.dir}/org.sonar.ide.eclipse.sonar_embedder" args="-Dtycho.mode=maven -Pupdate-dependencies clean org.sonatype.tycho:maven-osgi-packaging-plugin:generate-bundle"/>
-    <mvn dir="${eclipse.dir}/org.sonar.ide.eclipse.tests.common" args="-Dtycho.mode=maven -Pupdate-dependencies clean org.sonatype.tycho:maven-osgi-packaging-plugin:generate-bundle"/>
+    <mvn dir="${eclipse.dir}/org.sonar.ide.eclipse.sonar_embedder" args="-Dtycho.mode=maven -Dtycho.version=0.9.0 -Pupdate-dependencies clean org.sonatype.tycho:maven-osgi-packaging-plugin:generate-bundle"/>
+    <mvn dir="${eclipse.dir}/org.sonar.ide.eclipse.tests.common" args="-Dtycho.mode=maven -Dtycho.version=0.9.0 -Pupdate-dependencies clean org.sonatype.tycho:maven-osgi-packaging-plugin:generate-bundle"/>
   </target>
 
   <target name="compile" depends="update-dependencies">
-    <mvn dir="${basedir}" args="-Peclipse clean install"/>
+    <mvn dir="${basedir}" args="-Peclipse -Dtycho.version=0.9.0 clean install"/>
   </target>
 
   <macrodef name="mvn">
