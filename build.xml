@@ -14,7 +14,7 @@
   </target>
 
   <!-- Used in SonarSource Hudson -->
-  <target name="integration-test" depends="update-dependencies" description="Execute integration tests for Eclipse Sonar Plugin">
+  <target name="integration-tests" depends="update-dependencies" description="Execute integration tests for Eclipse Sonar Plugin">
     <mvn dir="${basedir}" args="-Peclipse,its -Dtarget.platform=e35 clean install"/>
     <mvn dir="${basedir}" args="-Peclipse,its -Dtarget.platform=e34 clean install"/>
     <mvn dir="${basedir}" args="-Peclipse,its -Dtarget.platform=e36 clean install"/>
