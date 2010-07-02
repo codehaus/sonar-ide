@@ -29,9 +29,11 @@
       <echo>Executing ${maven.home}/bin/mvn @{args}</echo>
       <exec dir="@{dir}" failonerror="@{failonerror}" executable="${maven.home}/bin/mvn.bat" osfamily="Windows">
         <arg line="@{args} -B -e"/>
+        <env key="MAVEN_OPTS" value="-Xmx256m"/>
       </exec>
       <exec dir="@{dir}" failonerror="@{failonerror}" executable="${maven.home}/bin/mvn" osfamily="unix">
         <arg line="@{args} -B -e"/>
+        <env key="MAVEN_OPTS" value="-Xmx256m"/>
       </exec>
     </sequential>
   </macrodef>
