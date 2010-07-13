@@ -17,7 +17,10 @@
   <!-- Used in SonarSource Hudson -->
   <target name="integration-tests" depends="update-dependencies" description="Execute integration tests for Eclipse Sonar Plugin">
     <mvn dir="${basedir}" args="-Peclipse,its -Dtarget.platform=e35 clean install"/>
+    <mvn dir="${basedir}" args="-Peclipse -Dtarget.platform=e34 clean install"/>
+    <!-- TODO 'bundle org.junit4 4.4.0' could not be found
     <mvn dir="${basedir}" args="-Peclipse,its -Dtarget.platform=e34 clean install"/>
+    -->
     <mvn dir="${basedir}" args="-Peclipse,its -Dtarget.platform=e36 clean install"/>
   </target>
 
