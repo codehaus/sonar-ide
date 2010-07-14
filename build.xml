@@ -4,7 +4,8 @@
   <property name="maven.home" value=""/>
 
   <target name="update-dependencies" description="Update dependencies for Eclipse Sonar Plugin">
-    <mvn dir="${basedir}" args="clean install"/>
+    <mvn dir="${basedir}/sonar-ide-parent" args="clean install"/>
+    <mvn dir="${basedir}/shared" args="clean install"/>
     <mvn dir="${eclipse.dir}/org.sonar.ide.eclipse.sonar_embedder" args="-Dtycho.mode=maven -Pupdate-dependencies clean org.sonatype.tycho:maven-osgi-packaging-plugin:generate-bundle"/>
     <mvn dir="${eclipse.dir}/org.sonar.ide.eclipse.tests.common" args="-Dtycho.mode=maven -Pupdate-dependencies clean org.sonatype.tycho:maven-osgi-packaging-plugin:generate-bundle"/>
   </target>
