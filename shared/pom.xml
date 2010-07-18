@@ -33,7 +33,7 @@
   </issueManagement>
 
   <properties>
-    <sonar.version>2.0.1</sonar.version>
+    <sonar.version>2.2</sonar.version>
   </properties>
 
   <build>
