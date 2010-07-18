@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.sonar.ide.api.IMeasure;
 import org.sonar.ide.api.Logs;
@@ -128,7 +129,6 @@ class RemoteSourceCode implements SourceCode {
    * {@inheritDoc}
    */
   public List<IMeasure> getMeasures() {
-    // TODO Godin: We shouldn't load all measures - see http://jira.codehaus.org/browse/SONAR-1620
     Map<String, Metric> metricsByKey = index.getMetrics();
     Set<String> keys = metricsByKey.keySet();
     String[] metricKeys = keys.toArray(new String[keys.size()]);
@@ -137,7 +137,9 @@ class RemoteSourceCode implements SourceCode {
     List<IMeasure> result = Lists.newArrayList();
     for (Measure measure : resource.getMeasures()) {
       final Metric metric = metricsByKey.get(measure.getMetricKey());
-      result.add(new MeasureData().setMetricDef(metric).setValue(measure.getFormattedValue()));
+      if (!metric.getHidden() && !"DATA".equals(metric.getType())) {
+        result.add(new MeasureData().setMetricDef(metric).setValue(measure.getFormattedValue()));
+      }
     }
     return result;
   }

@@ -28,6 +28,7 @@ import static org.junit.Assert.assertThat;
 import java.io.File;
 import java.util.List;
 
+import org.hamcrest.Matchers;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.sonar.ide.api.IMeasure;
@@ -45,12 +46,13 @@ public class MeasuresTest extends AbstractRemoteTestCase {
   }
 
   @Test
-  @Ignore("Not ready")
-  @SuppressWarnings("unchecked")
   public void notLoadDataMeasures() throws Exception {
-    List measures = getMeasures(getProject("measures"), "Measures");
+    List<IMeasure>  measures = getMeasures(getProject("measures"), "Measures");
 
-    assertThat((List<Object>) measures, not(hasItem(hasProperty("name", is("Coverage hits data")))));
+    for (IMeasure measure : measures) {
+      assertThat(measure.getMetricDef().getHidden(), not(true));
+      assertThat(measure.getMetricDef().getType(), not("DATA")); // "Coverage hits data" not hiddent, but with type DATA
+    }
   }
 
   private List<IMeasure> getMeasures(File project, String className) throws Exception {
