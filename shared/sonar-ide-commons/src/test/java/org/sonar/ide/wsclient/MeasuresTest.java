@@ -51,7 +51,7 @@ public class MeasuresTest extends AbstractRemoteTestCase {
 
     for (IMeasure measure : measures) {
       assertThat(measure.getMetricDef().getHidden(), not(true));
-      assertThat(measure.getMetricDef().getType(), not("DATA")); // "Coverage hits data" not hiddent, but with type DATA
+      assertThat(measure.getMetricDef().getType(), not("DATA")); // "Coverage hits data" not hidden, but with type DATA
     }
   }
 
