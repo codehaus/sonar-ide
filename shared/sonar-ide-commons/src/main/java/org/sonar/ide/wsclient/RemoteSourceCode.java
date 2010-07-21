@@ -137,8 +137,10 @@ class RemoteSourceCode implements SourceCode {
     List<IMeasure> result = Lists.newArrayList();
     for (Measure measure : resource.getMeasures()) {
       final Metric metric = metricsByKey.get(measure.getMetricKey());
-      if (!metric.getHidden() && !"DATA".equals(metric.getType())) {
-        result.add(new MeasureData().setMetricDef(metric).setValue(measure.getFormattedValue()));
+      final String value = measure.getFormattedValue();
+      // Hacks around SONAR-1620
+      if ( !metric.getHidden() && !"DATA".equals(metric.getType()) && !StringUtils.isNotBlank(measure.getFormattedValue())) {
+        result.add(new MeasureData().setMetricDef(metric).setValue(value));
       }
     }
     return result;
