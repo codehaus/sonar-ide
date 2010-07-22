@@ -139,7 +139,7 @@ class RemoteSourceCode implements SourceCode {
       final Metric metric = metricsByKey.get(measure.getMetricKey());
       final String value = measure.getFormattedValue();
       // Hacks around SONAR-1620
-      if ( !metric.getHidden() && !"DATA".equals(metric.getType()) && !StringUtils.isNotBlank(measure.getFormattedValue())) {
+      if ( !metric.getHidden() && !"DATA".equals(metric.getType()) && StringUtils.isNotBlank(measure.getFormattedValue())) {
         result.add(new MeasureData().setMetricDef(metric).setValue(value));
       }
     }
