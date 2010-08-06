@@ -8,6 +8,9 @@ import java.util.Collection;
  */
 public interface SourceCodeSearchEngine {
 
+  /**
+   * @return null, if not found
+   */
   SourceCode search(String key);
 
   Collection<SourceCode> getProjects();
