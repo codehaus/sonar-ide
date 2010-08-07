@@ -14,6 +14,8 @@ public interface SourceCode extends Comparable<SourceCode>, Measurable {
 
   Set<SourceCode> getChildren();
 
+  String getRemoteContent();
+
   /**
    * HIGHLY EXPERIMENTAL!!!
    * 

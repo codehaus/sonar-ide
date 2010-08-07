@@ -26,7 +26,6 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiDocumentManager;
 import com.intellij.psi.PsiFile;
-import org.apache.commons.lang.StringUtils;
 import org.sonar.ide.api.SourceCode;
 import org.sonar.ide.idea.utils.actions.SonarAction;
 import org.sonar.ide.idea.utils.actions.SonarActionUtils;
@@ -47,7 +46,7 @@ public class OpenDiffToolAction extends SonarAction {
     PsiFile psiFile = PsiDocumentManager.getInstance(project).getPsiFile(doc1);
     // Load code from Sonar
     SourceCode source = SonarActionUtils.getIdeaSonar(event).search(psiFile);
-    String content = StringUtils.join(source.getCode().getLines().toArray(), "\n");
+    String content = source.getRemoteContent();
     // Prepare content for diff
     SonarVirtualFile sonarVirtualFile = new SonarVirtualFile("Test.java", content.getBytes(), source.getKey());
     DiffContent sonarDiffContent = createDiffContent(project, sonarVirtualFile);

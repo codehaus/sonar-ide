@@ -32,7 +32,6 @@ public class RemoteSonarTest extends SonarIdeTestCase {
     System.out.println(sourceCode.getViolations());
     System.out.println(sourceCode.getDuplications());
     System.out.println(sourceCode.getCoverage());
-    System.out.println(sourceCode.getCode());
   }
 
 }

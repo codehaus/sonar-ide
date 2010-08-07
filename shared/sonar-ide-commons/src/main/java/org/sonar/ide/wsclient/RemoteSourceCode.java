@@ -49,7 +49,7 @@ class RemoteSourceCode implements SourceCode {
   private SourceCodeDiff diff;
 
   /**
-   * Lazy initialization - see {@link #getRemoteContent()}.
+   * Lazy initialization - see {@link #getRemoteContentAsArray()}.
    */
   private String[] remoteContent;
 
@@ -111,16 +111,20 @@ class RemoteSourceCode implements SourceCode {
     return localContent;
   }
 
-  private String[] getRemoteContent() {
+  private String[] getRemoteContentAsArray() {
     if (remoteContent == null) {
       remoteContent = SimpleSourceCodeDiffEngine.getLines(getCode());
     }
     return remoteContent;
   }
 
+  public String getRemoteContent() {
+    return StringUtils.join(getRemoteContentAsArray(), "\n");
+  }
+
   private SourceCodeDiff getDiff() {
     if (diff == null) {
-      diff = index.getDiffEngine().diff(SimpleSourceCodeDiffEngine.split(getLocalContent()), getRemoteContent());
+      diff = index.getDiffEngine().diff(SimpleSourceCodeDiffEngine.split(getLocalContent()), getRemoteContentAsArray());
     }
     return diff;
   }
@@ -186,10 +190,7 @@ class RemoteSourceCode implements SourceCode {
     return DuplicationUtils.convertLines(duplications, getDiff());
   }
 
-  /**
-   * {@inheritDoc}
-   */
-  public Source getCode() {
+  private Source getCode() {
     return index.getSonar().find(new SourceQuery(getKey()));
   }
 
