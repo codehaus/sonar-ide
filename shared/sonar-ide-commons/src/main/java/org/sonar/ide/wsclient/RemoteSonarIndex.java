@@ -34,14 +34,6 @@ class RemoteSonarIndex implements SourceCodeSearchEngine {
   private final Sonar sonar;
   private final SourceCodeDiffEngine diffEngine;
 
-  /**
-   * @deprecated use {@link #RemoteSonarIndex(Host, Sonar, SourceCodeDiffEngine)} instead of it
-   */
-  @Deprecated
-  public RemoteSonarIndex(Sonar sonar, SourceCodeDiffEngine diffEngine) {
-    this(null, sonar, diffEngine);
-  }
-
   public RemoteSonarIndex(Host host, SourceCodeDiffEngine diffEngine) {
     this(host, new Sonar(ConnectorFactory.create(host)), diffEngine);
   }

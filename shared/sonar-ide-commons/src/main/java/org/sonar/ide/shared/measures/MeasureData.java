@@ -54,28 +54,4 @@ public final class MeasureData implements IMeasure {
     return this;
   }
 
-  public String getName() {
-    return metric.getName();
-  }
-
-  /**
-   * @deprecated does nothing, use {@link #setMetricDef(Metric)} instead
-   */
-  @Deprecated
-  public MeasureData setName(String name) {
-    return this;
-  }
-
-  public String getDomain() {
-    return metric.getDomain();
-  }
-
-  /**
-   * @deprecated does nothing, use {@link #setMetricDef(Metric)} instead
-   */
-  @Deprecated
-  public MeasureData setDomain(String domain) {
-    return this;
-  }
-
 }

@@ -14,6 +14,9 @@ public interface SourceCode extends Comparable<SourceCode>, Measurable {
 
   Set<SourceCode> getChildren();
 
+  /**
+   * @return content, which was analyzed by Sonar
+   */
   String getRemoteContent();
 
   /**
