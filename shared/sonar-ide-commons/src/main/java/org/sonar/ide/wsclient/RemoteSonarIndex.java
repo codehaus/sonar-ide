@@ -3,24 +3,16 @@ package org.sonar.ide.wsclient;
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import org.apache.commons.httpclient.Credentials;
-import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.MultiThreadedHttpConnectionManager;
-import org.apache.commons.httpclient.UsernamePasswordCredentials;
-import org.apache.commons.httpclient.auth.AuthScope;
-import org.apache.commons.httpclient.params.HttpConnectionManagerParams;
 import org.sonar.ide.api.SourceCode;
 import org.sonar.ide.api.SourceCodeDiffEngine;
 import org.sonar.ide.api.SourceCodeSearchEngine;
 import org.sonar.wsclient.Host;
 import org.sonar.wsclient.Sonar;
-import org.sonar.wsclient.connectors.HttpClient3Connector;
 import org.sonar.wsclient.services.Metric;
 import org.sonar.wsclient.services.MetricQuery;
 import org.sonar.wsclient.services.Resource;
 import org.sonar.wsclient.services.ResourceQuery;
 
-import java.net.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -36,71 +28,12 @@ import java.util.Map;
  */
 class RemoteSonarIndex implements SourceCodeSearchEngine {
 
-  private static final int TIMEOUT_MS = 30000;
-  private static final int MAX_TOTAL_CONNECTIONS = 40;
-  private static final int MAX_HOST_CONNECTIONS = 4;
-
   private final Host host;
   private final Sonar sonar;
   private final SourceCodeDiffEngine diffEngine;
 
   public RemoteSonarIndex(Host host, SourceCodeDiffEngine diffEngine) {
-    this(host, new Sonar(configureConnector(host)), diffEngine);
-  }
-
-  /**
-   * Workaround for <a href="http://jira.codehaus.org/browse/SONAR-1715">SONAR-1715</a>.
-   * <p>
-   * TODO Godin: I suppose that call of method {@link HttpClient3Connector#configureCredentials()} should be added to constructor
-   * {@link HttpClient3Connector#HttpClient3Connector(Host, HttpClient)}
-   * </p>
-   *
-   * @param server Sonar server
-   * @return configured {@link HttpClient3Connector}
-   * @see org.sonar.wsclient.connectors.HttpClient3Connector#createClient()
-   * @see org.sonar.wsclient.connectors.HttpClient3Connector#configureCredentials()
-   */
-  private static HttpClient3Connector configureConnector(Host server) {
-    // createClient
-    final HttpConnectionManagerParams params = new HttpConnectionManagerParams();
-    params.setConnectionTimeout(TIMEOUT_MS);
-    params.setSoTimeout(TIMEOUT_MS);
-    params.setDefaultMaxConnectionsPerHost(MAX_HOST_CONNECTIONS);
-    params.setMaxTotalConnections(MAX_TOTAL_CONNECTIONS);
-    final MultiThreadedHttpConnectionManager connectionManager = new MultiThreadedHttpConnectionManager();
-    connectionManager.setParams(params);
-    HttpClient httpClient = new HttpClient(connectionManager);
-
-    // configureCredentials
-    if (server.getUsername() != null) {
-      httpClient.getParams().setAuthenticationPreemptive(true);
-      Credentials defaultcreds = new UsernamePasswordCredentials(server.getUsername(), server.getPassword());
-      httpClient.getState().setCredentials(AuthScope.ANY, defaultcreds);
-    }
-
-    // TODO Godin: ugly hack to use ProxySelector with commons-httpclient 3.1
-    try {
-      List<Proxy> list = ProxySelector.getDefault().select(new URI(server.getHost()));
-      for (Proxy proxy : list) {
-        if (proxy.type() == Proxy.Type.HTTP) {
-          // Proxy
-          InetSocketAddress addr = (InetSocketAddress) proxy.address();
-          System.out.println(addr);
-          httpClient.getHostConfiguration().setProxy(addr.getHostName(), addr.getPort());
-          // Proxy auth
-          InetAddress proxyInetAddress = InetAddress.getByName(addr.getHostName());
-          PasswordAuthentication auth = Authenticator.requestPasswordAuthentication(proxyInetAddress, addr.getPort(), null, null, null);
-          if (auth != null) {
-            Credentials defaultcreds = new UsernamePasswordCredentials(auth.getUserName(), new String(auth.getPassword()));
-            httpClient.getState().setProxyCredentials(AuthScope.ANY, defaultcreds);
-          }
-        }
-      }
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
-
-    return new HttpClient3Connector(server, httpClient);
+    this(host, new Sonar(HttpClient3ConnectorFactory.createConnector(host)), diffEngine);
   }
 
   private RemoteSonarIndex(Host host, Sonar sonar, SourceCodeDiffEngine diffEngine) {
