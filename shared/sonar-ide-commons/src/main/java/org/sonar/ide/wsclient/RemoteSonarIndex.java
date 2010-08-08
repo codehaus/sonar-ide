@@ -1,10 +1,8 @@
 package org.sonar.ide.wsclient;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-
+import com.google.common.base.Function;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import org.apache.commons.httpclient.Credentials;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.MultiThreadedHttpConnectionManager;
@@ -22,15 +20,17 @@ import org.sonar.wsclient.services.MetricQuery;
 import org.sonar.wsclient.services.Resource;
 import org.sonar.wsclient.services.ResourceQuery;
 
-import com.google.common.base.Function;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
+import java.net.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 
 /**
  * EXPERIMENTAL!!!
  * Layer between Sonar IDE and Sonar based on sonar-ws-client :
  * Sonar IDE -> RemoteSonarIndex -> sonar-ws-client -> Sonar
- * 
+ *
  * @author Evgeny Mandrikov
  * @since 0.2
  */
@@ -54,7 +54,7 @@ class RemoteSonarIndex implements SourceCodeSearchEngine {
    * TODO Godin: I suppose that call of method {@link HttpClient3Connector#configureCredentials()} should be added to constructor
    * {@link HttpClient3Connector#HttpClient3Connector(Host, HttpClient)}
    * </p>
-   * 
+   *
    * @param server Sonar server
    * @return configured {@link HttpClient3Connector}
    * @see org.sonar.wsclient.connectors.HttpClient3Connector#createClient()
@@ -76,6 +76,28 @@ class RemoteSonarIndex implements SourceCodeSearchEngine {
       httpClient.getParams().setAuthenticationPreemptive(true);
       Credentials defaultcreds = new UsernamePasswordCredentials(server.getUsername(), server.getPassword());
       httpClient.getState().setCredentials(AuthScope.ANY, defaultcreds);
+    }
+
+    // TODO Godin: ugly hack to use ProxySelector with commons-httpclient 3.1
+    try {
+      List<Proxy> list = ProxySelector.getDefault().select(new URI(server.getHost()));
+      for (Proxy proxy : list) {
+        if (proxy.type() == Proxy.Type.HTTP) {
+          // Proxy
+          InetSocketAddress addr = (InetSocketAddress) proxy.address();
+          System.out.println(addr);
+          httpClient.getHostConfiguration().setProxy(addr.getHostName(), addr.getPort());
+          // Proxy auth
+          InetAddress proxyInetAddress = InetAddress.getByName(addr.getHostName());
+          PasswordAuthentication auth = Authenticator.requestPasswordAuthentication(proxyInetAddress, addr.getPort(), null, null, null);
+          if (auth != null) {
+            Credentials defaultcreds = new UsernamePasswordCredentials(auth.getUserName(), new String(auth.getPassword()));
+            httpClient.getState().setProxyCredentials(AuthScope.ANY, defaultcreds);
+          }
+        }
+      }
+    } catch (Exception e) {
+      e.printStackTrace();
     }
 
     return new HttpClient3Connector(server, httpClient);
