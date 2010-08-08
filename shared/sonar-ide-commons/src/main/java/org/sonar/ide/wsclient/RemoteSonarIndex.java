@@ -1,41 +1,91 @@
 package org.sonar.ide.wsclient;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-
+import com.google.common.base.Function;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import org.apache.commons.httpclient.Credentials;
+import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.MultiThreadedHttpConnectionManager;
+import org.apache.commons.httpclient.UsernamePasswordCredentials;
+import org.apache.commons.httpclient.auth.AuthScope;
+import org.apache.commons.httpclient.params.HttpConnectionManagerParams;
 import org.sonar.ide.api.SourceCode;
 import org.sonar.ide.api.SourceCodeDiffEngine;
 import org.sonar.ide.api.SourceCodeSearchEngine;
 import org.sonar.wsclient.Host;
 import org.sonar.wsclient.Sonar;
-import org.sonar.wsclient.connectors.ConnectorFactory;
+import org.sonar.wsclient.connectors.HttpClient3Connector;
 import org.sonar.wsclient.services.Metric;
 import org.sonar.wsclient.services.MetricQuery;
 import org.sonar.wsclient.services.Resource;
 import org.sonar.wsclient.services.ResourceQuery;
 
-import com.google.common.base.Function;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 
 /**
  * EXPERIMENTAL!!!
  * Layer between Sonar IDE and Sonar based on sonar-ws-client :
  * Sonar IDE -> RemoteSonarIndex -> sonar-ws-client -> Sonar
- * 
+ *
  * @author Evgeny Mandrikov
  * @since 0.2
  */
 class RemoteSonarIndex implements SourceCodeSearchEngine {
+
+  private static final int TIMEOUT_MS = 30000;
+  private static final int MAX_TOTAL_CONNECTIONS = 40;
+  private static final int MAX_HOST_CONNECTIONS = 4;
 
   private final Host host;
   private final Sonar sonar;
   private final SourceCodeDiffEngine diffEngine;
 
   public RemoteSonarIndex(Host host, SourceCodeDiffEngine diffEngine) {
-    this(host, new Sonar(ConnectorFactory.create(host)), diffEngine);
+    this(host, new Sonar(configureConnector(host)), diffEngine);
+  }
+
+  /**
+   * TODO Godin: looks like we have a bug in sonar-ws-client
+   * <ul>
+   * <li>
+   * I suppose that call of method {@link HttpClient3Connector#configureCredentials()} should be added to
+   * constructor {@link HttpClient3Connector#HttpClient3Connector(Host, HttpClient)}
+   * </li>
+   * <li>
+   * Also {@link HttpConnectionManagerParams#setSoTimeout(int)} should be used.
+   * </li>
+   * </ul>
+   *
+   * @param server Sonar server
+   * @return configured {@link HttpClient3Connector}
+   */
+  private static HttpClient3Connector configureConnector(Host server) {
+    // createClient
+    final HttpConnectionManagerParams params = new HttpConnectionManagerParams();
+    params.setSoTimeout(TIMEOUT_MS);
+    params.setConnectionTimeout(TIMEOUT_MS);
+    params.setDefaultMaxConnectionsPerHost(MAX_HOST_CONNECTIONS);
+    params.setMaxTotalConnections(MAX_TOTAL_CONNECTIONS);
+    final MultiThreadedHttpConnectionManager connectionManager = new MultiThreadedHttpConnectionManager();
+    connectionManager.setParams(params);
+    HttpClient httpClient = new HttpClient(connectionManager);
+    // configureCredentials
+    if (server.getUsername() != null) {
+      httpClient.getParams().setAuthenticationPreemptive(true);
+      Credentials defaultcreds = new UsernamePasswordCredentials(server.getUsername(), server.getPassword());
+      httpClient.getState().setCredentials(AuthScope.ANY, defaultcreds);
+    }
+
+    // proxy
+    // TODO SONAR-1586
+//    httpClient.getHostConfiguration().setProxy("localhost", 9000);
+//    Credentials proxyCredentials = new UsernamePasswordCredentials("user", "pass");
+//    httpClient.getState().setProxyCredentials(AuthScope.ANY, proxyCredentials);
+
+    return new HttpClient3Connector(server, httpClient);
   }
 
   private RemoteSonarIndex(Host host, Sonar sonar, SourceCodeDiffEngine diffEngine) {

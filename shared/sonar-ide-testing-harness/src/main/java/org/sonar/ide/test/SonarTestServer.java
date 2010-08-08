@@ -26,10 +26,8 @@ import org.sonar.wsclient.services.*;
 /**
  * @author Evgeny Mandrikov
  */
-public class SonarTestServer {
+public class SonarTestServer extends HttpServer {
   protected static final Logger LOG = LoggerFactory.getLogger(SonarTestServer.class);
-
-  private HttpServer httpServer;
 
   public SonarTestServer() {
     this(0, "");
@@ -40,10 +38,9 @@ public class SonarTestServer {
    * @param baseDir location of sonar-data directory
    */
   public SonarTestServer(int port, String baseDir) {
-    httpServer = new HttpServer()
+    setContextPath("/")
         .setHttpPort(port)
         .setBaseDir(baseDir)
-        .setContextPath("/")
         .addServlet(VersionServlet.class, ServerQuery.BASE_URL)
         .addServlet(ViolationServlet.class, ViolationQuery.BASE_URL)
         .addServlet(SourceServlet.class, SourceQuery.BASE_URL)
@@ -51,21 +48,19 @@ public class SonarTestServer {
         .addServlet(MetricServlet.class, MetricQuery.BASE_URL);
   }
 
-  /**
-   * @throws Exception if server could not be started
-   */
-  public void start() throws Exception {
-    httpServer.start();
+  public HttpServer start() throws Exception {
+    super.start();
     LOG.info("Sonar test server started: {}", getBaseUrl());
+    return this;
   }
 
   public void stop() {
-    httpServer.stop();
+    super.stop();
     LOG.info("Sonar test server stopped: {}", getBaseUrl());
   }
 
   public String getBaseUrl() {
-    return httpServer.getHttpUrl();
+    return getHttpUrl();
   }
 
   public Host getHost() {

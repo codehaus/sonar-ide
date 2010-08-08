@@ -8,8 +8,7 @@ import org.mortbay.jetty.handler.AbstractHandler;
 import org.mortbay.jetty.handler.DefaultHandler;
 import org.mortbay.jetty.handler.HandlerList;
 import org.mortbay.jetty.nio.SelectChannelConnector;
-import org.mortbay.jetty.security.B64Code;
-import org.mortbay.jetty.security.SslSocketConnector;
+import org.mortbay.jetty.security.*;
 import org.mortbay.jetty.servlet.Context;
 import org.mortbay.jetty.servlet.ServletHolder;
 
@@ -19,7 +18,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * A helper for the tests to start an embedded HTTP server powered by Jetty.
@@ -50,6 +51,12 @@ public class HttpServer {
   private boolean redirectToHttps;
 
   private long latency;
+
+  private Map<String, String> userPasswords = new HashMap<String, String>();
+
+  private Map<String, String[]> userRoles = new HashMap<String, String[]>();
+
+  private Map<String, String[]> securedRealms = new HashMap<String, String[]>();
 
   /**
    * Sets the port to use for HTTP connections.
@@ -169,6 +176,32 @@ public class HttpServer {
     return this;
   }
 
+  /**
+   * Registers a user.
+   *
+   * @param username username, must not be {@code null}
+   * @param password password, must not be {@code null}
+   * @param roles    roles of the user, may be empty or {@code null}
+   * @return this (for method chaining)
+   */
+  public HttpServer addUser(String username, String password, String... roles) {
+    userPasswords.put(username, password);
+    userRoles.put(username, (roles == null) ? new String[0] : roles);
+    return this;
+  }
+
+  /**
+   * Sets up a security realm.
+   *
+   * @param pathSpec path to secure, e.g. {@code "/files/*"}, must not be {@code null}
+   * @param roles    roles that have access to the realm, may be empty or {@code null}
+   * @return this (for method chaining)
+   */
+  public HttpServer addSecuredRealm(String pathSpec, String... roles) {
+    securedRealms.put(pathSpec, (roles == null) ? new String[0] : roles);
+    return this;
+  }
+
   protected Connector newHttpConnector() {
     SelectChannelConnector connector = new SelectChannelConnector();
     connector.setPort(httpPort);
@@ -256,6 +289,44 @@ public class HttpServer {
     };
   }
 
+  protected Handler newSecurityHandler() {
+    List<ConstraintMapping> mappings = new ArrayList<ConstraintMapping>();
+
+    for (String pathSpec : securedRealms.keySet()) {
+      String[] roles = securedRealms.get(pathSpec);
+
+      Constraint constraint = new Constraint();
+      constraint.setName(Constraint.__BASIC_AUTH);
+      constraint.setRoles(roles);
+      constraint.setAuthenticate(true);
+
+      ConstraintMapping constraintMapping = new ConstraintMapping();
+      constraintMapping.setConstraint(constraint);
+      constraintMapping.setPathSpec(pathSpec);
+
+      mappings.add(constraintMapping);
+    }
+
+    HashUserRealm userRealm = new HashUserRealm("TestRealm");
+    for (String username : userPasswords.keySet()) {
+      String password = userPasswords.get(username);
+      String[] roles = userRoles.get(username);
+
+      userRealm.put(username, password);
+      if (roles != null) {
+        for (String role : roles) {
+          userRealm.addUserToRole(username, role);
+        }
+      }
+    }
+
+    SecurityHandler securityHandler = new SecurityHandler();
+    securityHandler.setUserRealm(userRealm);
+    securityHandler.setConstraintMappings(mappings.toArray(new ConstraintMapping[mappings.size()]));
+
+    return securityHandler;
+  }
+
   /**
    * Starts the server. Starting an already running server has no effect.
    *
@@ -284,6 +355,9 @@ public class HttpServer {
     }
     if (proxyUsername != null && proxyPassword != null) {
       handlerList.addHandler(newProxyHandler());
+    }
+    if (!securedRealms.isEmpty()) {
+      handlerList.addHandler(newSecurityHandler());
     }
     handlerList.addHandler(context); // TODO
     handlerList.addHandler(new DefaultHandler());
