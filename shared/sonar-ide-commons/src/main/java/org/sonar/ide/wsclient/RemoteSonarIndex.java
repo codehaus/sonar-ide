@@ -32,6 +32,13 @@ class RemoteSonarIndex implements SourceCodeSearchEngine {
   private final Sonar sonar;
   private final SourceCodeDiffEngine diffEngine;
 
+  /**
+   * Only for testing purposes.
+   */
+  protected RemoteSonarIndex(Host host) {
+    this(host, null);
+  }
+
   public RemoteSonarIndex(Host host, SourceCodeDiffEngine diffEngine) {
     this(host, new Sonar(HttpClient3ConnectorFactory.createConnector(host)), diffEngine);
   }

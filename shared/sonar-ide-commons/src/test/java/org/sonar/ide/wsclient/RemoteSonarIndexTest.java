@@ -3,7 +3,6 @@ package org.sonar.ide.wsclient;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.sonar.ide.test.SonarIdeTestCase;
 import org.sonar.ide.test.SonarTestServer;
 import org.sonar.wsclient.Host;
 import org.sonar.wsclient.connectors.ConnectionException;
@@ -16,7 +15,9 @@ import java.util.List;
 /**
  * @author Evgeny Mandrikov
  */
-public class RemoteSonarIndexTest extends SonarIdeTestCase {
+public class RemoteSonarIndexTest {
+
+  private static final long TIMEOUT = HttpClient3ConnectorFactory.TIMEOUT_MS * 2;
 
   private SonarTestServer testServer;
 
@@ -69,37 +70,43 @@ public class RemoteSonarIndexTest extends SonarIdeTestCase {
       }
     });
 
-    new RemoteSonarIndex(testServer.getHost(), null).getMetrics();
+    new RemoteSonarIndex(testServer.getHost()).getMetrics();
 
     ProxySelector.setDefault(defaultProxySelector);
     Authenticator.setDefault(null);
   }
 
   @Test(expected = ConnectionException.class)
-  public void readTimeout() throws Exception {
-    testServer.setLatency(HttpClient3ConnectorFactory.TIMEOUT_MS * 2).start();
+  public void proxyAuthFailed() throws Exception {
+    testServer.setProxyAuth("user", "pass").start();
 
-    new RemoteSonarIndex(testServer.getHost(), null).getMetrics();
+    new RemoteSonarIndex(testServer.getHost()).getMetrics();
+  }
+
+  @Test(expected = ConnectionException.class, timeout = TIMEOUT)
+  public void readTimeout() throws Exception {
+    testServer.setLatency(TIMEOUT).start();
+
+    new RemoteSonarIndex(testServer.getHost()).getMetrics();
   }
 
   @Test(expected = ConnectionException.class)
   public void noServerStarted() throws Exception {
-    new RemoteSonarIndex(new Host("http://localhost:70"), null).getMetrics();
+    new RemoteSonarIndex(new Host("http://localhost:70")).getMetrics();
   }
 
   @Test(expected = ConnectionException.class)
   public void unauthorized() throws Exception {
     testServer.addUser("user", "pass", "admin").addSecuredRealm("/*", "admin").start();
 
-    new RemoteSonarIndex(testServer.getHost(), null).getMetrics();
+    new RemoteSonarIndex(testServer.getHost()).getMetrics();
   }
-
 
   @Test
   public void authorized() throws Exception {
     testServer.addUser("user", "pass", "admin").addSecuredRealm("/*", "admin").start();
 
-    new RemoteSonarIndex(testServer.getHost().setUsername("user").setPassword("pass"), null).getMetrics();
+    new RemoteSonarIndex(testServer.getHost().setUsername("user").setPassword("pass")).getMetrics();
   }
 
 }
