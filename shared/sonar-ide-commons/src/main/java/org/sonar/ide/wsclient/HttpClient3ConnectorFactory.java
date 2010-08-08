@@ -16,7 +16,7 @@ import java.util.List;
  * @author Evgeny Mandrikov
  */
 public final class HttpClient3ConnectorFactory {
-  private static final int TIMEOUT_MS = 30000;
+  protected static final int TIMEOUT_MS = 30000;
   private static final int MAX_TOTAL_CONNECTIONS = 40;
   private static final int MAX_HOST_CONNECTIONS = 4;
 

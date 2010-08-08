@@ -16,9 +16,7 @@ import java.util.List;
 /**
  * @author Evgeny Mandrikov
  */
-public class RemoteSonarTest extends SonarIdeTestCase {
-
-  private static final long LATENCY = 2 * 30000; // 2 * HttpClient3Connector.TIMEOUT_MS; 
+public class RemoteSonarIndexTest extends SonarIdeTestCase {
 
   private SonarTestServer testServer;
 
@@ -33,7 +31,7 @@ public class RemoteSonarTest extends SonarIdeTestCase {
   }
 
   @Test
-  public void connectionOverSecuredProxy() throws Exception {
+  public void connectionOverSecuredHttpProxy() throws Exception {
     final String PROXY_USER = "user";
     final String PROXY_PASS = "pass";
 
@@ -71,40 +69,37 @@ public class RemoteSonarTest extends SonarIdeTestCase {
       }
     });
 
-    new RemoteSonar(testServer.getHost()).search("");
+    new RemoteSonarIndex(testServer.getHost(), null).getMetrics();
 
     ProxySelector.setDefault(defaultProxySelector);
     Authenticator.setDefault(null);
   }
 
-  /**
-   * See {@link RemoteSonarIndex#configureConnector(org.sonar.wsclient.Host)}
-   */
   @Test(expected = ConnectionException.class)
   public void readTimeout() throws Exception {
-    testServer.setLatency(LATENCY).start();
+    testServer.setLatency(HttpClient3ConnectorFactory.TIMEOUT_MS * 2).start();
 
-    new RemoteSonar(testServer.getHost()).search("");
+    new RemoteSonarIndex(testServer.getHost(), null).getMetrics();
   }
 
   @Test(expected = ConnectionException.class)
   public void noServerStarted() throws Exception {
-    new RemoteSonar(new Host("http://localhost:70")).search("");
+    new RemoteSonarIndex(new Host("http://localhost:70"), null).getMetrics();
   }
 
   @Test(expected = ConnectionException.class)
   public void unauthorized() throws Exception {
     testServer.addUser("user", "pass", "admin").addSecuredRealm("/*", "admin").start();
 
-    new RemoteSonar(testServer.getHost()).search("");
+    new RemoteSonarIndex(testServer.getHost(), null).getMetrics();
   }
+
 
   @Test
   public void authorized() throws Exception {
     testServer.addUser("user", "pass", "admin").addSecuredRealm("/*", "admin").start();
 
-    new RemoteSonar(new Host(testServer.getBaseUrl()).setUsername("user").setPassword("pass"))
-        .search("");
+    new RemoteSonarIndex(testServer.getHost().setUsername("user").setPassword("pass"), null).getMetrics();
   }
 
 }
