@@ -1,8 +1,10 @@
 package org.sonar.ide.wsclient;
 
-import com.google.common.base.Function;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+
 import org.apache.commons.httpclient.Credentials;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.MultiThreadedHttpConnectionManager;
@@ -20,16 +22,15 @@ import org.sonar.wsclient.services.MetricQuery;
 import org.sonar.wsclient.services.Resource;
 import org.sonar.wsclient.services.ResourceQuery;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
+import com.google.common.base.Function;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 
 /**
  * EXPERIMENTAL!!!
  * Layer between Sonar IDE and Sonar based on sonar-ws-client :
  * Sonar IDE -> RemoteSonarIndex -> sonar-ws-client -> Sonar
- *
+ * 
  * @author Evgeny Mandrikov
  * @since 0.2
  */
@@ -48,42 +49,34 @@ class RemoteSonarIndex implements SourceCodeSearchEngine {
   }
 
   /**
-   * TODO Godin: looks like we have a bug in sonar-ws-client
-   * <ul>
-   * <li>
-   * I suppose that call of method {@link HttpClient3Connector#configureCredentials()} should be added to
-   * constructor {@link HttpClient3Connector#HttpClient3Connector(Host, HttpClient)}
-   * </li>
-   * <li>
-   * Also {@link HttpConnectionManagerParams#setSoTimeout(int)} should be used.
-   * </li>
-   * </ul>
-   *
+   * Workaround for <a href="http://jira.codehaus.org/browse/SONAR-1715">SONAR-1715</a>.
+   * <p>
+   * TODO Godin: I suppose that call of method {@link HttpClient3Connector#configureCredentials()} should be added to constructor
+   * {@link HttpClient3Connector#HttpClient3Connector(Host, HttpClient)}
+   * </p>
+   * 
    * @param server Sonar server
    * @return configured {@link HttpClient3Connector}
+   * @see org.sonar.wsclient.connectors.HttpClient3Connector#createClient()
+   * @see org.sonar.wsclient.connectors.HttpClient3Connector#configureCredentials()
    */
   private static HttpClient3Connector configureConnector(Host server) {
     // createClient
     final HttpConnectionManagerParams params = new HttpConnectionManagerParams();
-    params.setSoTimeout(TIMEOUT_MS);
     params.setConnectionTimeout(TIMEOUT_MS);
+    params.setSoTimeout(TIMEOUT_MS);
     params.setDefaultMaxConnectionsPerHost(MAX_HOST_CONNECTIONS);
     params.setMaxTotalConnections(MAX_TOTAL_CONNECTIONS);
     final MultiThreadedHttpConnectionManager connectionManager = new MultiThreadedHttpConnectionManager();
     connectionManager.setParams(params);
     HttpClient httpClient = new HttpClient(connectionManager);
+
     // configureCredentials
     if (server.getUsername() != null) {
       httpClient.getParams().setAuthenticationPreemptive(true);
       Credentials defaultcreds = new UsernamePasswordCredentials(server.getUsername(), server.getPassword());
       httpClient.getState().setCredentials(AuthScope.ANY, defaultcreds);
     }
-
-    // proxy
-    // TODO SONAR-1586
-//    httpClient.getHostConfiguration().setProxy("localhost", 9000);
-//    Credentials proxyCredentials = new UsernamePasswordCredentials("user", "pass");
-//    httpClient.getState().setProxyCredentials(AuthScope.ANY, proxyCredentials);
 
     return new HttpClient3Connector(server, httpClient);
   }
