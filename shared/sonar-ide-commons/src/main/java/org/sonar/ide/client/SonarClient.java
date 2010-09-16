@@ -18,18 +18,18 @@
 
 package org.sonar.ide.client;
 
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.sonar.ide.wsclient.HttpClient3ConnectorFactory;
 import org.sonar.wsclient.Host;
 import org.sonar.wsclient.Sonar;
 import org.sonar.wsclient.connectors.ConnectionException;
-import org.sonar.wsclient.connectors.ConnectorFactory;
 import org.sonar.wsclient.services.Model;
 import org.sonar.wsclient.services.Query;
 import org.sonar.wsclient.services.Server;
 import org.sonar.wsclient.services.ServerQuery;
-
-import java.util.List;
 
 /**
  * @author Evgeny Mandrikov
@@ -47,7 +47,7 @@ public class SonarClient extends Sonar {
   }
 
   public SonarClient(String host, String username, String password) {
-    super(ConnectorFactory.create(new Host(host, username, password)));
+    super(HttpClient3ConnectorFactory.createConnector(new Host(host, username, password)));
     connect();
   }
 
