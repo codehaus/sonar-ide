@@ -1,5 +1,14 @@
 package org.sonar.ide.wsclient;
 
+import java.net.Authenticator;
+import java.net.InetAddress;
+import java.net.InetSocketAddress;
+import java.net.PasswordAuthentication;
+import java.net.Proxy;
+import java.net.ProxySelector;
+import java.net.URI;
+import java.util.List;
+
 import org.apache.commons.httpclient.Credentials;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.MultiThreadedHttpConnectionManager;
@@ -8,9 +17,6 @@ import org.apache.commons.httpclient.auth.AuthScope;
 import org.apache.commons.httpclient.params.HttpConnectionManagerParams;
 import org.sonar.wsclient.Host;
 import org.sonar.wsclient.connectors.HttpClient3Connector;
-
-import java.net.*;
-import java.util.List;
 
 /**
  * @author Evgeny Mandrikov
@@ -33,7 +39,7 @@ public final class HttpClient3ConnectorFactory {
    * TODO Godin: I suppose that call of method {@link HttpClient3Connector#configureCredentials()} should be added to constructor
    * {@link HttpClient3Connector#HttpClient3Connector(Host, HttpClient)}
    * </p>
-   *
+   * 
    * @param server Sonar server
    * @return configured {@link HttpClient3Connector}
    * @see org.sonar.wsclient.connectors.HttpClient3Connector#createClient()
@@ -64,7 +70,6 @@ public final class HttpClient3ConnectorFactory {
         if (proxy.type() == Proxy.Type.HTTP) {
           // Proxy
           InetSocketAddress addr = (InetSocketAddress) proxy.address();
-          System.out.println(addr);
           httpClient.getHostConfiguration().setProxy(addr.getHostName(), addr.getPort());
           // Proxy auth
           InetAddress proxyInetAddress = InetAddress.getByName(addr.getHostName());
