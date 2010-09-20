@@ -22,6 +22,8 @@ public interface Measurable {
 
   List<Violation> getViolations();
 
+  List<Violation> getViolations2();
+
   List<Duplication> getDuplications();
 
   CoverageData getCoverage();

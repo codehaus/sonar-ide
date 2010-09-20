@@ -178,6 +178,13 @@ class RemoteSourceCode implements SourceCode {
   /**
    * {@inheritDoc}
    */
+  public List<Violation> getViolations2() {
+    return getRemoteSonarIndex().getSonar().findAll(new ProperViolationQuery(key).setDepth( -1));
+  }
+
+  /**
+   * {@inheritDoc}
+   */
   public List<Duplication> getDuplications() {
     Logs.INFO.info("Loading duplications for {}", getKey());
     final Resource resource = index.getSonar().find(ResourceQuery.createForMetrics(getKey(), DuplicationUtils.DUPLICATIONS_DATA));
