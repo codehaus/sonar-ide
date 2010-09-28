@@ -11,7 +11,7 @@
 
   <groupId>org.codehaus.sonar-ide</groupId>
   <artifactId>sonar-ide-shared-components</artifactId>
-  <version>0.2-SNAPSHOT</version>
+  <version>0.2</version>
   <packaging>pom</packaging>
 
   <name>Sonar IDEs :: Shared Components</name>
@@ -23,9 +23,9 @@
   </modules>
 
   <scm>
-    <connection>scm:svn:http://svn.codehaus.org/sonar-ide/trunk/shared</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/sonar-ide/trunk/shared</developerConnection>
-    <url>http://svn.codehaus.org/sonar-ide/trunk/shared</url>
+    <connection>scm:svn:http://svn.codehaus.org/sonar-ide/tags/sonar-ide-shared-components-0.2</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/sonar-ide/tags/sonar-ide-shared-components-0.2</developerConnection>
+    <url>http://svn.codehaus.org/sonar-ide/tags/sonar-ide-shared-components-0.2</url>
   </scm>
   <issueManagement>
     <system>jira</system>
