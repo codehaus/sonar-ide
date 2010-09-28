@@ -1,6 +1,0 @@
-<!DOCTYPE idea-plugin PUBLIC "Plugin/DTD" "http://plugins.intellij.net/plugin.dtd">
-<idea-plugin>
-  <extensions xmlns="org.jetbrains.idea.maven">
-    <importer implementation="org.sonar.ide.idea.maven.SonarMavenImporter"/>
-  </extensions>
-</idea-plugin>

@@ -1,4 +1,0 @@
-Manifest-Version: 1.0
-OpenIDE-Module-Localizing-Bundle: org/sonar/ide/netbeans/Bundle.properties
-OpenIDE-Module-Layer: org/sonar/ide/netbeans/layer.xml
-OpenIDE-Module-Install: org/sonar/ide/netbeans/SonarModule.class
