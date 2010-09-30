@@ -1,11 +1,12 @@
 package org.sonar.ide.wsclient;
 
-import java.util.Collection;
-
 import org.sonar.ide.api.SourceCode;
 import org.sonar.ide.api.SourceCodeDiffEngine;
 import org.sonar.ide.api.SourceCodeSearchEngine;
 import org.sonar.wsclient.Host;
+import org.sonar.wsclient.Sonar;
+
+import java.util.Collection;
 
 /**
  * @author Evgeny Mandrikov
@@ -29,6 +30,10 @@ public class RemoteSonar implements SourceCodeSearchEngine {
 
   public Collection<SourceCode> getProjects() {
     return index.getProjects();
+  }
+
+  public Sonar getSonar() {
+    return index.getSonar();
   }
 
 }
