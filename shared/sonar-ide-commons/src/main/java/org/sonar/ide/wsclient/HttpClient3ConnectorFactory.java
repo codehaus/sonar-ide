@@ -20,23 +20,18 @@
 
 package org.sonar.ide.wsclient;
 
-import java.net.Authenticator;
-import java.net.InetAddress;
-import java.net.InetSocketAddress;
-import java.net.PasswordAuthentication;
-import java.net.Proxy;
-import java.net.ProxySelector;
-import java.net.URI;
-import java.util.List;
-
 import org.apache.commons.httpclient.Credentials;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.MultiThreadedHttpConnectionManager;
 import org.apache.commons.httpclient.UsernamePasswordCredentials;
 import org.apache.commons.httpclient.auth.AuthScope;
 import org.apache.commons.httpclient.params.HttpConnectionManagerParams;
+import org.apache.commons.lang.StringUtils;
 import org.sonar.wsclient.Host;
 import org.sonar.wsclient.connectors.HttpClient3Connector;
+
+import java.net.*;
+import java.util.List;
 
 /**
  * @author Evgeny Mandrikov
@@ -77,7 +72,7 @@ public final class HttpClient3ConnectorFactory {
     HttpClient httpClient = new HttpClient(connectionManager);
 
     // configureCredentials
-    if (server.getUsername() != null) {
+    if (StringUtils.isNotEmpty(server.getUsername())) {
       httpClient.getParams().setAuthenticationPreemptive(true);
       Credentials defaultcreds = new UsernamePasswordCredentials(server.getUsername(), server.getPassword());
       httpClient.getState().setCredentials(AuthScope.ANY, defaultcreds);
