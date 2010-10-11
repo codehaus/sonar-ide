@@ -20,18 +20,20 @@
 
 package org.sonar.ide.wsclient;
 
-import com.google.common.base.Function;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import org.sonar.ide.api.SourceCode;
 import org.sonar.ide.api.SourceCodeDiffEngine;
 import org.sonar.ide.api.SourceCodeSearchEngine;
+import org.sonar.ide.client.ExtendedHttpClient3Connector;
 import org.sonar.wsclient.Host;
 import org.sonar.wsclient.Sonar;
 import org.sonar.wsclient.services.Metric;
 import org.sonar.wsclient.services.MetricQuery;
 import org.sonar.wsclient.services.Resource;
 import org.sonar.wsclient.services.ResourceQuery;
+
+import com.google.common.base.Function;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -42,7 +44,7 @@ import java.util.Map;
  * EXPERIMENTAL!!!
  * Layer between Sonar IDE and Sonar based on sonar-ws-client :
  * Sonar IDE -> RemoteSonarIndex -> sonar-ws-client -> Sonar
- *
+ * 
  * @author Evgeny Mandrikov
  * @since 0.2
  */
@@ -60,7 +62,7 @@ class RemoteSonarIndex implements SourceCodeSearchEngine {
   }
 
   public RemoteSonarIndex(Host host, SourceCodeDiffEngine diffEngine) {
-    this(host, new Sonar(HttpClient3ConnectorFactory.createConnector(host)), diffEngine);
+    this(host, new Sonar(new ExtendedHttpClient3Connector(host)), diffEngine);
   }
 
   private RemoteSonarIndex(Host host, Sonar sonar, SourceCodeDiffEngine diffEngine) {

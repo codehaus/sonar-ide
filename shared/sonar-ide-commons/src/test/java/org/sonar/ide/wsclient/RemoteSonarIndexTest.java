@@ -23,6 +23,7 @@ package org.sonar.ide.wsclient;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.sonar.ide.client.ExtendedHttpClient3Connector;
 import org.sonar.ide.test.SonarTestServer;
 import org.sonar.wsclient.Host;
 import org.sonar.wsclient.connectors.ConnectionException;
@@ -37,7 +38,7 @@ import java.util.List;
  */
 public class RemoteSonarIndexTest {
 
-  private static final long TIMEOUT = HttpClient3ConnectorFactory.TIMEOUT_MS * 2;
+  private static final long TIMEOUT = ExtendedHttpClient3Connector.TIMEOUT_MS * 2;
 
   private SonarTestServer testServer;
 
