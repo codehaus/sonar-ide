@@ -2,6 +2,7 @@
   <property environment="env"/>
   <property name="eclipse.dir" value="${basedir}/eclipse"/>
   <property name="maven.home" value=""/>
+  <property name="maven2.home" value=""/>
 
   <target name="update-dependencies" description="Update dependencies for Eclipse Sonar Plugin">
     <mvn dir="${basedir}/sonar-ide-parent" args="clean install"/>
@@ -17,11 +18,11 @@
 
   <!-- Used in SonarSource Hudson -->
   <target name="integration-tests" depends="update-dependencies" description="Execute integration tests for Eclipse Sonar Plugin">
-    <mvn dir="${basedir}" args="-Peclipse,its -Dtarget.platform=e35 clean install"/>
+    <mvn dir="${basedir}" args="-Peclipse,its -Dtarget.platform=e35 -Dsonar.mavenHome=${maven2.home} clean install"/>
     <!-- TODO 'bundle org.junit4 4.4.0' could not be found
-    <mvn dir="${basedir}" args="-Peclipse,its -Dtarget.platform=e34 clean install"/>
+    <mvn dir="${basedir}" args="-Peclipse,its -Dtarget.platform=e34 -Dsonar.mavenHome=${maven2.home} clean install"/>
     -->
-    <mvn dir="${basedir}" args="-Peclipse,its -Dtarget.platform=e36 clean install"/>
+    <mvn dir="${basedir}" args="-Peclipse,its -Dtarget.platform=e36 -Dsonar.mavenHome=${maven2.home} clean install"/>
   </target>
 
   <macrodef name="mvn">
