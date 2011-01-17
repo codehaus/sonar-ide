@@ -47,7 +47,8 @@ public class SonarTestServer extends HttpServer {
         .addServlet(ViolationServlet.class, ViolationQuery.BASE_URL)
         .addServlet(SourceServlet.class, SourceQuery.BASE_URL)
         .addServlet(MeasureServlet.class, ResourceQuery.BASE_URL)
-        .addServlet(MetricServlet.class, MetricQuery.BASE_URL);
+        .addServlet(MetricServlet.class, MetricQuery.BASE_URL)
+        .addServlet(RuleServlet.class, RuleQuery.BASE_URL);
   }
 
   public HttpServer start() throws Exception {
