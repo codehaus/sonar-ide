@@ -39,11 +39,14 @@ import org.sonar.ide.shared.coverage.CoverageUtils;
 import org.sonar.ide.shared.duplications.Duplication;
 import org.sonar.ide.shared.duplications.DuplicationUtils;
 import org.sonar.ide.shared.measures.MeasureData;
+import org.sonar.ide.shared.profile.ProfileUtil;
 import org.sonar.ide.shared.violations.ViolationUtils;
 import org.sonar.wsclient.services.Measure;
 import org.sonar.wsclient.services.Metric;
 import org.sonar.wsclient.services.Resource;
 import org.sonar.wsclient.services.ResourceQuery;
+import org.sonar.wsclient.services.Rule;
+import org.sonar.wsclient.services.RuleQuery;
 import org.sonar.wsclient.services.Source;
 import org.sonar.wsclient.services.SourceQuery;
 import org.sonar.wsclient.services.Violation;
@@ -215,6 +218,21 @@ class RemoteSourceCode implements SourceCode {
     final List<Duplication> duplications = DuplicationUtils.parse(measure.getData());
     Logs.INFO.info("Loaded {} duplications: {}", duplications.size(), duplications);
     return DuplicationUtils.convertLines(duplications, getDiff());
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public List<Rule> getRules() {
+    Logs.INFO.info("Loading rules for {}", getKey());
+    final Resource resource = index.getSonar().find(ResourceQuery.createForMetrics(getKey(), ProfileUtil.METRIC_KEY));
+    final Measure measure = resource.getMeasure(ProfileUtil.METRIC_KEY);
+    if (measure == null) {
+      return Collections.emptyList();
+    }
+    final List<Rule> rules = getRemoteSonarIndex().getSonar().findAll(new RuleQuery(/* TODO */"java").setProfile(measure.getData()));
+    Logs.INFO.info("Loaded {} rules for profile {}", rules.size(), measure.getData());
+    return rules;
   }
 
   private Source getCode() {

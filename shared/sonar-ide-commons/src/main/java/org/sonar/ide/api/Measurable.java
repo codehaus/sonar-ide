@@ -24,6 +24,7 @@ import java.util.List;
 
 import org.sonar.ide.shared.coverage.CoverageData;
 import org.sonar.ide.shared.duplications.Duplication;
+import org.sonar.wsclient.services.Rule;
 import org.sonar.wsclient.services.Violation;
 
 /**
@@ -47,5 +48,7 @@ public interface Measurable {
   List<Duplication> getDuplications();
 
   CoverageData getCoverage();
+  
+  List<Rule> getRules();
 
 }
