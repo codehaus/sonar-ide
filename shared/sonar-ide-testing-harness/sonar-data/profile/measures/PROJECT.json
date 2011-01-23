@@ -1,0 +1,19 @@
+[
+  {
+    "id": 172317,
+    "key": "org.codehaus.sonar-ide.profile:profile",
+    "name": "Profile",
+    "scope": "PRJ",
+    "qualifier": "TRK",
+    "date": "2011-01-07T22:54:46+0000",
+    "lang": "java",
+    "msr":[
+      {
+        "key":"profile",
+        "val":15.0,
+        "frmt_val":"15.0",
+        "data":"Sonar for Sonar"
+      }
+    ]
+  }
+]

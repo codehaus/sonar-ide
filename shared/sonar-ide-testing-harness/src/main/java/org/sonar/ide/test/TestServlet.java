@@ -35,7 +35,9 @@ import java.io.PrintWriter;
  * @author Evgeny Mandrikov
  */
 public abstract class TestServlet extends GenericServlet {
+
   private static final String DEFAULT_PACKAGE_NAME = "[default]";
+  private static final String PROJECT_RESOURCE_NAME = "PROJECT";
 
   protected abstract String getResource(String classKey);
 
@@ -50,22 +52,17 @@ public abstract class TestServlet extends GenericServlet {
     try {
       String resourceKey = request.getParameter("resource");
       String[] parts = resourceKey.split(":");
-      String groupId = parts[0];
-      String artifactId = parts[1];
-      String classKey = parts[2];
-      SonarTestServer.LOG.debug("Loading data for {}:{}:{}", new Object[]{groupId, artifactId, classKey});
-      if (classKey.startsWith(DEFAULT_PACKAGE_NAME)) {
-        classKey = StringUtils.substringAfter(classKey, ".");
+      switch (parts.length) {
+        case 2:
+          json = loadProjectData(parts[0], parts[1]);
+          break;
+        case 3:
+          json = loadFileData(parts[0], parts[1], parts[2]);
+          break;
+        default:
+          json = "[]";
+          break;
       }
-      String testName;
-      if (StringUtils.contains(groupId, ".")) {
-        testName = StringUtils.substringAfterLast(groupId, ".");
-      } else {
-        testName = groupId;
-      }
-      File resourceFile = getResourceAsFile(testName, classKey);
-      SonarTestServer.LOG.info("Resource file: {}", resourceFile);
-      json = FileUtils.readFileToString(resourceFile);
     } catch (Exception e) {
       SonarTestServer.LOG.error(e.getMessage(), e);
       json = "[]";
@@ -75,5 +72,53 @@ public abstract class TestServlet extends GenericServlet {
 
   public static String getBaseDir(GenericServlet servlet) {
     return StringUtils.defaultIfEmpty(servlet.getServletConfig().getInitParameter("baseDir"), "target/sonar-data");
+  }
+
+  protected String loadFileData(String groupId, String artifactId, String classKey) throws IOException {
+    SonarTestServer.LOG.debug("Loading data for {}:{}:{} file", new Object[] { groupId, artifactId, classKey });
+    if (classKey.startsWith(DEFAULT_PACKAGE_NAME)) {
+      classKey = StringUtils.substringAfter(classKey, ".");
+    }
+    String testName;
+    if (StringUtils.contains(groupId, ".")) {
+      testName = StringUtils.substringAfterLast(groupId, ".");
+    } else {
+      testName = groupId;
+    }
+    File resourceFile = getResourceAsFile(testName, classKey);
+    SonarTestServer.LOG.info("Resource file: {}", resourceFile);
+    return FileUtils.readFileToString(resourceFile);
+  }
+
+  protected String loadProjectData(String groupId, String artifactId) throws IOException {
+    SonarTestServer.LOG.debug("Loading data for {}:{} project", new Object[] { groupId, artifactId });
+
+    // Calculate the test name
+    String testName;
+    if (StringUtils.contains(groupId, ".")) {
+      testName = StringUtils.substringAfterLast(groupId, ".");
+    } else {
+      testName = groupId;
+    }
+
+    // Calculate the resource name
+    String resourceName;
+    if (testName.equals(artifactId)) {
+      // Simple test project.
+      resourceName = PROJECT_RESOURCE_NAME;
+    } else {
+      // Multi-modules test project.
+      resourceName = PROJECT_RESOURCE_NAME + "_" + artifactId;
+    }
+
+    // Load resource data file.
+    File resourceFile = getResourceAsFile(testName, resourceName);
+    if (resourceFile.isFile() && resourceFile.canRead()) {
+      SonarTestServer.LOG.info("Resource file: {}", resourceFile);
+      return FileUtils.readFileToString(resourceFile);
+    } else {
+      SonarTestServer.LOG.info("Resource file not exist : {}", resourceFile);
+      return "[]";
+    }
   }
 }
