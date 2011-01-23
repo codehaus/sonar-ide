@@ -26,7 +26,6 @@ import static org.junit.Assert.assertThat;
 import java.io.File;
 import java.util.List;
 
-import org.apache.commons.io.FileUtils;
 import org.junit.Test;
 import org.sonar.wsclient.services.Rule;
 
@@ -36,15 +35,13 @@ import org.sonar.wsclient.services.Rule;
  */
 public class RulesTest extends AbstractRemoteTestCase {
 
-  private List<Rule> getRules(File project, String className) throws Exception {
-    return getRemoteSonar().search(getProjectKey(project) + ":[default]." + className)
-        .setLocalContent(FileUtils.readFileToString(getProjectFile(project, "/src/main/java/" + className + ".java"))).getRules();
+  private List<Rule> getRules(File project) throws Exception {
+    return getRemoteSonar().search(getProjectKey(project)).getRules();
   }
 
   @Test
   public void testGetRules() throws Exception {
-    List<Rule> rules = getRules(getProject("profile"), "Profile");
-
+    List<Rule> rules = getRules(getProject("profile"));
     assertThat(rules.size(), is(742));
     // TODO assert lines
   }
